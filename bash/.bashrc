@@ -205,6 +205,10 @@ alias vim=nvim
 alias ll='ls -alF'
 alias l='ls -CF'
 alias la='ls -a'
+alias lf='ls -alF | grep '
+
+# other aliases
+alias fn='find . -name'
 
 # Set copy/paste helper functions
 # the perl step removes the final newline from the output
@@ -231,12 +235,13 @@ so() {
 
 COLOR_BRIGHT_GREEN="\033[38;5;10m"
 COLOR_BRIGHT_BLUE="\033[38;5;115m"
-COLOR_RED="\033[0;31m"
+COLOR_CYAN="\033[1;36m"
+COLOR_RED="\033[1;31m"
 COLOR_YELLOW="\033[0;33m"
 COLOR_GREEN="\033[0;32m"
 COLOR_PURPLE="\033[1;35m"
 COLOR_ORANGE="\033[38;5;202m"
-COLOR_BLUE="\033[34;5;115m"
+COLOR_BLUE="\033[1;34m"
 COLOR_WHITE="\033[0;37m"
 COLOR_GOLD="\033[38;5;142m"
 COLOR_SILVER="\033[38;5;248m"
@@ -245,8 +250,8 @@ BOLD="$(tput bold)"
 
 # Set Bash PS1
 PS1_DIR="\[$BOLD\]\[$COLOR_BRIGHT_BLUE\]\w"
-PS1_USR="\[$BOLD\]\[$COLOR_GOLD\]\u@\h"
-PS1_END="\[$BOLD\]\[$COLOR_SILVER\]$ \[$COLOR_RESET\]"
+PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@\h"
+PS1_END="\[$BOLD\]\[$COLOR_CYAN\]$ \[$COLOR_RESET\]"
 
 PS1="${PS1_DIR}\
 
