@@ -1,6 +1,6 @@
-DOT_FILES = /.bashrc /.profile /.gitconfig /.tmux.conf /.vimrc
-AUX_FILES = /.config/nvim/init.vim
-BK_PATH := $(subst $(DOT_FILES), ~, $(CURDIR)/.old)
+DOT_FILES = .bashrc .profile .gitconfig .tmux.conf .vimrc
+AUX_FILES = .config/nvim/init.vim
+
 .PHONY: help
 help:
 	@echo "This make file has options avaliable to make sure the dotfiles are configured" \
@@ -10,18 +10,19 @@ help:
 
 .PHONY: backup_folder
 backup_folder:
-	@echo $(DOT_FILES)
-	@echo $(BK_PATH)
 	@mkdir -p $(CURDIR)/.old
 
 .PHONY: backup
 backup: backup_folder
 	@for FILE in $(DOT_FILES) ; do \
           echo $$FILE; \
-          echo $(subst $$FILE, ~, $(CURDIR)/.old); \
-          [ -f ~$$FILE ] && ( \
-            [ ! -f $(BK_PATH)$(subst $$FILE, ~, $(CURDIR)/.old) ] && ( \
-              cp -n $$FILE $(subst $$FILE, ~, $(CURDIR)/.old); \
+          $(eval OLD_FILE = $(shell echo ~)/$(shell echo $(FILE))) \
+          $(eval BK_FILE = $(CURDIR)/.old/$(FILE)) \
+          echo $(OLD_FILE); \
+          echo $(BK_FILE); \
+          [ -f $(shell echo ~)/$$FILE ] && ( \
+            [ ! -f $(CURDIR)/.old/$$FILE ] && ( \
+              cp -n $(shell echo ~)/$$FILE $(CURDIR)/.old/$$FILE; \
               echo "Backed up.\n" \
             ) || \
               echo "Backup already exists.\n" \
