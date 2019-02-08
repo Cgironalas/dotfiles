@@ -207,6 +207,12 @@ alias l='ls -CF'
 alias la='ls -a'
 alias lf='ls -alF | grep '
 
+# python virtual environments
+alias envc='python -m venv .env'
+alias enva='. .env/bin/activate'
+alias envd='deactivate'
+alias envr='rm -rf .env'
+
 # other aliases
 alias fn='find . -name'
 
