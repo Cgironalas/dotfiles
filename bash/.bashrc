@@ -124,6 +124,8 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export EDITOR=vim
 export SHELL=bash
 
+export MANPAGER="nvim -c 'set ft=man' -"
+
 # environment variable controlling difference between HI-DPI / Non HI_DPI
 # turn off because it messes up my pdf tooling
 export GDK_SCALE=0
