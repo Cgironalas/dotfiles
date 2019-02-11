@@ -48,12 +48,15 @@ clean:
           echo $(OLD_FILE); \
           echo $(BK_FILE); \
           [ -f $(CURDIR)/.old/$$FILE ] && ( \
-            [ -f $(shell echo ~)/$$FILE && -L $(shell echo ~) ] && ( \
-              mv $(CURDIR)/.old/$$FILE $(shell echo ~)/$$FILE; \
-              echo "File restored from backup.\n" \
+            [ -L $(shell echo ~)/$$FILE ] && ( \
+              rm $(shell echo ~)/$$FILE; \
+              echo "Symbolic link deleted"; \
             ) || \
-              echo "File is not symbolic link, assumed it's not from this git.\n" \
-            rm $(shell echo ~)/$$FILE; \
+              echo "File is not symbolic link, assumed it's not from this git.\n"; \
+            [ ! -f $(shell echo ~)/$$FILE ] && ( \
+              mv $(CURDIR)/.old/$$FILE $(shell echo ~)/$$FILE; \
+              echo "File restored from backup.\n"; \
+            ) \
           ) || \
             echo "Backup doesn't exists, thus ignored.\n"; \
 	done
