@@ -5,8 +5,9 @@ DOT_DIR = bash git tmux vim
 help:
 	@echo "This make file has options avaliable to make sure the dotfiles are configured" \
           "\nin their ideal location.\n" \
-          "\nRun make to backup your currently existing files into a .old directory" \
-	  "\nwithin this git and link the dotfiles for all available programs"
+          "\nRun make dotfiles to backup your currently existing files into a .old directory" \
+	  "\nwithin this git and link the dotfiles for all available programs.\n" \
+          "\nRun make clean to remove the dotfiles linked from this git and restoreyour previous dotfiles."
 
 .PHONY: backup_folder
 backup_folder:
