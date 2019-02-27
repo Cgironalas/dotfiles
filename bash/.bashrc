@@ -217,6 +217,10 @@ alias envr='rm -rf .env'
 
 # other aliases
 alias fn='find . -name'
+alias trw='tmux rename-window'
+
+alias dockrmac='docker rm $(docker ps -a -q)'
+alias dockrmai='docker rmi $(docker images -q)'
 
 # Set copy/paste helper functions
 # the perl step removes the final newline from the output
