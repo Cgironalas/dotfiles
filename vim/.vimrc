@@ -98,6 +98,11 @@ augroup redraw_on_refocus
   au FocusGained * :redraw!
 augroup END
 
+set foldmethod=indent
+set nofoldenable
+set foldnestmax=10
+
+
 " }}}
 " General: Plugin Install --------------------- {{{
 
@@ -126,6 +131,12 @@ Plug 'scrooloose/nerdtree'
 
 " Jedi-vim
 Plug 'davidhalter/jedi-vim'
+
+" Vim rooter
+Plug 'airblade/vim-rooter'
+
+" Ctrl P
+Plug 'kien/ctrlp.vim'
 
 call plug#end()
 
@@ -242,6 +253,13 @@ let g:jedi#show_call_signatures = 0
 let g:jedi#auto_close_doc = 0
 let g:jedi#smart_auto_mappings = 0
 let g:jedi#force_py_version = 3
+
+" CtrlP
+let g:ctrlp_working_path_mode = 'rw' " start from cwd
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+" open first in current window and others as hidden
+let g:ctrlp_open_multiple_files = '1r'
+let g:ctrlp_use_caching = 0
 
 " mappings
 " auto_vim_configuration creates space between where vim is opened and
