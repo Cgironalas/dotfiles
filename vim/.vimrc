@@ -99,8 +99,8 @@ augroup redraw_on_refocus
 augroup END
 
 set foldmethod=indent
+set foldnestmax=5
 set nofoldenable
-set foldnestmax=10
 
 
 " }}}
@@ -155,9 +155,9 @@ augroup END
 
 augroup fold_settings
   autocmd!
-  autocmd FileType vim setlocal foldmethod=marker
+  autocmd FileType vim setlocal foldmethod=indent
   autocmd FileType vim setlocal foldlevelstart=0
-  autocmd FileType * setlocal foldnestmax=1
+  autocmd FileType * setlocal foldnestmax=5
 augroup END
 
 " }}}
