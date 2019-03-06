@@ -215,12 +215,18 @@ alias enva='. .env/bin/activate'
 alias envd='deactivate'
 alias envr='rm -rf .env'
 
+# docker aliases
+alias dockrmac='docker rm $(docker ps -a -q)'
+alias dockrmai='docker rmi $(docker images -q)'
+alias docklsc='docker container ls'
+alias docklsac='docker container ls -a'
+alias docklsi='docker image ls'
+alias docklsai='docker image ls -a'
+
 # other aliases
 alias fn='find . -name'
 alias trw='tmux rename-window'
 
-alias dockrmac='docker rm $(docker ps -a -q)'
-alias dockrmai='docker rmi $(docker images -q)'
 
 # Set copy/paste helper functions
 # the perl step removes the final newline from the output
