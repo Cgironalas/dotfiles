@@ -118,6 +118,15 @@ Plug 'hdima/python-syntax'
 " Indentation
 Plug 'hynek/vim-python-pep8-indent'
 
+" Macro repeater
+Plug 'ckarnell/Antonys-macro-repeater'
+
+" File system explorer for vim
+Plug 'scrooloose/nerdtree'
+
+" Jedi-vim
+Plug 'davidhalter/jedi-vim'
+
 call plug#end()
 
 " }}}
@@ -213,11 +222,47 @@ endtry
 let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
 
+" NERD Tree
+let g:NERDTreeMapOpenInTab = '<C-t>'
+let g:NERDTreeMapOpenSplit = '<C-s>'
+let g:NERDTreeMapOpenVSplit = '<C-v>'
+let g:NERDTreeShowLineNumbers = 1
+let g:NERDTreeCaseSensitiveSort = 0
+let g:NERDTreeWinPos = 'left'
+let g:NERDTreeWinSize = 31
+let g:NERDTreeAutoDeleteBuffer = 2
+let g:NERDTreeIgnore=['venv$[[dir]]', '__pycache__$[[dir]]', 'node_modules$[[dir]]']
+nnoremap <silent> <space>h :NERDTreeToggle %<CR>
+
+" Jedi-vim
+" Python:
+" Open module, e.g. :Pyimport os (opens the os module)
+let g:jedi#popup_on_dot = 0
+let g:jedi#show_call_signatures = 0
+let g:jedi#auto_close_doc = 0
+let g:jedi#smart_auto_mappings = 0
+let g:jedi#force_py_version = 3
+
+" mappings
+" auto_vim_configuration creates space between where vim is opened and
+" closed in my bash terminal. This is annoying, so I disable and manually
+" configure. See 'set completeopt' in my global config for my settings
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#goto_command = "<C-]>"
+let g:jedi#documentation_command = "<leader>sd"
+let g:jedi#usages_command = "<leader>su"
+let g:jedi#rename_command = "<leader>r"
+
 "  }}}
 " General: Key remappings ----------------------- {{{
 
 " Put your key remappings here
 " Prefer nnoremap to nmap, inoremap to imap, and vnoremap to vmap
+
+nnoremap <silent> <C-k> :wincmd k<CR>
+nnoremap <silent> <C-j> :wincmd j<CR>
+nnoremap <silent> <C-l> :wincmd l<CR>
+nnoremap <silent> <C-h> :wincmd h<CR>
 
 " }}}
 " General: Cleanup ------------------ {{{
