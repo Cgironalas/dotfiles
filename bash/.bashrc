@@ -216,6 +216,7 @@ alias envd='deactivate'
 alias envr='rm -rf .env'
 
 # docker aliases
+alias dockpr='docker system prune --all'
 alias dockrmac='docker rm $(docker ps -a -q)'
 alias dockrmai='docker rmi $(docker images -q)'
 alias docklsc='docker container ls'
@@ -224,6 +225,7 @@ alias docklsi='docker image ls'
 alias docklsai='docker image ls -a'
 
 # other aliases
+alias cl='clear'
 alias fn='find . -name'
 alias trw='tmux rename-window'
 
