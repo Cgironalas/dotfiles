@@ -99,7 +99,7 @@ augroup redraw_on_refocus
 augroup END
 
 set foldmethod=indent
-set foldnestmax=5
+set foldnestmax=10
 set nofoldenable
 
 
@@ -137,6 +137,9 @@ Plug 'airblade/vim-rooter'
 
 " Ctrl P
 Plug 'kien/ctrlp.vim'
+
+" Vim-Toml
+Plug 'cespare/vim-toml'
 
 call plug#end()
 
