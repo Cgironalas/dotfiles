@@ -9,6 +9,8 @@
 [alias]
   co = checkout
   ci = commit
+  df = diff
+  dfs = diff --staged
   st = status
   ut = status -u
   br = branch
