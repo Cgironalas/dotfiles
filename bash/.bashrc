@@ -212,28 +212,30 @@ alias la='ls -a'
 alias lf='ls -alF | grep '
 
 # python virtual environments
+alias enva='source .env/bin/activate'
 alias envc='python -m venv .env'
-alias enva='. .env/bin/activate'
 alias envd='deactivate'
 alias envr='rm -rf .env'
 
 # git aliases
 alias g='git'
 alias ga='git add'
+alias gci='git commit'
+alias gch='git checkout'
 alias gd='git diff'
 alias gds='git diff --staged'
 alias gh='git hist'
 alias gs='git status'
-alias gc='git commit'
+alias gsu='git status -u'
 
 # docker aliases
+alias dklsac='docker container ls -a'
+alias dklsai='docker image ls -a'
+alias dklsc='docker container ls'
+alias dklsi='docker image ls'
 alias dkpr='docker system prune --all'
 alias dkrmac='docker rm $(docker ps -a -q)'
 alias dkrmai='docker rmi $(docker images -q)'
-alias dklsc='docker container ls'
-alias dklsac='docker container ls -a'
-alias dklsi='docker image ls'
-alias dklsai='docker image ls -a'
 alias 'dk-cu'='docker-compose up'
 alias 'dk-cd'='docker-compose down'
 
