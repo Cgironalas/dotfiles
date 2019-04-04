@@ -201,7 +201,9 @@ fi
 
 
 # Make "vim" direct to nvim
-alias vim=nvim
+alias v='nvim .'
+alias vi='nvim'
+alias vim='nvim'
 
 # ls aliases
 alias ll='ls -alF'
@@ -215,19 +217,40 @@ alias enva='. .env/bin/activate'
 alias envd='deactivate'
 alias envr='rm -rf .env'
 
+# git aliases
+alias g='git'
+alias ga='git add'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gh='git hist'
+alias gs='git status'
+alias gc='git commit'
+
 # docker aliases
-alias dockpr='docker system prune --all'
-alias dockrmac='docker rm $(docker ps -a -q)'
-alias dockrmai='docker rmi $(docker images -q)'
-alias docklsc='docker container ls'
-alias docklsac='docker container ls -a'
-alias docklsi='docker image ls'
-alias docklsai='docker image ls -a'
+alias dkpr='docker system prune --all'
+alias dkrmac='docker rm $(docker ps -a -q)'
+alias dkrmai='docker rmi $(docker images -q)'
+alias dklsc='docker container ls'
+alias dklsac='docker container ls -a'
+alias dklsi='docker image ls'
+alias dklsai='docker image ls -a'
+alias 'dk-cu'='docker-compose up'
+alias 'dk-cd'='docker-compose down'
+
+# directory movement
+alias c='cd'
+alias .='cd ..'
+alias ..='cd ../../'
+alias ...='cd ../../../'
+
 
 # other aliases
 alias cl='clear'
 alias fn='find . -name'
 alias trw='tmux rename-window'
+alias saud='sudo apt update'
+alias saup='sudo apt upgrade -y'
+alias ':q'='exit'
 
 
 # Set copy/paste helper functions
