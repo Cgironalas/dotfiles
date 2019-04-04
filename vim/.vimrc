@@ -160,7 +160,7 @@ augroup fold_settings
   autocmd!
   autocmd FileType vim setlocal foldmethod=indent
   autocmd FileType vim setlocal foldlevelstart=0
-  autocmd FileType * setlocal foldnestmax=5
+  autocmd FileType * setlocal foldnestmax=10
 augroup END
 
 " }}}
