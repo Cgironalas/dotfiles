@@ -1,19 +1,20 @@
 [user]
   name = Carlos Giron
   email = cgironalas@gmail.com
+
 [core]
   editor = nvim
   autocrlf = input
   safecrlf = true
 
 [alias]
-  co = checkout
+  br = branch
   ci = commit
+  co = checkout
   df = diff
   dfs = diff --staged
-  st = status
-  ut = status -u
-  br = branch
-  hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
-  type = cat-file -t
   dump = cat-file -p
+  hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+  st = status
+  type = cat-file -t
+  ut = status -u
