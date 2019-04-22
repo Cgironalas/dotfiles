@@ -304,3 +304,9 @@ PS1="${PS1_DIR}\
 ${PS1_USR} ${PS1_END}"
 
 # }}}
+
+## Automatically start tmux on every bash session
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" = ~screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+ exec tmux
+fi
+## ---
