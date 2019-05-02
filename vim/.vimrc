@@ -237,13 +237,14 @@ let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
 
 " NERD Tree
+let g:NERDTreeShowHidden = 1
 let g:NERDTreeMapOpenInTab = '<C-t>'
 let g:NERDTreeMapOpenSplit = '<C-s>'
 let g:NERDTreeMapOpenVSplit = '<C-v>'
 let g:NERDTreeShowLineNumbers = 1
 let g:NERDTreeCaseSensitiveSort = 0
 let g:NERDTreeWinPos = 'left'
-let g:NERDTreeWinSize = 31
+let g:NERDTreeWinSize = 35
 let g:NERDTreeAutoDeleteBuffer = 2
 let g:NERDTreeIgnore=['venv$[[dir]]', '__pycache__$[[dir]]', 'node_modules$[[dir]]']
 nnoremap <silent> <space>h :NERDTreeToggle %<CR>
