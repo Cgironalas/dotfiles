@@ -21,3 +21,5 @@ if [ -n "$BASH_VERSION" ] && [ -f $HOME/.bashrc ]; then
 fi
 
 export PATH="$HOME/.poetry/bin:$PATH"
+
+export PATH="$HOME/.cargo/bin:$PATH"
