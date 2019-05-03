@@ -16,90 +16,89 @@
 # Set up environment and PATH
 #######################################################################
 
-# Functions --- {{{
+## Functions ##################################################################
+    path_ladd() {
+      # Takes 1 argument and adds it to the beginning of the PATH
+      if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+	PATH="$1${PATH:+":$PATH"}"
+      fi
+    }
 
-path_ladd() {
-  # Takes 1 argument and adds it to the beginning of the PATH
-  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-    PATH="$1${PATH:+":$PATH"}"
-  fi
-}
+    path_radd() {
+      # Takes 1 argument and adds it to the end of the PATH
+      if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+	PATH="${PATH:+"$PATH:"}$1"
+      fi
+    }
+## ############################################################################
 
-path_radd() {
-  # Takes 1 argument and adds it to the end of the PATH
-  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-    PATH="${PATH:+"$PATH:"}$1"
-  fi
-}
 
-# }}}
-# Exported variable: LS_COLORS --- {{{
+## Exported variable: LS_COLORS ###############################################
+    # Colors when using the LS command
+    # NOTE:
+    # Color codes:
+    #   0   Default Colour
+    #   1   Bold
+    #   4   Underlined
+    #   5   Flashing Text
+    #   7   Reverse Field
+    #   31  Red
+    #   32  Green
+    #   33  Orange
+    #   34  Blue
+    #   35  Purple
+    #   36  Cyan
+    #   37  Grey
+    #   40  Black Background
+    #   41  Red Background
+    #   42  Green Background
+    #   43  Orange Background
+    #   44  Blue Background
+    #   45  Purple Background
+    #   46  Cyan Background
+    #   47  Grey Background
+    #   90  Dark Grey
+    #   91  Light Red
+    #   92  Light Green
+    #   93  Yellow
+    #   94  Light Blue
+    #   95  Light Purple
+    #   96  Turquoise
+    #   100 Dark Grey Background
+    #   101 Light Red Background
+    #   102 Light Green Background
+    #   103 Yellow Background
+    #   104 Light Blue Background
+    #   105 Light Purple Background
+    #   106 Turquoise Background
+    # Parameters
+    #   di 	Directory
+    LS_COLORS="di=1;34:"
+    #   fi 	File
+    LS_COLORS+="fi=0:"
+    #   ln 	Symbolic Link
+    LS_COLORS+="ln=1;36:"
+    #   pi 	Fifo file
+    LS_COLORS+="pi=5:"
+    #   so 	Socket file
+    LS_COLORS+="so=5:"
+    #   bd 	Block (buffered) special file
+    LS_COLORS+="bd=5:"
+    #   cd 	Character (unbuffered) special file
+    LS_COLORS+="cd=5:"
+    #   or 	Symbolic Link pointing to a non-existent file (orphan)
+    LS_COLORS+="or=31:"
+    #   mi 	Non-existent file pointed to by a symbolic link (visible with ls -l)
+    LS_COLORS+="mi=0:"
+    #   ex 	File which is executable (ie. has 'x' set in permissions).
+    LS_COLORS+="ex=1;92:"
+    # additional file types as-defined by their extension
+    LS_COLORS+="*.rpm=90"
 
-# Colors when using the LS command
-# NOTE:
-# Color codes:
-#   0   Default Colour
-#   1   Bold
-#   4   Underlined
-#   5   Flashing Text
-#   7   Reverse Field
-#   31  Red
-#   32  Green
-#   33  Orange
-#   34  Blue
-#   35  Purple
-#   36  Cyan
-#   37  Grey
-#   40  Black Background
-#   41  Red Background
-#   42  Green Background
-#   43  Orange Background
-#   44  Blue Background
-#   45  Purple Background
-#   46  Cyan Background
-#   47  Grey Background
-#   90  Dark Grey
-#   91  Light Red
-#   92  Light Green
-#   93  Yellow
-#   94  Light Blue
-#   95  Light Purple
-#   96  Turquoise
-#   100 Dark Grey Background
-#   101 Light Red Background
-#   102 Light Green Background
-#   103 Yellow Background
-#   104 Light Blue Background
-#   105 Light Purple Background
-#   106 Turquoise Background
-# Parameters
-#   di 	Directory
-LS_COLORS="di=1;34:"
-#   fi 	File
-LS_COLORS+="fi=0:"
-#   ln 	Symbolic Link
-LS_COLORS+="ln=1;36:"
-#   pi 	Fifo file
-LS_COLORS+="pi=5:"
-#   so 	Socket file
-LS_COLORS+="so=5:"
-#   bd 	Block (buffered) special file
-LS_COLORS+="bd=5:"
-#   cd 	Character (unbuffered) special file
-LS_COLORS+="cd=5:"
-#   or 	Symbolic Link pointing to a non-existent file (orphan)
-LS_COLORS+="or=31:"
-#   mi 	Non-existent file pointed to by a symbolic link (visible with ls -l)
-LS_COLORS+="mi=0:"
-#   ex 	File which is executable (ie. has 'x' set in permissions).
-LS_COLORS+="ex=1;92:"
-# additional file types as-defined by their extension
-LS_COLORS+="*.rpm=90"
+    # Finally, export LS_COLORS
+    export LS_COLORS
+## ############################################################################
 
-# Finally, export LS_COLORS
-export LS_COLORS
-
-# }}}
 # Exported variables: General --- {{{
 
 # React
@@ -191,128 +190,166 @@ include ~/.bash/sensitive
 stty -ixon
 
 # }}}
-# Aliases --- {{{
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-  alias ls='ls --color=auto'
-  alias dir='dir --color=auto'
-  alias vdir='vdir --color=auto'
-
-  alias grep='grep --color=auto'
-  alias fgrep='fgrep --color=auto'
-  alias egrep='egrep --color=auto'
-fi
 
 
-# Make "vim" direct to nvim
-alias v='nvim .'
-alias vi='nvim'
-alias vim='nvim'
+## Aliases --- {{{
+  # enable color support of ls and also add handy aliases
+  if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
 
-# ls aliases
-alias ll='ls -alF'
-alias l='ls -CF'
-alias la='ls -a'
-alias lf='ls -alF | grep '
-
-# python virtual environments
-alias enva='source .env/bin/activate'
-alias envc='python -m venv .env'
-alias envd='deactivate'
-alias envr='rm -rf .env'
-
-# git aliases
-alias g='git'
-alias ga='git add'
-alias gb='git branch'
-alias gci='git commit'
-alias gd='git diff'
-alias gds='git diff --staged'
-alias gh='git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
-alias go='git checkout'
-alias gs='git status'
-alias gsu='git status -u'
-
-# docker aliases
-alias dklsac='docker container ls -a'
-alias dklsai='docker image ls -a'
-alias dklsc='docker container ls'
-alias dklsi='docker image ls'
-alias dkpr='docker system prune --all'
-alias dkrmac='docker rm $(docker ps -a -q)'
-alias dkrmai='docker rmi $(docker images -q)'
-alias 'dk-cu'='docker-compose up'
-alias 'dk-cd'='docker-compose down'
-
-# directory movement
-alias c='cd'
-alias .='cd ..'
-alias ..='cd ../../'
-alias ...='cd ../../../'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+  fi
 
 
-# other aliases
-alias cl='clear'
-alias fn='find . -name'
-alias trw='tmux rename-window'
-alias saud='sudo apt update'
-alias saup='sudo apt upgrade -y'
-alias ':q'='exit'
+  ## Make "vim" direct to nvim ###
+    alias v='nvim .'
+    alias vi='nvim'
+    alias vim='nvim'
+  ## ####################3########
+
+  ## List aliases ################
+    alias ll='ls -alF'
+    alias l='ls -CF'
+    alias la='ls -a'
+    alias lf='ls -alF | grep '
+  ## #############################
+
+  ## Python Virtual Environments #
+    alias enva='source .env/bin/activate'
+    alias envc='python -m venv .env'
+    alias envd='deactivate'
+    alias envr='rm -rf .env'
+  ## #############################
+
+  ## Git #########################
+    alias g='git'
+    alias ga='git add'
+    alias gb='git branch'
+    alias gci='git commit'
+    alias gd='git diff'
+    alias gds='git diff --staged'
+    alias gh='git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
+    alias go='git checkout'
+    alias gs='git status'
+    alias gsu='git status -u'
+  ## #############################
+
+  ## Docker ######################
+    alias dklsac='docker container ls -a'
+    alias dklsai='docker image ls -a'
+    alias dklsc='docker container ls'
+    alias dklsi='docker image ls'
+    alias dkpr='docker system prune --all'
+    alias dkrmac='docker rm $(docker ps -a -q)'
+    alias dkrmai='docker rmi $(docker images -q)'
+    alias 'dk-cu'='docker-compose up'
+    alias 'dk-cd'='docker-compose down'
+
+    function drmi() {
+      for img in "$@"
+      do
+	docker image rm \
+	  $(docker images --format "{{.Repository}}:{{.Tag}}" | grep $img)
+      done
+    }
+
+    ## $ drmi kip python
+    ## will remove any docker images that contain kip, amazonaws, and python
+  ## #############################
 
 
-# Set copy/paste helper functions
-# the perl step removes the final newline from the output
-alias pbcopy="perl -pe 'chomp if eof' | xsel --clipboard --input"
-alias pbpaste="xsel --clipboard --output"
 
-# }}}
-# Functions --- {{{
+  ## #############################
+    ## Directory #################
+    alias c='cd'
+    alias .='cd ..'
+    alias ..='cd ../../'
+    alias ...='cd ../../../'
 
-# Example functions...
+    alias mv='mv -i'
+    alias cp='cp -i'
+  ## ##########################################################################
 
-# Clubhouse story template
-clubhouse() {
-  echo -e "## Objective\n## Value\n## Acceptance Criteria" | pbcopy
-}
 
-# Reload bashrc
-so() {
-  source ~/.bashrc
-}
+  ## ##########################################################################
+    ## Other
+    alias cl='clear'
+    alias fn='find . -name'
 
-# }}}
-# Command line prompt (PS1) --- {{{
+    alias trw='tmux rename-window'
+    alias saud='sudo apt update'
+    alias saup='sudo apt upgrade -y'
+    alias ':q'='exit'
 
-COLOR_BRIGHT_GREEN="\033[38;5;10m"
-COLOR_BRIGHT_BLUE="\033[38;5;115m"
-COLOR_CYAN="\033[1;36m"
-COLOR_RED="\033[1;31m"
-COLOR_YELLOW="\033[0;33m"
-COLOR_GREEN="\033[0;32m"
-COLOR_PURPLE="\033[1;35m"
-COLOR_ORANGE="\033[38;5;202m"
-COLOR_BLUE="\033[1;34m"
-COLOR_WHITE="\033[0;37m"
-COLOR_GOLD="\033[38;5;142m"
-COLOR_SILVER="\033[38;5;248m"
-COLOR_RESET="\033[0m"
-BOLD="$(tput bold)"
+    pkg_updates() {
+      if [[ $(command -v apt) ]]; then
+	echo "Using apt update then upgrade -y"
+	sudo apt update && sudo apt upgrade -y
+      fi
 
-# Set Bash PS1
-PS1_DIR="\[$BOLD\]\[$COLOR_BRIGHT_BLUE\]\w"
-PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@\h"
-PS1_END="\[$BOLD\]\[$COLOR_CYAN\]$ \[$COLOR_RESET\]"
+      if [[ $(command -v pacman) ]]; then
+	echo "Using arch pacman and yay"
+	sudo pacman -Syyu && yay -Syu
+      fi
+    }
 
-PS1="${PS1_DIR}\
+    # Set copy/paste helper functions
+    # the perl step removes the final newline from the output
+    alias pbcopy="perl -pe 'chomp if eof' | xsel --clipboard --input"
+    alias pbpaste="xsel --clipboard --output"
+    ## End Other
+  ## ##########################################################################
 
-${PS1_USR} ${PS1_END}"
+## ############################################################################
 
-# }}}
+
+#### Functions ################################################################
+  clubhouse() {
+    # Clubhouse story template
+    echo -e "## Objective\n## Value\n## Acceptance Criteria" | pbcopy
+  }
+
+  so() {
+    # Reload bashrc
+    source ~/.bashrc
+  }
+#### ##########################################################################
+
+#### ##########################################################################
+  ## Command line prompt (PS1) ################################################
+  COLOR_BRIGHT_GREEN="\033[38;5;10m"
+  COLOR_BRIGHT_BLUE="\033[38;5;115m"
+  COLOR_CYAN="\033[1;36m"
+  COLOR_RED="\033[1;31m"
+  COLOR_YELLOW="\033[0;33m"
+  COLOR_GREEN="\033[0;32m"
+  COLOR_PURPLE="\033[1;35m"
+  COLOR_ORANGE="\033[38;5;202m"
+  COLOR_BLUE="\033[1;34m"
+  COLOR_WHITE="\033[0;37m"
+  COLOR_GOLD="\033[38;5;142m"
+  COLOR_SILVER="\033[38;5;248m"
+  COLOR_RESET="\033[0m"
+  BOLD="$(tput bold)"
+
+  # Set Bash PS1
+  PS1_DIR="\[$BOLD\]\[$COLOR_BRIGHT_BLUE\]\w"
+  PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@\h"
+  PS1_END="\[$BOLD\]\[$COLOR_CYAN\]$ \[$COLOR_RESET\]"
+
+  PS1="${PS1_DIR}\
+
+  ${PS1_USR} ${PS1_END}"
+#### ##########################################################################
 
 ## Automatically start tmux on every bash session
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" = ~screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
  exec tmux
 fi
 ## ---
+
