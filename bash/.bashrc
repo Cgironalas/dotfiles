@@ -413,3 +413,25 @@ alias go_dotfiles='cd ~/dotfiles/ && so'
 alias go_sandbox='cd ~/sandbox/ && so'
 alias go_tetris='cd ~/repos/tetris/ && so'
 ###############################################################################
+
+## Monitor stuff ##############################################################
+function hz() {
+  case $1 in
+    240)
+      echo "240"
+      xrandr --output DisplayPort-0 --mode 1920x1080 --rate 239.96
+      ;;
+    144)
+      xrandr --output DisplayPort-0 --mode 1920x1080 --rate 144.00
+      ;;
+    120)
+      xrandr --output DisployPort-0 --mode 1920x1080 --rate 119.98
+      ;;
+    100)
+      xrandr --output DisplayPort-0 --mode 1920x1080 --rate 99.93
+      ;;
+    *)
+      xrandr --output DisplayPort-0 --mode 1920x1080 --rate 60.00
+  esac
+}
+###############################################################################
