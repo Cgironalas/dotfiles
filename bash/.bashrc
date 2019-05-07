@@ -1,16 +1,12 @@
 #!/bin/bash
 
-# Default .bashrc
-# Original Author: Samuel Roeca
+# Based in Samuel Roeca's dotfiles.
 #
 # Use this file to:
 #   Import .profile and ~/.bash/sensitive (using the provided "include")
 #   Execute some "basic" commands
 #   Define bash aliases and functions
 #   Note: do NOT place sensitive information (like passwords) in this file
-# if using vim:
-#   za: toggle one fold
-#   zi: toggle all folds
 
 #######################################################################
 # Set up environment and PATH
@@ -210,14 +206,14 @@ stty -ixon
     alias v='nvim .'
     alias vi='nvim'
     alias vim='nvim'
-  ## ####################3########
+  ################################
 
   ## List aliases ################
     alias ll='ls -alF'
     alias l='ls -CF'
     alias la='ls -a'
     alias lf='ls -alF | grep '
-  ## #############################
+  ################################
 
   ## Python Virtual Environments #
     function enva() {
@@ -311,12 +307,19 @@ stty -ixon
 
   ## #############################
     ## Directory #################
-    alias c='cd'
-    alias .='cd ..'
-    alias ..='cd ../../'
-    alias ...='cd ../../../'
-    alias ....='cd ../../../../'
-    alias .....='cd ../../../../../'
+    function c() {
+      cd $1
+      so
+    }
+    function d() {
+      cd $1
+      so
+    }
+    alias .='cd .. && so'
+    alias ..='cd ../../ && so'
+    alias ...='cd ../../../ && so'
+    alias ....='cd ../../../../ && so'
+    alias .....='cd ../../../../../ && so'
 
     alias mv='mv -i'
     alias cp='cp -i'
@@ -399,14 +402,14 @@ stty -ixon
 #### ##########################################################################
 
 ## Automatically start tmux on every bash session
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" = ~screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
- exec tmux
-fi
+# if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" = ~screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+#  exec tmux
+# fi
 ## ---
 
 
 ## Project CDs ################################################################
-alias go_dotfiles='cd ~/dotfiles/'
-alias go_sandbox='cd ~/sandbox/'
-alias go_tetris='cd ~/repos/tetris/'
+alias go_dotfiles='cd ~/dotfiles/ && so'
+alias go_sandbox='cd ~/sandbox/ && so'
+alias go_tetris='cd ~/repos/tetris/ && so'
 ###############################################################################
