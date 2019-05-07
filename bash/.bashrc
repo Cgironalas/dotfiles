@@ -220,16 +220,53 @@ stty -ixon
   ## #############################
 
   ## Python Virtual Environments #
-    alias enva='source .env/bin/activate'
-    alias envc='python -m venv .env'
+    function enva() {
+      if [ -d .env ]; then
+        source .env/bin/activate
+      else
+        source $(cat .env)/bin/activate
+      fi
+      so
+    }
+
+    function envc() {
+      if [ -z $1 ]; then
+        echo "creating default virtual env '.env'"
+        python -m venv .env
+      else
+        echo "creating virtual env '$1'"
+        python -m venv $1
+        echo $1 >> .env
+      fi
+    }
+
+    function envp(){
+      if [[ -n "$VIRTUAL_ENV" ]]; then
+        echo "${VIRTUAL_ENV##*/}"
+      else
+        echo ''
+      fi
+    }
+
+    function envr() {
+      if [ -d .env ]; then
+        echo "removing default virtual env '.env'"
+        rm -rf .env
+      else
+        echo "removing virtual env '$(cat .env)'"
+        rm -rf $(cat .env)
+        rm .env
+      fi
+    }
+
     alias envd='deactivate'
-    alias envr='rm -rf .env'
   ## #############################
 
   ## Git #########################
     alias g='git'
     alias ga='git add'
     alias gb='git branch'
+    alias gcb='git checkout -b'
     alias gci='git commit'
     alias gd='git diff'
     alias gds='git diff --staged'
@@ -237,6 +274,14 @@ stty -ixon
     alias go='git checkout'
     alias gs='git status'
     alias gsu='git status -u'
+
+    function gitp() {
+      if [ -d .git ]; then
+        echo "[$(git branch | grep \* | cut -d ' ' -f2)]"
+      else
+        echo ''
+      fi
+    }
   ## #############################
 
   ## Docker ######################
@@ -270,9 +315,12 @@ stty -ixon
     alias .='cd ..'
     alias ..='cd ../../'
     alias ...='cd ../../../'
+    alias ....='cd ../../../../'
+    alias .....='cd ../../../../../'
 
     alias mv='mv -i'
     alias cp='cp -i'
+    alias rm='rm -i'
   ## ##########################################################################
 
 
@@ -335,14 +383,17 @@ stty -ixon
   COLOR_GOLD="\033[38;5;142m"
   COLOR_SILVER="\033[38;5;248m"
   COLOR_RESET="\033[0m"
+
   BOLD="$(tput bold)"
 
   # Set Bash PS1
+  PS1_GIT="\[$BOLD\]\[$COLOR_WHITE\]$(gitp)"
   PS1_DIR="\[$BOLD\]\[$COLOR_BRIGHT_BLUE\]\w"
+  PS1_ENV="\[$BOLD\]\[$COLOR_BRIGHT_GREEN\]$(envp)"
   PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@\h"
   PS1_END="\[$BOLD\]\[$COLOR_CYAN\]$ \[$COLOR_RESET\]"
 
-  PS1="${PS1_DIR}\
+  PS1="${PS1_GIT} ${PS1_DIR} ${PS1_ENV}\
 
   ${PS1_USR} ${PS1_END}"
 #### ##########################################################################
@@ -353,3 +404,9 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" = ~screen ]] &&
 fi
 ## ---
 
+
+## Project CDs ################################################################
+alias go_dotfiles='cd ~/dotfiles/'
+alias go_sandbox='cd ~/sandbox/'
+alias go_tetris='cd ~/repos/tetris/'
+###############################################################################
