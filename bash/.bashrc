@@ -222,7 +222,7 @@ stty -ixon
       else
         source $(cat .env)/bin/activate
       fi
-      so
+      update_prompt
     }
 
     function envc() {
@@ -255,7 +255,7 @@ stty -ixon
       fi
     }
 
-    alias envd='deactivate'
+    alias envd='deactivate && update_prompt'
   ## #############################
 
   ## Git #########################
@@ -272,7 +272,7 @@ stty -ixon
     alias gsu='git status -u'
 
     function gitp() {
-      if [ -d .git ]; then
+      if [[ -d .git || $(git rev-parse --git-dir 2> /dev/null) ]]; then
         echo "[$(git branch | grep \* | cut -d ' ' -f2)]"
       else
         echo ''
@@ -309,17 +309,17 @@ stty -ixon
     ## Directory #################
     function c() {
       cd $1
-      so
+      update_prompt
     }
     function d() {
       cd $1
-      so
+      update_prompt
     }
-    alias .='cd .. && so'
-    alias ..='cd ../../ && so'
-    alias ...='cd ../../../ && so'
-    alias ....='cd ../../../../ && so'
-    alias .....='cd ../../../../../ && so'
+    alias .='cd .. && update_prompt'
+    alias ..='cd ../../ && update_prompt'
+    alias ...='cd ../../../ && update_prompt'
+    alias ....='cd ../../../../ && update_prompt'
+    alias .....='cd ../../../../../ && update_prompt'
 
     alias mv='mv -i'
     alias cp='cp -i'
@@ -375,7 +375,8 @@ stty -ixon
   ## Command line prompt (PS1) ################################################
   COLOR_BRIGHT_GREEN="\033[38;5;10m"
   COLOR_BRIGHT_BLUE="\033[38;5;115m"
-  COLOR_CYAN="\033[1;36m"
+  COLOR_CYAN="\033[0;36m"
+  COLOR_LIGHT_CYAN="\033[1;36m"
   COLOR_RED="\033[1;31m"
   COLOR_YELLOW="\033[0;33m"
   COLOR_GREEN="\033[0;32m"
@@ -390,28 +391,33 @@ stty -ixon
   BOLD="$(tput bold)"
 
   # Set Bash PS1
-  PS1_GIT="\[$BOLD\]\[$COLOR_WHITE\]$(gitp)"
+  PS1_GIT="\[$BOLD\]\[$COLOR_GOLD\]$(gitp)"
   PS1_DIR="\[$BOLD\]\[$COLOR_BRIGHT_BLUE\]\w"
   PS1_ENV="\[$BOLD\]\[$COLOR_BRIGHT_GREEN\]$(envp)"
   PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@\h"
-  PS1_END="\[$BOLD\]\[$COLOR_CYAN\]$ \[$COLOR_RESET\]"
+  PS1_END="\[$BOLD\]\[$COLOR_LIGHT_CYAN\]$ \[$COLOR_RESET\]"
 
   PS1="${PS1_GIT} ${PS1_DIR} ${PS1_ENV}\
 
-  ${PS1_USR} ${PS1_END}"
+${PS1_USR} ${PS1_END}"
+
+  function update_prompt() {
+    PS1_GIT="\[$BOLD\]\[$COLOR_GOLD\]$(gitp)"
+    PS1_DIR="\[$BOLD\]\[$COLOR_BRIGHT_BLUE\]\w"
+    PS1_ENV="\[$BOLD\]\[$COLOR_BRIGHT_GREEN\]$(envp)"
+    PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@\h"
+    PS1_END="\[$BOLD\]\[$COLOR_LIGHT_CYAN\]$ \[$COLOR_RESET\]"
+
+    PS1="${PS1_GIT} ${PS1_DIR} ${PS1_ENV}\
+
+${PS1_USR} ${PS1_END}"
+  }
 #### ##########################################################################
 
-## Automatically start tmux on every bash session
-# if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" = ~screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-#  exec tmux
-# fi
-## ---
-
-
 ## Project CDs ################################################################
-alias go_dotfiles='cd ~/dotfiles/ && so'
-alias go_sandbox='cd ~/sandbox/ && so'
-alias go_tetris='cd ~/repos/tetris/ && so'
+alias go_dotfiles='cd ~/dotfiles/ && update_prompt'
+alias go_sandbox='cd ~/sandbox/ && update_prompt'
+alias go_tetris='cd ~/repos/tetris/ && update_prompt'
 ###############################################################################
 
 ## Monitor stuff ##############################################################
