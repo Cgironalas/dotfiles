@@ -413,13 +413,6 @@ stty -ixon
   }
 #### ##########################################################################
 
-## Automatically start tmux on every bash session
-# if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" = ~screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-#  exec tmux
-# fi
-## ---
-
-
 ## Project CDs ################################################################
 alias go_dotfiles='cd ~/dotfiles/ && update_prompt'
 alias go_sandbox='cd ~/sandbox/ && update_prompt'
