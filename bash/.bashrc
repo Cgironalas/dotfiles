@@ -325,6 +325,27 @@ stty -ixon
     ## Directory #################
     function c() {
       cd $1
+
+      if [[ ! -n "$VIRTUAL_ENV" ]]; then
+        if [ -d .env ]; then
+          source .env/bin/activate
+        else
+          if [ -f .env ]; then
+            source $(cat .env)/bin/activate
+          fi
+        fi
+      else
+        if [[ -n "$VIRTUAL_ENV" ]]; then
+         deactivate
+        fi
+      fi
+
+      # if [ -d .env ]; then
+      #   source .env/bin/activate
+      # else
+      #   source $(cat .env)/bin/activate
+      # fi
+
       update_prompt
     }
     function d() {
