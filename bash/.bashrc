@@ -267,11 +267,14 @@ stty -ixon
     alias gd='git diff'
     alias gds='git diff --staged'
     alias gh='git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
-    alias go='git checkout'
     alias gs='git status'
     alias gsu='git status -u'
     alias gbintegration='export GITBRANCH=integration'
 
+    function go() {
+      git checkout $*
+      update_prompt
+    }
     function gitp() {
       if [[ -d .git || $(git rev-parse --git-dir 2> /dev/null) ]]; then
         echo "[$(git branch | grep \* | cut -d ' ' -f2)]"
