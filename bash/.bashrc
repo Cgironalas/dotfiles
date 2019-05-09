@@ -305,6 +305,18 @@ stty -ixon
   ## #############################
 
 
+  ## Python ######################
+    alias pya='poetry add'
+    alias pyad='poetry add --dev'
+    alias pyi='poetry init'
+    alias pyr='poetry remove'
+    alias pipf='pip freeze'
+    alias pipfr='pip freeze >> requirements.txt'
+    alias pipu='pip install -U'
+    alias pipun='pip uninstall'
+    alias pipup='pip install -U pip'
+    alias pipr='pip install -r requirements.txt'
+  ## #############################
 
   ## #############################
     ## Directory #################
