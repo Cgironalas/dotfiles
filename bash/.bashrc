@@ -334,17 +334,7 @@ stty -ixon
             source $(cat .env)/bin/activate
           fi
         fi
-      else
-        if [[ -n "$VIRTUAL_ENV" ]]; then
-         deactivate
-        fi
       fi
-
-      # if [ -d .env ]; then
-      #   source .env/bin/activate
-      # else
-      #   source $(cat .env)/bin/activate
-      # fi
 
       update_prompt
     }
