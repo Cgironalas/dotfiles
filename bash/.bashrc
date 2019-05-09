@@ -270,6 +270,7 @@ stty -ixon
     alias go='git checkout'
     alias gs='git status'
     alias gsu='git status -u'
+    alias gbintegration='export GITBRANCH=integration'
 
     function gitp() {
       if [[ -d .git || $(git rev-parse --git-dir 2> /dev/null) ]]; then
