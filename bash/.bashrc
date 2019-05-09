@@ -267,10 +267,14 @@ stty -ixon
     alias gd='git diff'
     alias gds='git diff --staged'
     alias gh='git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
-    alias go='git checkout'
     alias gs='git status'
     alias gsu='git status -u'
+    alias gbintegration='export GITBRANCH=integration'
 
+    function go() {
+      git checkout $*
+      update_prompt
+    }
     function gitp() {
       if [[ -d .git || $(git rev-parse --git-dir 2> /dev/null) ]]; then
         echo "[$(git branch | grep \* | cut -d ' ' -f2)]"
@@ -304,11 +308,34 @@ stty -ixon
   ## #############################
 
 
+  ## Python ######################
+    alias pya='poetry add'
+    alias pyad='poetry add --dev'
+    alias pyi='poetry init'
+    alias pyr='poetry remove'
+    alias pipf='pip freeze'
+    alias pipfr='pip freeze >> requirements.txt'
+    alias pipu='pip install -U'
+    alias pipun='pip uninstall'
+    alias pipup='pip install -U pip'
+    alias pipr='pip install -r requirements.txt'
+  ## #############################
 
   ## #############################
     ## Directory #################
     function c() {
       cd $1
+
+      if [[ ! -n "$VIRTUAL_ENV" ]]; then
+        if [ -d .env ]; then
+          source .env/bin/activate
+        else
+          if [ -f .env ]; then
+            source $(cat .env)/bin/activate
+          fi
+        fi
+      fi
+
       update_prompt
     }
     function d() {
@@ -415,9 +442,9 @@ ${PS1_USR} ${PS1_END}"
 #### ##########################################################################
 
 ## Project CDs ################################################################
-alias go_dotfiles='cd ~/dotfiles/ && update_prompt'
-alias go_sandbox='cd ~/sandbox/ && update_prompt'
-alias go_tetris='cd ~/repos/tetris/ && update_prompt'
+alias go_dotfiles='cd ~/dotfiles/ && update_prompt && trw dotfiles'
+alias go_sandbox='cd ~/sandbox/ && update_prompt && trw sandbox'
+alias go_tetris='cd ~/repos/tetris/ && update_prompt && trw tetris'
 ###############################################################################
 
 ## Monitor stuff ##############################################################
