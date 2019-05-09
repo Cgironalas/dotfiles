@@ -415,7 +415,7 @@ ${PS1_USR} ${PS1_END}"
 #### ##########################################################################
 
 ## Project CDs ################################################################
-alias go_dotfiles='cd ~/dotfiles/ && update_prompt'
-alias go_sandbox='cd ~/sandbox/ && update_prompt'
-alias go_tetris='cd ~/repos/tetris/ && update_prompt'
+alias go_dotfiles='cd ~/dotfiles/ && update_prompt && trw dotfiles'
+alias go_sandbox='cd ~/sandbox/ && update_prompt && trw sandbox'
+alias go_tetris='cd ~/repos/tetris/ && update_prompt && trw tetris'
 ###############################################################################
