@@ -324,6 +324,36 @@ stty -ixon
     alias pipr='pip install -r requirements.txt'
   ## #############################
 
+  ## RUST ########################
+    function rustcp() {
+      if [ -z $1 ]; then
+        if [ -z $2 ]; then
+          cargo new --vcs=$2 --verbose --color=always $1
+        else
+          cargo new --vcs=none --verbose --color=always $1
+        fi
+      else
+        echo "Please specify a name for the project"
+      fi
+    }
+
+    function rustrp() {
+      if [ -z $1 ]; then
+        cargo run --verbose --color=always $1
+      else
+        cargo run --verbose --color=always .
+      fi
+    }
+
+    function rustrcs() {
+      if [ $(command -v runner) ]; then
+        runner $1
+      else
+        echo "ERROR: There is no runner installed, please run 'cargo install runner'"
+      fi
+    }
+  ################################
+
   ## #############################
     ## Directory #################
     function c() {
