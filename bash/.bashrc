@@ -205,7 +205,10 @@ stty -ixon
   ## Make "vim" direct to nvim ###
     alias v='nvim .'
     alias vi='nvim'
+    alias vib='nvim ~/dotfiles/bash/.bashrc'
     alias vim='nvim'
+    alias vit='nvim ~/dotfiles/tmux/.tmux.conf'
+    alias viv='nvim ~/dotfiles/vim/.vimrc'
   ################################
 
   ## List aliases ################
