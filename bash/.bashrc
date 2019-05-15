@@ -259,6 +259,7 @@ stty -ixon
     }
 
     alias envd='deactivate && update_prompt'
+    alias pycache-clean='find . -name "*.pyc" -delete'
   ## #############################
 
   ## Git #########################
