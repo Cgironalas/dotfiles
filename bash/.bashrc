@@ -177,7 +177,6 @@ include () {
   [[ -f "$1" ]] && source "$1"
 }
 
-include ~/.bash/sensitive
 
 # }}}
 # Executed Commands --- {{{
@@ -476,6 +475,24 @@ ${PS1_USR} ${PS1_END}"
 #### ##########################################################################
 
 ## Project CDs ################################################################
+function goto() {
+  case $1 in
+    'dotfiles')
+      c ~/dotfiles
+      # trw dotfiles
+      ;;
+    'sandbox')
+      c ~/sandbox
+      # trw sandbox
+      ;;
+    'tetris')
+      c ~/repos/tetris
+      # trw tetris
+      ;;
+    *)
+      cd ~
+    esac
+}
 alias go_dotfiles='cd ~/dotfiles/ && update_prompt && trw dotfiles'
 alias go_sandbox='cd ~/sandbox/ && update_prompt && trw sandbox'
 alias go_tetris='cd ~/repos/tetris/ && update_prompt && trw tetris'
@@ -502,3 +519,5 @@ function hz() {
   esac
 }
 ###############################################################################
+
+include ~/.bash/sensitive
