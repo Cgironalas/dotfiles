@@ -266,13 +266,12 @@ stty -ixon
     alias ga='git add'
     alias gb='git branch'
     alias gcb='git checkout -b'
-    alias gci='git commit'
+    alias gco='git commit'
     alias gd='git diff'
     alias gds='git diff --staged'
     alias gh='git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
     alias gs='git status'
     alias gsu='git status -u'
-    alias gbintegration='export GITBRANCH=integration'
 
     function go() {
       git checkout $*
@@ -312,16 +311,22 @@ stty -ixon
 
 
   ## Python ######################
-    alias pya='poetry add'
-    alias pyad='poetry add --dev'
-    alias pyi='poetry init'
-    alias pyr='poetry remove'
+    alias lintK='pylint main.py config.py pkg/'
+
     alias pipf='pip freeze'
     alias pipfr='pip freeze >> requirements.txt'
     alias pipu='pip install -U'
     alias pipun='pip uninstall'
     alias pipup='pip install -U pip'
     alias pipr='pip install -r requirements.txt'
+
+    alias poa='poetry add'
+    alias poad='poetry add --dev'
+    alias poi='poetry init'
+    alias por='poetry remove'
+
+    alias pym='python main.py'
+    alias pyprep='enva && export GITBRANCH=integration'
   ## #############################
 
   ## RUST ########################
