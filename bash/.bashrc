@@ -312,6 +312,7 @@ stty -ixon
 
   ## Python ######################
     alias lintK='pylint main.py config.py pkg/'
+    alias mypyK='mypy main.py config.py pkg/'
 
     alias pipf='pip freeze'
     alias pipfr='pip freeze >> requirements.txt'
