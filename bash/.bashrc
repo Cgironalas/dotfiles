@@ -435,6 +435,18 @@ stty -ixon
     # Reload bashrc
     source ~/.bashrc
   }
+
+  zoomy() {
+    if [ -z $1 ]; then
+      echo "Conference room number needed! 'zoomy 1234567890'"
+    else
+      xdg-open "zoommtg://zoom.us/join?action=join&confno=$1"
+    fi
+  }
+
+  standup() {
+    zoomy 9279165538
+  }
 #### ##########################################################################
 
 #### ##########################################################################
