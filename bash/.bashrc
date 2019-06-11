@@ -211,10 +211,10 @@ stty -ixon
   ################################
 
   ## List aliases ################
-    alias ll='ls -alF'
+    alias ll='ls -AlF'
     alias l='ls -CF'
-    alias la='ls -a'
-    alias lf='ls -alF | grep '
+    alias la='ls -A'
+    alias lf='ls -AlF | grep '
   ################################
 
   ## Python Virtual Environments #
@@ -446,6 +446,10 @@ stty -ixon
 
   standup() {
     zoomy 9279165538
+  }
+
+  explore() {
+    xdg-open .
   }
 #### ##########################################################################
 
