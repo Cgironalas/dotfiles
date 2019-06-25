@@ -311,8 +311,10 @@ stty -ixon
 
 
   ## Python ######################
-    alias lintK='pylint main.py config.py pkg/'
-    alias mypyK='mypy main.py config.py pkg/'
+    alias lintK='poetry run pylint main.py config.py pkg/'
+    alias mypyK='poetry run mypy main.py config.py pkg/'
+    alias pytestK='poetry run pytest test/unit/ && poetry run pytest test/integration/'
+    alias pytestKnw='poetry run pytest --disable-warnings test/unit && poetry run pytest --disable-warnings test/integration'
 
     alias pipf='pip freeze'
     alias pipfr='pip freeze >> requirements.txt'
