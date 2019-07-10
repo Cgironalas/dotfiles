@@ -503,15 +503,15 @@ function goto() {
   case $1 in
     'dotfiles')
       c ~/dotfiles
-      # trw dotfiles
+      trw dotfiles
       ;;
     'sandbox')
       c ~/sandbox
-      # trw sandbox
+      trw sandbox
       ;;
     'tetris')
       c ~/repos/tetris
-      # trw tetris
+      trw tetris
       ;;
     *)
       cd ~
