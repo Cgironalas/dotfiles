@@ -247,7 +247,19 @@ let g:NERDTreeCaseSensitiveSort = 0
 let g:NERDTreeWinPos = 'left'
 let g:NERDTreeWinSize = 35
 let g:NERDTreeAutoDeleteBuffer = 2
-let g:NERDTreeIgnore=['venv$[[dir]]', '__pycache__$[[dir]]', 'node_modules$[[dir]]']
+let g:NERDTreeIgnore=[
+  \'.env$[[dir]]',
+  \'.env$[[file]]',
+  \'.git$[[dir]]',
+  \'.mypy_cache$[[dir]]',
+  \'.pyc$[[file]]',
+  \'.pytest_cache$[[dir]]',
+  \'.tox$[[dir]]',
+  \'__pycache__$[[dir]]',
+  \'node_modules$[[dir]]'
+  \'pip-wheel-metadata$[[dir]]',
+  \'venv$[[dir]]',
+  \]
 nnoremap <silent> <space>h :NERDTreeToggle %<CR>
 
 " Jedi-vim
