@@ -257,6 +257,19 @@ stty -ixon
       fi
     }
 
+    function pyenv_update() {
+      if [ -d $(pyenv root) ]; then
+        echo "Updating pyenv"
+        cur_dir=$(pwd)
+        cd $(pyenv root)
+        git pull
+        cd $cur_dir
+        source ~/.bashrc
+      else
+        echo "pyenv is not installed"
+      fi
+    }
+
     alias envd='deactivate && update_prompt'
     alias pycache-clean='find . -name "*.pyc" -delete'
   ## #############################
@@ -329,7 +342,7 @@ stty -ixon
     alias por='poetry remove'
 
     alias pym='python main.py'
-    alias pyprep='enva && export GITBRANCH=integration'
+    alias pyprep='enva && export GITBRANCH=integration && export ENV=integration'
   ## #############################
 
   ## RUST ########################
