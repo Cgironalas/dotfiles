@@ -491,7 +491,11 @@ stty -ixon
   PS1_GIT="\[$BOLD\]\[$COLOR_GOLD\]$(gitp)"
   PS1_DIR="\[$BOLD\]\[$COLOR_BRIGHT_BLUE\]\w"
   PS1_ENV="\[$BOLD\]\[$COLOR_BRIGHT_GREEN\]$(envp)"
-  PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@\h"
+    if [ $(whoami) != 'root' ]; then
+      PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@\h"
+    else
+      PS1_USR="\[$BOLD\]\[$COLOR_RED\]\u@\h"
+    fi
   PS1_END="\[$BOLD\]\[$COLOR_LIGHT_CYAN\]$ \[$COLOR_RESET\]"
 
   PS1="${PS1_GIT} ${PS1_DIR} ${PS1_ENV}\
@@ -502,7 +506,11 @@ ${PS1_USR} ${PS1_END}"
     PS1_GIT="\[$BOLD\]\[$COLOR_GOLD\]$(gitp)"
     PS1_DIR="\[$BOLD\]\[$COLOR_BRIGHT_BLUE\]\w"
     PS1_ENV="\[$BOLD\]\[$COLOR_BRIGHT_GREEN\]$(envp)"
-    PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@\h"
+    if [ $(whoami) != 'root' ]; then
+      PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@\h"
+    else
+      PS1_USR="\[$BOLD\]\[$COLOR_RED\]\u@\h"
+    fi
     PS1_END="\[$BOLD\]\[$COLOR_LIGHT_CYAN\]$ \[$COLOR_RESET\]"
 
     PS1="${PS1_GIT} ${PS1_DIR} ${PS1_ENV}\
