@@ -204,10 +204,8 @@ stty -ixon
   ## Make "vim" direct to nvim ###
     function open_v() {
       if [ -z $1 ]; then
-        echo "got there"
         nvim .
       else
-        echo "got here"
         nvim $1
       fi
     }
