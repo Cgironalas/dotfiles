@@ -202,10 +202,19 @@ stty -ixon
 
 
   ## Make "vim" direct to nvim ###
-    alias v='nvim .'
-    alias vi='nvim'
+    function open_v() {
+      if [ -z $1 ]; then
+        echo "got there"
+        nvim .
+      else
+        echo "got here"
+        nvim $1
+      fi
+    }
+    alias v='open_v'
+    alias vi='open_v'
     alias vib='nvim ~/dotfiles/bash/.bashrc'
-    alias vim='nvim'
+    alias vim='open_v'
     alias vit='nvim ~/dotfiles/tmux/.tmux.conf'
     alias viv='nvim ~/dotfiles/vim/.vimrc'
   ################################
