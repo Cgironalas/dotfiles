@@ -336,18 +336,23 @@ stty -ixon
     alias pytestK='poetry run pytest test/unit/ && poetry run pytest test/integration/'
     alias pytestKnw='poetry run pytest --disable-warnings test/unit && poetry run pytest --disable-warnings test/integration'
 
-    alias pipf='pip freeze'
-    alias pipfr='pip freeze >> requirements.txt'
     alias pipu='pip install -U'
     alias pipun='pip uninstall'
     alias pipup='pip install -U pip'
-    alias pipr='pip install -r requirements.txt'
+    alias pipir='pip install -r requirements.txt'
+
+    alias pipf='pip freeze'
+    alias pipfr='pip freeze >> requirements.txt'
+
+    alias poi='poetry init'
+    alias porun='poetry run'
 
     alias poa='poetry add'
     alias poad='poetry add --dev'
-    alias poi='poetry init'
+
     alias por='poetry remove'
 
+    alias pyt='bash test.sh'
     alias pym='python main.py'
     alias pyprep='enva && export GITBRANCH=integration && export ENV=integration'
   ## #############################
