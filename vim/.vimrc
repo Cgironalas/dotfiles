@@ -259,6 +259,7 @@ let g:NERDTreeIgnore=[
   \'node_modules$[[dir]]'
   \'pip-wheel-metadata$[[dir]]',
   \'venv$[[dir]]',
+  \'\.xlsx$[[file]]',
   \]
 nnoremap <silent> <space>h :NERDTreeToggle %<CR>
 
