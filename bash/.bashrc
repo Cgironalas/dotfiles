@@ -221,7 +221,7 @@ stty -ixon
     alias ll='ls -AlF'
     alias l='ls -CF'
     alias la='ls -A'
-    alias lf='ls -AlF | grep '
+    alias lf='ls -AlF | grep -i '
   ################################
 
   ## Python Virtual Environments #
@@ -423,7 +423,9 @@ stty -ixon
   ## ##########################################################################
     ## Other
     alias cl='clear'
+    alias cll='clear && ll'
     alias fn='find . -name'
+    alias dfn='grep -nri'
 
     alias trw='tmux rename-window'
     alias saud='sudo apt update'
