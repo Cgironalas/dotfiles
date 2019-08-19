@@ -243,6 +243,8 @@ stty -ixon
         python -m venv $1
         echo $1 >> .env
       fi
+      enva
+      pip install -U pip pynvim
     }
 
     function envp(){
