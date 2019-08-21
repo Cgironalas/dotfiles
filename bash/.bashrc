@@ -480,7 +480,13 @@ stty -ixon
   }
 
   explore() {
-    xdg-open .
+    if [[ $(command -v nemo) ]]; then
+      echo 'using nemo'
+      nemo .
+    else
+      echo 'using xdg-open'
+      xdg-open .
+    fi
   }
 #### ##########################################################################
 
