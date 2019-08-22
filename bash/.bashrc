@@ -289,10 +289,12 @@ stty -ixon
     alias gb='git branch'
     alias gcb='git checkout -b'
     alias gco='git commit'
-    alias gd='git diff'
+    alias gd='git diff .'
+    alias gda='git diff'
     alias gds='git diff --staged'
     alias gh='git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
-    alias gs='git status'
+    alias gs='git status .'
+    alias gsa='git status'
     alias gsu='git status -u'
 
     function go() {
