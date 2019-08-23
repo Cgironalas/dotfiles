@@ -490,6 +490,18 @@ stty -ixon
       xdg-open .
     fi
   }
+  function nodenv_update() {
+    if [ -d $(nodenv root) ]; then
+      echo "Updating nodenv"
+      cur_dir=$(pwd)
+      cd $(nodenv root)
+      git pull
+      cd $cur_dir
+      source ~/.bashrc
+    else
+      echo "nodenv is not installed"
+    fi
+  }
 #### ##########################################################################
 
 #### ##########################################################################
