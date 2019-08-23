@@ -141,6 +141,9 @@ Plug 'kien/ctrlp.vim'
 " Vim-Toml
 Plug 'cespare/vim-toml'
 
+" For Svelte
+Plug 'evanleck/vim-svelte' "svelte highlights
+
 call plug#end()
 
 " }}}
