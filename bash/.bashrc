@@ -12,7 +12,7 @@
 # Set up environment and PATH
 #######################################################################
 
-## Functions ##################################################################
+## PATH Functions #############################################################
     path_ladd() {
       # Takes 1 argument and adds it to the beginning of the PATH
       if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
@@ -266,19 +266,6 @@ stty -ixon
       fi
     }
 
-    function pyenv_update() {
-      if [ -d $(pyenv root) ]; then
-        echo "Updating pyenv"
-        cur_dir=$(pwd)
-        cd $(pyenv root)
-        git pull
-        cd $cur_dir
-        source ~/.bashrc
-      else
-        echo "pyenv is not installed"
-      fi
-    }
-
     alias envd='deactivate && update_prompt'
     alias pycache-clean='find . -name "*.pyc" -delete'
   ## #############################
@@ -436,18 +423,6 @@ stty -ixon
     alias saup='sudo apt upgrade -y'
     alias ':q'='exit'
 
-    pkg_updates() {
-      if [[ $(command -v apt) ]]; then
-	echo "Using apt update then upgrade -y"
-	sudo apt update && sudo apt upgrade -y
-      fi
-
-      if [[ $(command -v pacman) ]]; then
-	echo "Using arch pacman and yay"
-	sudo pacman -Syyu && yay -Syu
-      fi
-    }
-
     # Set copy/paste helper functions
     # the perl step removes the final newline from the output
     alias pbcopy="perl -pe 'chomp if eof' | xsel --clipboard --input"
@@ -459,17 +434,29 @@ stty -ixon
 
 
 #### Functions ################################################################
-  clubhouse() {
+  function clubhouse() {
     # Clubhouse story template
     echo -e "## Objective\n## Value\n## Acceptance Criteria" | pbcopy
   }
 
-  so() {
+  function so() {
     # Reload bashrc
     source ~/.bashrc
   }
 
-  zoomy() {
+  function pkg_updates() {
+    if [[ $(command -v apt) ]]; then
+      echo "Using apt update then upgrade -y"
+      sudo apt update && sudo apt upgrade -y
+    fi
+
+    if [[ $(command -v pacman) ]]; then
+      echo "Using arch pacman and yay"
+      sudo pacman -Syyu && yay -Syu
+    fi
+  }
+
+  function zoomy() {
     if [ -z $1 ]; then
       echo "Conference room number needed! 'zoomy 1234567890'"
     else
@@ -477,11 +464,11 @@ stty -ixon
     fi
   }
 
-  standup() {
+  function standup() {
     zoomy 9279165538
   }
 
-  explore() {
+  function explore() {
     if [[ $(command -v nemo) ]]; then
       echo 'using nemo'
       nemo .
@@ -490,18 +477,35 @@ stty -ixon
       xdg-open .
     fi
   }
+
   function nodenv_update() {
     if [ -d $(nodenv root) ]; then
-      echo "Updating nodenv"
+      echo "Updating nodenv and node-build plugin"
       cur_dir=$(pwd)
+      cd $(nodenv root)/plugins/node-build
+      git pull origin master
       cd $(nodenv root)
-      git pull
+      git pull origin master
       cd $cur_dir
       source ~/.bashrc
     else
       echo "nodenv is not installed"
     fi
   }
+
+  function pyenv_update() {
+    if [ -d $(pyenv root) ]; then
+      echo "Updating pyenv"
+      cur_dir=$(pwd)
+      cd $(pyenv root)
+      git pull
+      cd $cur_dir
+      source ~/.bashrc
+    else
+      echo "pyenv is not installed"
+    fi
+  }
+
 #### ##########################################################################
 
 #### ##########################################################################
