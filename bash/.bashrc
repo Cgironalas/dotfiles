@@ -451,8 +451,16 @@ stty -ixon
     fi
 
     if [[ $(command -v pacman) ]]; then
-      echo "Using arch pacman and yay"
-      sudo pacman -Syyu && yay -Syu
+      if [[ $(command -v pamac) ]]; then
+        echo "Usinch pacmand and pamac"
+        sudo pacman -Syyu && \
+          sudo pamac checkupdates && \
+          sudo pamac update && \
+          sudo pamac upgrade
+      else
+        echo "Using arch pacman and yay"
+        sudo pacman -Syyu && yay -Syu
+      fi
     fi
   }
 
