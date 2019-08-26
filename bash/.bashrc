@@ -226,10 +226,14 @@ stty -ixon
 
   ## Python Virtual Environments #
     function enva() {
-      if [ -d .env ]; then
-        source .env/bin/activate
+      if [ -z $1 ]; then
+        if [ -d .env ]; then
+          source .env/bin/activate
+        else
+          source $(cat .env)/bin/activate
+        fi
       else
-        source $(cat .env)/bin/activate
+        source $1/bin/activate
       fi
       update_prompt
     }
