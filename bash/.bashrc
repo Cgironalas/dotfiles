@@ -251,13 +251,14 @@ stty -ixon
       pip install -U pip pynvim
     }
 
-    function envp(){
+    function envp() {
       if [[ -n "$VIRTUAL_ENV" ]]; then
-        echo "${VIRTUAL_ENV##*/}"
+        echo "${VIRTUAL_ENV##*/}_$(print_python_version)"
       else
         echo ''
       fi
     }
+
 
     function envr() {
       if [ -d .env ]; then
@@ -270,7 +271,13 @@ stty -ixon
       fi
     }
 
-    alias envd='deactivate && update_prompt'
+    function envd() {
+      if [[ -n "$VIRTUAL_ENV" ]]; then
+        deactivate
+        update_prompt
+      fi
+    }
+
     alias pycache-clean='find . -name "*.pyc" -delete'
   ## #############################
 
@@ -445,6 +452,7 @@ stty -ixon
 
   function so() {
     # Reload bashrc
+    envd
     source ~/.bashrc
   }
 
@@ -488,6 +496,13 @@ stty -ixon
       echo 'using xdg-open'
       xdg-open .
     fi
+  }
+
+  function print_python_version() {
+    python_version=$(python -V)
+    IFS=' '
+    read -ra py_version <<< "$python_version"
+    echo ${py_version[1]}
   }
 
   function nodenv_update() {
