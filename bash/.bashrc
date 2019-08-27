@@ -255,7 +255,7 @@ stty -ixon
       if [[ -n "$VIRTUAL_ENV" ]]; then
         echo "${VIRTUAL_ENV##*/}_$(print_python_version)"
       else
-        echo ''
+        echo '$(print_python_version)'
       fi
     }
 
@@ -557,7 +557,7 @@ stty -ixon
   # Set Bash PS1
   PS1_GIT="\[$BOLD\]\[$COLOR_GOLD\]$(gitp)"
   PS1_DIR="\[$BOLD\]\[$COLOR_BRIGHT_BLUE\]\w"
-  PS1_ENV="\[$BOLD\]\[$COLOR_BRIGHT_GREEN\]$(envp)"
+  PS1_ENV="\[$BOLD\]\[$COLOR_YELLOW\]$(envp)"
     if [ $(whoami) != 'root' ]; then
       PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@\h"
     else
@@ -572,7 +572,7 @@ ${PS1_USR} ${PS1_END}"
   function update_prompt() {
     PS1_GIT="\[$BOLD\]\[$COLOR_GOLD\]$(gitp)"
     PS1_DIR="\[$BOLD\]\[$COLOR_BRIGHT_BLUE\]\w"
-    PS1_ENV="\[$BOLD\]\[$COLOR_BRIGHT_GREEN\]$(envp)"
+    PS1_ENV="\[$BOLD\]\[$COLOR_YELLOW\]$(envp)"
     if [ $(whoami) != 'root' ]; then
       PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@\h"
     else
