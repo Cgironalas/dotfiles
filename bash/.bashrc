@@ -225,59 +225,6 @@ stty -ixon
   ################################
 
   ## Python Virtual Environments #
-    function enva() {
-      if [ -z $1 ]; then
-        if [ -d .env ]; then
-          source .env/bin/activate
-        else
-          source $(cat .env)/bin/activate
-        fi
-      else
-        source $1/bin/activate
-      fi
-      update_prompt
-    }
-
-    function envc() {
-      if [ -z $1 ]; then
-        echo "creating default virtual env '.env'"
-        python -m venv .env
-      else
-        echo "creating virtual env '$1'"
-        python -m venv $1
-        echo $1 >> .env
-      fi
-      enva
-      pip install -U pip pynvim
-    }
-
-    function envp() {
-      if [[ -n "$VIRTUAL_ENV" ]]; then
-        echo "${VIRTUAL_ENV##*/}_$(print_python_version)"
-      else
-        echo '$(print_python_version)'
-      fi
-    }
-
-
-    function envr() {
-      if [ -d .env ]; then
-        echo "removing default virtual env '.env'"
-        rm -rf .env
-      else
-        echo "removing virtual env '$(cat .env)'"
-        rm -rf $(cat .env)
-        rm .env
-      fi
-    }
-
-    function envd() {
-      if [[ -n "$VIRTUAL_ENV" ]]; then
-        deactivate
-        update_prompt
-      fi
-    }
-
     alias pycache-clean='find . -name "*.pyc" -delete'
   ## #############################
 
@@ -319,14 +266,6 @@ stty -ixon
     alias 'dk-cu'='docker-compose up'
     alias 'dk-cd'='docker-compose down'
 
-    function drmi() {
-      for img in "$@"
-      do
-	docker image rm \
-	  $(docker images --format "{{.Repository}}:{{.Tag}}" | grep $img)
-      done
-    }
-
     ## $ drmi kip python
     ## will remove any docker images that contain kip, amazonaws, and python
   ## #############################
@@ -358,36 +297,6 @@ stty -ixon
     alias pym='python main.py'
     alias pyprep='enva && export GITBRANCH=integration && export ENV=integration'
   ## #############################
-
-  ## RUST ########################
-    function rustcp() {
-      if [ -z $1 ]; then
-        if [ -z $2 ]; then
-          cargo new --vcs=$2 --verbose --color=always $1
-        else
-          cargo new --vcs=none --verbose --color=always $1
-        fi
-      else
-        echo "Please specify a name for the project"
-      fi
-    }
-
-    function rustrp() {
-      if [ -z $1 ]; then
-        cargo run --verbose --color=always $1
-      else
-        cargo run --verbose --color=always .
-      fi
-    }
-
-    function rustrcs() {
-      if [ $(command -v runner) ]; then
-        runner $1
-      else
-        echo "ERROR: There is no runner installed, please run 'cargo install runner'"
-      fi
-    }
-  ################################
 
   ## #############################
     ## Directory #################
@@ -444,36 +353,177 @@ stty -ixon
 
 
 #### Functions ################################################################
-  function clubhouse() {
-    # Clubhouse story template
-    echo -e "## Objective\n## Value\n## Acceptance Criteria" | pbcopy
-  }
-
-  function so() {
-    # Reload bashrc
-    envd
-    source ~/.bashrc
-  }
-
-  function pkg_updates() {
-    if [[ $(command -v apt) ]]; then
-      echo "Using apt update then upgrade -y"
-      sudo apt update && sudo apt upgrade -y
-    fi
-
-    if [[ $(command -v pacman) ]]; then
-      if [[ $(command -v pamac) ]]; then
-        echo "Usinch pacmand and pamac"
-        sudo pacman -Syyu && \
-          sudo pamac checkupdates && \
-          sudo pamac update && \
-          sudo pamac upgrade
+  ## Python functions ##########################################
+    function enva() {
+      if [ -z $1 ]; then
+        if [ -d .env ]; then
+          source .env/bin/activate
+        else
+          source $(cat .env)/bin/activate
+        fi
       else
-        echo "Using arch pacman and yay"
-        sudo pacman -Syyu && yay -Syu
+        source $1/bin/activate
       fi
-    fi
-  }
+      update_prompt
+    }
+
+    function envc() {
+      if [ -z $1 ]; then
+        echo "creating default virtual env '.env'"
+        python -m venv .env
+      else
+        echo "creating virtual env '$1'"
+        python -m venv $1
+        echo $1 >> .env
+      fi
+      enva
+      pip install -U pip pynvim
+    }
+
+    function envp() {
+      if [[ -n "$VIRTUAL_ENV" ]]; then
+        echo "${VIRTUAL_ENV##*/}_$(print_python_version)"
+      else
+        echo '$(print_python_version)'
+      fi
+    }
+
+    function envr() {
+      if [ -d .env ]; then
+        echo "removing default virtual env '.env'"
+        rm -rf .env
+      else
+        echo "removing virtual env '$(cat .env)'"
+        rm -rf $(cat .env)
+        rm .env
+      fi
+    }
+
+    function envd() {
+      if [[ -n "$VIRTUAL_ENV" ]]; then
+        deactivate
+        update_prompt
+      fi
+    }
+
+    function print_python_version() {
+      python_version=$(python -V)
+      IFS=' '
+      read -ra py_version <<< "$python_version"
+      echo ${py_version[1]}
+    }
+
+    function pyenv_update() {
+      if [ -d $(pyenv root) ]; then
+        echo "Updating pyenv"
+        cur_dir=$(pwd)
+        cd $(pyenv root)
+        git pull
+        cd $cur_dir
+        source ~/.bashrc
+      else
+        echo "pyenv is not installed"
+      fi
+    }
+  ######################################
+
+  ## RUST ##############################
+    function rustcp() {
+      if [ -z $1 ]; then
+        if [ -z $2 ]; then
+          cargo new --vcs=$2 --verbose --color=always $1
+        else
+          cargo new --vcs=none --verbose --color=always $1
+        fi
+      else
+        echo "Please specify a name for the project"
+      fi
+    }
+
+    function rustrp() {
+      if [ -z $1 ]; then
+        cargo run --verbose --color=always $1
+      else
+        cargo run --verbose --color=always .
+      fi
+    }
+
+    function rustrcs() {
+      if [ $(command -v runner) ]; then
+        runner $1
+      else
+        echo "ERROR: There is no runner installed, please run 'cargo install runner'"
+      fi
+    }
+  ######################################
+
+  ## DOCKER ##########################{{
+    function drmi() {
+      for img in "$@"
+      do
+        docker image rm \
+          $(docker images --format "{{.Repository}}:{{.Tag}}" | grep $img)
+      done
+    }
+  ####################################}}
+
+  ## TDS ###############################
+    function clubhouse() {
+      # Clubhouse story template
+      echo -e "## Objective\n## Value\n## Acceptance Criteria" | pbcopy
+    }
+    function standup() {
+      zoomy 9279165538
+    }
+  ######################################
+
+  ## MISC ##############################
+    function so() {
+      # Reload bashrc
+      envd
+      source ~/.bashrc
+    }
+
+    function explore() {
+      if [[ $(command -v nemo) ]]; then
+        echo 'using nemo'
+        nemo .
+      else
+        echo 'using xdg-open'
+        xdg-open .
+      fi
+    }
+
+    function cll() {
+      if [ -z $1 ]; then
+        clear
+        ll
+      else
+        clear
+        ll | grep $1
+      fi
+    }
+
+    function pkg_updates() {
+      if [[ $(command -v apt) ]]; then
+        echo "Using apt update then upgrade -y"
+        sudo apt update && sudo apt upgrade -y
+      fi
+
+      if [[ $(command -v pacman) ]]; then
+        if [[ $(command -v pamac) ]]; then
+          echo "Usinch pacmand and pamac"
+          sudo pacman -Syyu && \
+            sudo pamac checkupdates && \
+            sudo pamac update && \
+            sudo pamac upgrade
+        else
+          echo "Using arch pacman and yay"
+          sudo pacman -Syyu && yay -Syu
+        fi
+      fi
+    }
+  ######################################
 
   function zoomy() {
     if [ -z $1 ]; then
@@ -481,27 +531,6 @@ stty -ixon
     else
       xdg-open "zoommtg://zoom.us/join?action=join&confno=$1"
     fi
-  }
-
-  function standup() {
-    zoomy 9279165538
-  }
-
-  function explore() {
-    if [[ $(command -v nemo) ]]; then
-      echo 'using nemo'
-      nemo .
-    else
-      echo 'using xdg-open'
-      xdg-open .
-    fi
-  }
-
-  function print_python_version() {
-    python_version=$(python -V)
-    IFS=' '
-    read -ra py_version <<< "$python_version"
-    echo ${py_version[1]}
   }
 
   function nodenv_update() {
@@ -516,29 +545,6 @@ stty -ixon
       source ~/.bashrc
     else
       echo "nodenv is not installed"
-    fi
-  }
-
-  function pyenv_update() {
-    if [ -d $(pyenv root) ]; then
-      echo "Updating pyenv"
-      cur_dir=$(pwd)
-      cd $(pyenv root)
-      git pull
-      cd $cur_dir
-      source ~/.bashrc
-    else
-      echo "pyenv is not installed"
-    fi
-  }
-
-  function cll() {
-    if [ -z $1 ]; then
-      clear
-      ll
-    else
-      clear
-      ll | grep $1
     fi
   }
 #### ##########################################################################
