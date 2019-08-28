@@ -13,19 +13,19 @@
 #######################################################################
 
 ## PATH Functions #############################################################
-    path_ladd() {
-      # Takes 1 argument and adds it to the beginning of the PATH
-      if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-	PATH="$1${PATH:+":$PATH"}"
-      fi
-    }
+  path_ladd() {
+    # Takes 1 argument and adds it to the beginning of the PATH
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+      PATH="$1${PATH:+":$PATH"}"
+    fi
+  }
 
-    path_radd() {
-      # Takes 1 argument and adds it to the end of the PATH
-      if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-	PATH="${PATH:+"$PATH:"}$1"
-      fi
-    }
+  path_radd() {
+    # Takes 1 argument and adds it to the end of the PATH
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+      PATH="${PATH:+"$PATH:"}$1"
+    fi
+  }
 ## ############################################################################
 
 
@@ -425,7 +425,6 @@ stty -ixon
   ## ##########################################################################
     ## Other
     alias cl='clear'
-    alias cll='clear && ll'
     alias fn='find . -name'
     alias dfn='grep -nri'
 
@@ -533,6 +532,15 @@ stty -ixon
     fi
   }
 
+  function cll() {
+    if [ -z $1 ]; then
+      clear
+      ll
+    else
+      clear
+      ll | grep $1
+    fi
+  }
 #### ##########################################################################
 
 #### ##########################################################################
