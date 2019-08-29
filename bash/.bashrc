@@ -237,7 +237,6 @@ stty -ixon
     alias g='git'
     alias ga='git add'
     alias gb='git branch'
-    alias gcb='git checkout -b'
     alias gco='git commit'
     alias gd='git diff .'
     alias gda='git diff'
@@ -246,6 +245,11 @@ stty -ixon
     alias gs='git status .'
     alias gsa='git status'
     alias gsu='git status -u'
+
+    function gcb() {
+      git checkout -b $1
+      update_prompt
+    }
 
     function go() {
       git checkout $*
