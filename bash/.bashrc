@@ -416,10 +416,7 @@ stty -ixon
     }
 
     function print_python_version() {
-      python_version=$(python -V)
-      IFS=' '
-      read -ra py_version <<< "$python_version"
-      echo ${py_version[1]}
+      echo $(python --version | sed -r 's/Python //g')
     }
 
     function pyenv_update() {
