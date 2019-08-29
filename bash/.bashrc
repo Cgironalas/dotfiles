@@ -501,6 +501,7 @@ stty -ixon
     }
 
     function cll() {
+      update_prompt
       if [ -z $1 ]; then
         clear
         ll
