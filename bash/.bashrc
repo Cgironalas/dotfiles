@@ -248,7 +248,7 @@ stty -ixon
     }
     function gitp() {
       if [[ -d .git || $(git rev-parse --git-dir 2> /dev/null) ]]; then
-        echo "[$(git branch | grep \* | cut -d ' ' -f2)]"
+        echo "[$(git branch | grep \* | sed -r 's/\* //g')]"
       else
         echo ''
       fi
