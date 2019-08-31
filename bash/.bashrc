@@ -416,7 +416,11 @@ stty -ixon
     }
 
     function print_python_version() {
-      echo $(python --version | sed -r 's/Python //g')
+      py=$(python --version 2>/dev/null)
+      if [[ -z $py ]]; then
+        py=$(python --version 2>&1)
+      fi
+      echo $(echo "$py" | sed -r 's/Python //g')
     }
 
     function pyenv_update() {
