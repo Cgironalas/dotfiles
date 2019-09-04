@@ -310,7 +310,7 @@ stty -ixon
   ## #############################
     ## Directory #################
     function c() {
-      cd $1
+      cd "$@"
 
       if [[ ! -n "$VIRTUAL_ENV" ]]; then
         if [ -d .env ]; then
@@ -325,7 +325,7 @@ stty -ixon
       update_prompt
     }
     function d() {
-      cd $1
+      cd "$@"
       update_prompt
     }
     alias .='cd .. && update_prompt'
