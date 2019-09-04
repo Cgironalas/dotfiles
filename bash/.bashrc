@@ -475,6 +475,29 @@ stty -ixon
           $(docker images --format "{{.Repository}}:{{.Tag}}" | grep $img)
       done
     }
+
+    function update_compose() {
+      # Get only the number part from --version, then remove the extra comma
+      current_version=$(\
+        docker-compose --version |\
+        cut -d ' ' -f3 |\
+        sed -r 's/,//g'\
+      )
+      # Get the latest version from the tag link, then get only the number part
+      newest_version=$(\
+        curl --silent https://github.com/docker/compose/releases/latest |\
+        cut -d '"' -f2 | cut -d '/' -f8\
+      )
+      if [ "$current_version" == "$newest_version" ]; then
+        echo "Current compose version is the lastest."
+      else
+        echo "Updating compose to $newest_version."
+        link="https://github.com/docker/compose/releases/download/$newest_version/docker-compose-$(uname -s)-$(uname -m)"
+        dest=/usr/local/bin/docker-compose
+        sudo curl -L  ${link} -o $dest
+        sudo chmod +x $dest
+      fi
+    }
   ####################################}}
 
   ## TDS ###############################
