@@ -541,7 +541,7 @@ stty -ixon
     function pkg_updates() {
       if [[ $(command -v apt) ]]; then
         echo "Using apt update then upgrade -y"
-        sudo apt update && sudo apt upgrade -y
+        sudo apt update && sudo apt upgrade -y && sudo apt autoremove
       fi
 
       if [[ $(command -v pacman) ]]; then
