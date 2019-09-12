@@ -508,6 +508,16 @@ stty -ixon
     function standup() {
       zoomy 9279165538
     }
+    function print_vpn_status() {
+      net_status=$(nmcli)
+      if [[ $net_status == *"aws VPN connection"* ]]; then
+        # echo "AWS VPN ON"
+        echo "ON"
+      else
+        # echo "AWS VPN OFF"
+        echo "OFF"
+      fi
+    }
   ######################################
 
   ## MISC ##############################
@@ -606,11 +616,16 @@ stty -ixon
   PS1_GIT="\[$BOLD\]\[$COLOR_GOLD\]$(gitp)"
   PS1_DIR="\[$BOLD\]\[$COLOR_BRIGHT_BLUE\]\w"
   PS1_ENV="\[$BOLD\]\[$COLOR_YELLOW\]$(envp)"
-    if [ $(whoami) != 'root' ]; then
-      PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@\h"
-    else
-      PS1_USR="\[$BOLD\]\[$COLOR_RED\]\u@\h"
-    fi
+  if [[ $(print_vpn_status) == 'ON' ]]; then
+    LOCATION='AWS_VPN'
+  else
+    LOCATION="\h"
+  fi
+  if [ $(whoami) != 'root' ]; then
+    PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@$LOCATION"
+  else
+    PS1_USR="\[$BOLD\]\[$COLOR_RED\]\u@$LOCATION"
+  fi
   PS1_END="\[$BOLD\]\[$COLOR_LIGHT_CYAN\]$ \[$COLOR_RESET\]"
 
   PS1="${PS1_GIT} ${PS1_DIR} ${PS1_ENV}\
@@ -621,10 +636,15 @@ ${PS1_USR} ${PS1_END}"
     PS1_GIT="\[$BOLD\]\[$COLOR_GOLD\]$(gitp)"
     PS1_DIR="\[$BOLD\]\[$COLOR_BRIGHT_BLUE\]\w"
     PS1_ENV="\[$BOLD\]\[$COLOR_YELLOW\]$(envp)"
-    if [ $(whoami) != 'root' ]; then
-      PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@\h"
+    if [[ $(print_vpn_status) == 'ON' ]]; then
+      LOCATION='AWS_VPN'
     else
-      PS1_USR="\[$BOLD\]\[$COLOR_RED\]\u@\h"
+      LOCATION="\h"
+    fi
+    if [ $(whoami) != 'root' ]; then
+      PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@$LOCATION"
+    else
+      PS1_USR="\[$BOLD\]\[$COLOR_RED\]\u@$LOCATION"
     fi
     PS1_END="\[$BOLD\]\[$COLOR_LIGHT_CYAN\]$ \[$COLOR_RESET\]"
 
