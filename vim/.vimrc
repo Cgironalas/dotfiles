@@ -144,6 +144,9 @@ Plug 'cespare/vim-toml'
 " For Svelte
 Plug 'evanleck/vim-svelte' "svelte highlights
 
+" For Rust
+Plug 'rust-lang/rust.vim' "rust highlights
+
 call plug#end()
 
 " }}}
