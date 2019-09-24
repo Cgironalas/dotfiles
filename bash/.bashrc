@@ -510,11 +510,9 @@ stty -ixon
     }
     function print_vpn_status() {
       net_status=$(nmcli)
-      if [[ $net_status == *"aws VPN connection"* ]]; then
-        # echo "AWS VPN ON"
+      if [[ $net_status == *"Auto AWS VPN connection"* ]]; then
         echo "ON"
       else
-        # echo "AWS VPN OFF"
         echo "OFF"
       fi
     }
@@ -595,62 +593,67 @@ stty -ixon
 
 #### ##########################################################################
   ## Command line prompt (PS1) ################################################
-  COLOR_BRIGHT_GREEN="\033[38;5;10m"
-  COLOR_BRIGHT_BLUE="\033[38;5;115m"
   COLOR_CYAN="\033[0;36m"
   COLOR_LIGHT_CYAN="\033[1;36m"
   COLOR_RED="\033[1;31m"
   COLOR_YELLOW="\033[0;33m"
   COLOR_GREEN="\033[0;32m"
   COLOR_PURPLE="\033[1;35m"
-  COLOR_ORANGE="\033[38;5;202m"
   COLOR_BLUE="\033[1;34m"
   COLOR_WHITE="\033[0;37m"
-  COLOR_GOLD="\033[38;5;142m"
-  COLOR_SILVER="\033[38;5;248m"
   COLOR_RESET="\033[0m"
+
+  # 256 colors: https://jonasjacek.github.io/colors/
+  # MAIN COLOURS
+  CYAN2_COLOUR="\033[38;5;50m"
+  DEEP_PINK1_COLOUR="\033[38;5;198m"
+
+  # COMPLIMENTARY COLOURS
+  FRONT_GREY_COLOUR="\033[38;5;248m"
+  BACK_GREY_COLOUR="\033[38;5;237m"
+
+  GIT_COLOUR="\033[38;5;226m"
+  PY_COLOUR="\033[38;5;118m" #Chartreuse1
 
   BOLD="$(tput bold)"
 
   # Set Bash PS1
-  PS1_GIT="\[$BOLD\]\[$COLOR_GOLD\]$(gitp)"
-  PS1_DIR="\[$BOLD\]\[$COLOR_BRIGHT_BLUE\]\w"
-  PS1_ENV="\[$BOLD\]\[$COLOR_YELLOW\]$(envp)"
+  PS1_GIT="\[$GIT_COLOUR\]$(gitp)\[$COLOR_RESET\]"
+  PS1_DIR="\[$FRONT_GREY_COLOUR\]\w\[$COLOR_RESET\]"
+  PS1_ENV="\[$PY_COLOUR\]$(envp)\[$COLOR_RESET\]"
+
   if [[ $(print_vpn_status) == 'ON' ]]; then
     LOCATION='AWS_VPN'
   else
     LOCATION="\h"
   fi
+
   if [ $(whoami) != 'root' ]; then
-    PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@$LOCATION"
+    PS1_USR="\[$CYAN2_COLOUR\]\u@$LOCATION \[$BOLD\]$ \[$COLOR_RESET\]"
   else
-    PS1_USR="\[$BOLD\]\[$COLOR_RED\]\u@$LOCATION"
+    PS1_USR="\[$DEEP_PINK1_COLOUR\]\u@$LOCATION \[$BOLD\]$ \[$COLOR_RESET\]"
   fi
-  PS1_END="\[$BOLD\]\[$COLOR_LIGHT_CYAN\]$ \[$COLOR_RESET\]"
 
   PS1="${PS1_GIT} ${PS1_DIR} ${PS1_ENV}\
 
-${PS1_USR} ${PS1_END}"
+${PS1_USR}"
 
   function update_prompt() {
-    PS1_GIT="\[$BOLD\]\[$COLOR_GOLD\]$(gitp)"
-    PS1_DIR="\[$BOLD\]\[$COLOR_BRIGHT_BLUE\]\w"
-    PS1_ENV="\[$BOLD\]\[$COLOR_YELLOW\]$(envp)"
     if [[ $(print_vpn_status) == 'ON' ]]; then
       LOCATION='AWS_VPN'
     else
       LOCATION="\h"
     fi
+
     if [ $(whoami) != 'root' ]; then
-      PS1_USR="\[$BOLD\]\[$COLOR_BLUE\]\u@$LOCATION"
+      PS1_USR="\[$CYAN2_COLOUR\]\u@$LOCATION \[$BOLD\]$ \[$COLOR_RESET\]"
     else
-      PS1_USR="\[$BOLD\]\[$COLOR_RED\]\u@$LOCATION"
+      PS1_USR="\[$DEEP_PINK1_COLOUR\]\u@$LOCATION \[$BOLD\]$ \[$COLOR_RESET\]"
     fi
-    PS1_END="\[$BOLD\]\[$COLOR_LIGHT_CYAN\]$ \[$COLOR_RESET\]"
 
     PS1="${PS1_GIT} ${PS1_DIR} ${PS1_ENV}\
 
-${PS1_USR} ${PS1_END}"
+${PS1_USR}"
   }
 #### ##########################################################################
 
