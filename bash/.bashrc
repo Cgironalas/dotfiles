@@ -342,7 +342,7 @@ stty -ixon
 
   ## ##########################################################################
     ## Other
-    alias cl='clear'
+    alias cl='clear && update_prompt'
     alias fn='find . -name'
     alias dfn='grep -nri'
 
@@ -609,7 +609,7 @@ stty -ixon
   DEEP_PINK1_COLOUR="\033[38;5;198m"
 
   # COMPLIMENTARY COLOURS
-  FRONT_GREY_COLOUR="\033[38;5;248m"
+  FRONT_GREY_COLOUR="\033[38;5;250m"
   BACK_GREY_COLOUR="\033[38;5;237m"
 
   GIT_COLOUR="\033[38;5;226m"
@@ -639,6 +639,10 @@ stty -ixon
 ${PS1_USR}"
 
   function update_prompt() {
+    PS1_GIT="\[$GIT_COLOUR\]$(gitp)\[$COLOR_RESET\]"
+    PS1_DIR="\[$FRONT_GREY_COLOUR\]\w\[$COLOR_RESET\]"
+    PS1_ENV="\[$PY_COLOUR\]$(envp)\[$COLOR_RESET\]"
+
     if [[ $(print_vpn_status) == 'ON' ]]; then
       LOCATION='AWS_VPN'
     else
