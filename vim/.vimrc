@@ -1,204 +1,255 @@
 " General: Notes
-"
-" Author: Samuel Roeca
-" Date: August 15, 2017
-" TLDR: vimrc minimum viable product for Python programming
-"
-" I've noticed that many vim/neovim beginners have trouble creating a useful
-" vimrc. This file is intended to get a Python programmer who is new to vim
-" set up with a vimrc that will enable the following:
-"   1. Sane editing of Python files
-"   2. Sane defaults for vim itself
-"   3. An organizational skeleton that can be easily extended
-"
-" Notes:
-"   * When in normal mode, scroll over a folded section and type 'za'
-"       this toggles the folded section
-"
-" Initialization:
-"   1. Follow instructions at https://github.com/junegunn/vim-plug to install
-"      vim-plug for either Vim or Neovim
-"   2. Open vim (hint: type vim at command line and press enter :p)
-"   3. :PlugInstall
-"   4. :PlugUpdate
-"   5. You should be ready for MVP editing
-"
-" Updating:
-"   If you want to upgrade your vim plugins to latest version
-"     :PlugUpdate
-"   If you want to upgrade vim-plug itself
-"     :PlugUpgrade
-" General: Leader mappings -------------------- {{{
+  "
+  " Based On: Samuel Roeca dotfiles (https://github.com/pappasam/dotfiles)
+  "
+  " Notes:
+  "   * When in normal mode, scroll over a folded section and type 'za'
+  "       this toggles the folded section
+  "
+  " Initialization:
+  "   1. Follow instructions at https://github.com/junegunn/vim-plug to install
+  "      vim-plug for either Vim or Neovim
+  "   2. Open vim (hint: type vim at command line and press enter :p)
+  "   3. :PlugInstall
+  "   4. :PlugUpdate
+  "
+  " Updating:
+  "   If you want to upgrade your vim plugins to latest version
+  "     :PlugUpdate
+  "   If you want to upgrade vim-plug itself
+  "     :PlugUpgrade
 
-let mapleader = ","
-let maplocalleader = "\\"
-
+" General: Leader mappings {{{
+  let mapleader = ","
+  let maplocalleader = "\\"
 " }}}
+
 " General: global config ------------ {{{
+  "A comma separated list of options for Insert mode completion
+  "   menuone  Use the popup menu also when there is only one match.
+  "            Useful when there is additional information about the
+  "            match, e.g., what file it comes from.
 
-"A comma separated list of options for Insert mode completion
-"   menuone  Use the popup menu also when there is only one match.
-"            Useful when there is additional information about the
-"            match, e.g., what file it comes from.
+  "   longest  Only insert the longest common text of the matches.  If
+  "            the menu is displayed you can use CTRL-L to add more
+  "            characters.  Whether case is ignored depends on the kind
+  "            of completion.  For buffer text the 'ignorecase' option is
+  "            used.
 
-"   longest  Only insert the longest common text of the matches.  If
-"            the menu is displayed you can use CTRL-L to add more
-"            characters.  Whether case is ignored depends on the kind
-"            of completion.  For buffer text the 'ignorecase' option is
-"            used.
+  "   preview  Show extra information about the currently selected
+  "            completion in the preview window.  Only works in
+  "            combination with 'menu' or 'menuone'.
+  set completeopt=menuone,longest,preview
 
-"   preview  Show extra information about the currently selected
-"            completion in the preview window.  Only works in
-"            combination with 'menu' or 'menuone'.
-set completeopt=menuone,longest,preview
+  " Enable buffer deletion instead of having to write each buffer
+  set hidden
 
-" Enable buffer deletion instead of having to write each buffer
-set hidden
+  " Disable swap files
+  set nobackup
+  set noswapfile
 
-" Mouse: enable GUI mouse support in all modes
-set mouse=a
+  " Enable filetype detection, plugins and indentation
+  filetype plugin indent on
 
-" Set column to light grey at 80 characters
-if (exists('+colorcolumn'))
-  set colorcolumn=80
-  highlight ColorColumn ctermbg=9
-endif
+  " Single spaces after periods
+  set nojoinspaces
 
-" Remove query for terminal version
-" This prevents un-editable garbage characters from being printed
-" after the 80 character highlight line
-set t_RV=
+  " Always display tabline
+  set showtabline=2
 
-filetype plugin indent on
+  " Improve key timeout behaviour
+    " don't timeout on mappings
+    set notimeout
+    " do timeout on terminal key codes
+    set ttimeout
 
-set spelllang=en_us
+  " Explicitely set shell
+  set shell=$SHELL
 
-set showtabline=2
+  " Mouse: enable GUI mouse support in all modes
+  set mouse=a
 
-set autoread
-
-" When you type the first tab hit will complete as much as possible,
-" the second tab hit will provide a list, the third and subsequent tabs
-" will cycle through completion options so you can complete the file
-" without further keys
-set wildmode=longest,list,full
-set wildmenu
-
-" Turn off complete vi compatibility
-set nocompatible
-
-" Enable using local vimrc
-set exrc
-
-" Make sure numbering is set
-set number
-
-" Redraw window whenever I've regained focus
-augroup redraw_on_refocus
-  au FocusGained * :redraw!
-augroup END
-
-set foldmethod=indent
-set foldnestmax=10
-set nofoldenable
-
-
-" }}}
-" General: Plugin Install --------------------- {{{
-
-call plug#begin('~/.vim/plugged')
-
-" Commands run in vim's virtual screen and don't pollute main shell
-Plug 'fcpg/vim-altscreen'
-
-" Basic coloring
-Plug 'NLKNguyen/papercolor-theme'
-
-" Utils
-Plug 'tpope/vim-commentary'
-
-" Language-specific syntax
-Plug 'hdima/python-syntax'
-
-" Indentation
-Plug 'hynek/vim-python-pep8-indent'
-
-" Macro repeater
-Plug 'ckarnell/Antonys-macro-repeater'
-
-" File system explorer for vim
-Plug 'scrooloose/nerdtree'
-
-" Jedi-vim
-Plug 'davidhalter/jedi-vim'
-
-" Vim rooter
-Plug 'airblade/vim-rooter'
-
-" Ctrl P
-Plug 'kien/ctrlp.vim'
-
-" Vim-Toml
-Plug 'cespare/vim-toml'
-
-" For Svelte
-Plug 'evanleck/vim-svelte' "svelte highlights
-
-" For Rust
-Plug 'rust-lang/rust.vim' "rust highlights
-
-call plug#end()
-
-" }}}
-" General: Indentation (tabs, spaces, width, etc)------------- {{{
-
-augroup indentation_sr
-  autocmd!
-  autocmd Filetype * setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=8
-  autocmd Filetype python setlocal shiftwidth=4 softtabstop=4 tabstop=8
-  autocmd Filetype yaml setlocal indentkeys-=<:>
-  autocmd Filetype make setlocal noexpandtab softtabstop=0
-augroup END
-
-" }}}
-" General: Folding Settings --------------- {{{
-
-augroup fold_settings
-  autocmd!
-  autocmd FileType vim setlocal foldmethod=indent
-  autocmd FileType vim setlocal foldlevelstart=0
-  autocmd FileType * setlocal foldnestmax=10
-augroup END
-
-" }}}
-" General: Trailing whitespace ------------- {{{
-
-" This section should go before syntax highlighting
-" because autocommands must be declared before syntax library is loaded
-function! TrimWhitespace()
-  if &ft == 'markdown'
-    return
+  " Set column to light grey at 80 characters
+  if (exists('+colorcolumn'))
+    set colorcolumn=80
+    highlight ColorColumn ctermbg=9
   endif
-  let l:save = winsaveview()
-  %s/\s\+$//e
-  call winrestview(l:save)
-endfunction
 
-highlight EOLWS ctermbg=red guibg=red
-match EOLWS /\s\+$/
-augroup whitespace_color
-  autocmd!
-  autocmd ColorScheme * highlight EOLWS ctermbg=red guibg=red
-  autocmd InsertEnter * highlight EOLWS NONE
-  autocmd InsertLeave * highlight EOLWS ctermbg=red guibg=red
-augroup END
+  " Remove query for terminal version
+  " This prevents un-editable garbage characters from being printed
+  " after the 80 character highlight line
+  set t_RV=
 
-augroup fix_whitespace_save
-  autocmd!
-  autocmd BufWritePre * call TrimWhitespace()
-augroup END
+  set spelllang=en_us
 
+  set autoread
+
+  " When you type the first tab hit will complete as much as possible,
+  " the second tab hit will provide a list, the third and subsequent tabs
+  " will cycle through completion options so you can complete the file
+  " without further keys
+  set wildmode=longest,list,full
+  set wildmenu
+
+  " Turn off complete vi compatibility
+  set nocompatible
+
+  " Enable using local vimrc ('.nvimrc', '_nvimrc', '.exrc')
+  set exrc
+
+  " Make sure numbering is set
+  set number
+
+  " Redraw window whenever I've regained focus
+  augroup redraw_on_refocus
+    autocmd!
+    autocmd FocusGained * :redraw!
+  augroup END
+
+  " Enable Truecolor if applicable
+  if $COLORTERM ==# 'truecolor'
+    set termguicolors
+  else
+    set guicursor=
+  endif
+
+  " Configure Updatetime: time vim waits to do something after I stop moving
+  set updatetime=750
 " }}}
+
+" General: Plugin Install --------------------- {{{
+  call plug#begin('~/.vim/plugged')
+
+  " Commands run in vim's virtual screen and don't pollute main shell
+  Plug 'fcpg/vim-altscreen'
+
+  " Basic coloring
+  Plug 'NLKNguyen/papercolor-theme'
+
+  " Utils
+  Plug 'tpope/vim-commentary'
+
+  " Language-specific syntax
+  Plug 'hdima/python-syntax'
+
+  " Indentation
+  Plug 'hynek/vim-python-pep8-indent'
+
+  " Macro repeater
+  Plug 'ckarnell/Antonys-macro-repeater'
+
+  " File system explorer for vim
+  Plug 'scrooloose/nerdtree'
+
+  " Jedi-vim
+  Plug 'davidhalter/jedi-vim'
+
+  " Vim rooter
+  Plug 'airblade/vim-rooter'
+
+  " Ctrl P
+  Plug 'kien/ctrlp.vim'
+
+  " Vim-Toml
+  Plug 'cespare/vim-toml'
+
+  " For Svelte
+  Plug 'evanleck/vim-svelte' "svelte highlights
+
+  " For Rust
+  Plug 'rust-lang/rust.vim' "rust highlights
+
+  " Filetype formatter
+  Plug 'pappasam/vim-filetype-formatter'
+
+  call plug#end()
+" }}}
+
+" General: Filetype recognition ------------ {{{
+  augroup filetype_recognition
+    autocmd!
+    autocmd BufNewFile,BufRead,BufEnter *.hql,*.q set filetype=hive
+    autocmd BufNewFile,BufRead,BufEnter *.config,.cookiecutterrc set filetype=yaml
+    autocmd BufNewFile,BufRead,BufEnter .jrnl_config,*.bowerrc,*.babelrc,*.eslintrc,*.slack-term
+          \ set filetype=json
+    autocmd BufNewFile,BufRead,BufEnter *.asm set filetype=nasm
+    autocmd BufNewFile,BufRead,BufEnter *.handlebars set filetype=html
+    autocmd BufNewFile,BufRead,BufEnter *.m,*.oct set filetype=octave
+    autocmd BufNewFile,BufRead,BufEnter *.jsx set filetype=javascript
+    autocmd BufNewFile,BufRead,BufEnter *.gs set filetype=javascript
+    autocmd BufNewFile,BufRead,BufEnter *.cfg,*.ini,.coveragerc,*pylintrc
+          \ set filetype=dosini
+    autocmd BufNewFile,BufRead,BufEnter *.tsv set filetype=tsv
+    autocmd BufNewFile,BufRead,BufEnter *.toml set filetype=toml
+    autocmd BufNewFile,BufRead,BufEnter Dockerfile.* set filetype=Dockerfile
+    autocmd BufNewFile,BufRead,BufEnter Makefile.* set filetype=make
+    autocmd BufNewFile,BufRead,BufEnter poetry.lock set filetype=toml
+    autocmd BufNewFile,BufRead,BufEnter .gitignore,.dockerignore
+          \ set filetype=conf
+  augroup END
+" }}}
+
+" General: Indentation (tabs, spaces, width, etc)------------- {{{
+  set expandtab shiftwidth=2 softtabstop=2 tabstop=8
+  augroup indentation_sr
+    autocmd!
+    autocmd Filetype python,c,haskell,markdown,rust,rst,kv,nginx,asm,nasm,gdscript3
+          \ setlocal shiftwidth=4 softtabstop=4 tabstop=8
+    autocmd Filetype dot setlocal autoindent cindent
+    autocmd Filetype make,tsv,votl,go
+          \ setlocal tabstop=4 softtabstop=0 shiftwidth=4 noexpandtab
+    " Prevent auto-indenting from occuring
+    autocmd Filetype yaml setlocal indentkeys-=<:>
+
+    autocmd Filetype ron setlocal cindent
+          \ cinkeys=0{,0},0(,0),0[,0],:,0#,!^F,o,O,e
+          \ cinoptions+='(s,m2'
+          \ cinoptions+='(s,U1'
+          \ cinoptions+='j1'
+          \ cinoptions+='J1'
+  augroup END
+" }}}
+
+" General: Folding Settings --------------- {{{
+  set foldmethod=indent
+  set foldnestmax=10
+  set nofoldenable
+
+  augroup fold_settings
+    autocmd!
+    " autocmd FileType vim setlocal foldmethod=indent
+    " autocmd FileType vim setlocal foldlevelstart=0
+    autocmd FileType * setlocal foldnestmax=10
+  augroup END
+" }}}
+
+" General: Trailing whitespace ------------- {{{
+  " This section should go before syntax highlighting
+  " because autocommands must be declared before syntax library is loaded
+  function! TrimWhitespace()
+    if &ft == 'markdown'
+      return
+    endif
+    let l:save = winsaveview()
+    %s/\s\+$//e
+    call winrestview(l:save)
+  endfunction
+
+  highlight EOLWS ctermbg=red guibg=red
+  match EOLWS /\s\+$/
+  augroup whitespace_color
+    autocmd!
+    autocmd ColorScheme * highlight EOLWS ctermbg=red guibg=red
+    autocmd InsertEnter * highlight EOLWS NONE
+    autocmd InsertLeave * highlight EOLWS ctermbg=red guibg=red
+  augroup END
+
+  augroup fix_whitespace_save
+    autocmd!
+    autocmd BufWritePre * call TrimWhitespace()
+  augroup END
+" }}}
+
 " General: Syntax highlighting ---------------- {{{
 
 " Papercolor: options
@@ -295,6 +346,11 @@ let g:jedi#documentation_command = "<leader>sd"
 let g:jedi#usages_command = "<leader>su"
 let g:jedi#rename_command = "<leader>r"
 
+" Filetype formatter
+let g:vim_filetype_formatter_commands = {
+      \ 'text': 'poetry run textformatter',
+      \ }
+
 "  }}}
 " General: Key remappings ----------------------- {{{
 
@@ -305,6 +361,10 @@ nnoremap <silent> <C-k> :wincmd k<CR>
 nnoremap <silent> <C-j> :wincmd j<CR>
 nnoremap <silent> <C-l> :wincmd l<CR>
 nnoremap <silent> <C-h> :wincmd h<CR>
+
+" FiletypeFormat: remap leader f to do filetype formatting
+nnoremap <leader>f :FiletypeFormat<cr>
+vnoremap <leader>f :FiletypeFormat<cr>
 
 " }}}
 " General: Cleanup ------------------ {{{
