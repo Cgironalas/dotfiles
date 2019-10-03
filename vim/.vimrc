@@ -69,12 +69,6 @@
   " Mouse: enable GUI mouse support in all modes
   set mouse=a
 
-  " Set column to light grey at 80 characters
-  if (exists('+colorcolumn'))
-    set colorcolumn=80
-    highlight ColorColumn ctermbg=9
-  endif
-
   " Remove query for terminal version
   " This prevents un-editable garbage characters from being printed
   " after the 80 character highlight line
@@ -120,47 +114,50 @@
 " General: Plugin Install --------------------- {{{
   call plug#begin('~/.vim/plugged')
 
-  " Commands run in vim's virtual screen and don't pollute main shell
-  Plug 'fcpg/vim-altscreen'
+    " Commands run in vim's virtual screen and don't pollute main shell
+    Plug 'fcpg/vim-altscreen'
 
-  " Basic coloring
-  Plug 'NLKNguyen/papercolor-theme'
+    " Basic coloring
+    Plug 'NLKNguyen/papercolor-theme'
 
-  " Utils
-  Plug 'tpope/vim-commentary'
+    " Utils
+    Plug 'tpope/vim-commentary'
 
-  " Language-specific syntax
-  Plug 'hdima/python-syntax'
+    " Language-specific syntax
+    Plug 'hdima/python-syntax'
 
-  " Indentation
-  Plug 'hynek/vim-python-pep8-indent'
+    " Indentation
+    Plug 'hynek/vim-python-pep8-indent'
 
-  " Macro repeater
-  Plug 'ckarnell/Antonys-macro-repeater'
+    " Macro repeater
+    Plug 'ckarnell/Antonys-macro-repeater'
 
-  " File system explorer for vim
-  Plug 'scrooloose/nerdtree'
+    " File system explorer for vim
+    Plug 'scrooloose/nerdtree'
 
-  " Jedi-vim
-  Plug 'davidhalter/jedi-vim'
+    " Jedi-vim
+    Plug 'davidhalter/jedi-vim'
 
-  " Vim rooter
-  Plug 'airblade/vim-rooter'
+    " Vim rooter
+    Plug 'airblade/vim-rooter'
 
-  " Ctrl P
-  Plug 'kien/ctrlp.vim'
+    " Ctrl P
+    Plug 'kien/ctrlp.vim'
 
-  " Vim-Toml
-  Plug 'cespare/vim-toml'
+    " Vim-Toml
+    Plug 'cespare/vim-toml'
 
-  " For Svelte
-  Plug 'evanleck/vim-svelte' "svelte highlights
+    " For Svelte
+    Plug 'evanleck/vim-svelte' "svelte highlights
 
-  " For Rust
-  Plug 'rust-lang/rust.vim' "rust highlights
+    " For Rust
+    Plug 'rust-lang/rust.vim' "rust highlights
 
-  " Filetype formatter
-  Plug 'pappasam/vim-filetype-formatter'
+    " Filetype formatter
+    Plug 'pappasam/vim-filetype-formatter'
+
+    " Web Close Tag
+    Plug 'alvan/vim-closetag'
 
   call plug#end()
 " }}}
@@ -190,6 +187,9 @@
 " }}}
 
 " General: Indentation (tabs, spaces, width, etc)------------- {{{
+  " Note -> apparently BufRead, BufNewFile trumps Filetype
+  " Eg, if BufRead,BufNewFile * ignores any Filetype overwrites
+  " This is why default settings are chosen with Filetype *
   set expandtab shiftwidth=2 softtabstop=2 tabstop=8
   augroup indentation_sr
     autocmd!
@@ -210,6 +210,16 @@
   augroup END
 " }}}
 
+" General: Colorcolumn --------------- {{{
+  " Set column to light grey at 80 characters
+  set colorcolumn=80
+  augroup colorcolumn_configuration
+    autocmd!
+    autocmd FileType gitcommit setlocal colorcolumn=73 textwidth=72
+    autocmd FileType html, text, markdown,rst setlocal colorcolumn=0
+  augroup END
+" }}}
+
 " General: Folding Settings --------------- {{{
   set foldmethod=indent
   set foldnestmax=10
@@ -217,165 +227,264 @@
 
   augroup fold_settings
     autocmd!
-    " autocmd FileType vim setlocal foldmethod=indent
-    " autocmd FileType vim setlocal foldlevelstart=0
-    autocmd FileType * setlocal foldnestmax=10
+    autocmd FileType * setlocal foldlevelstart=1
+    " autocmd FileType vim,tmux,bash,zsh,sh
+    "       \ setlocal foldmethod=marker foldlevelstart=0 foldnestmax=1
+    autocmd FileType markdown, rst
+          \ setlocal nofoldenable
   augroup END
 " }}}
 
 " General: Trailing whitespace ------------- {{{
-  " This section should go before syntax highlighting
-  " because autocommands must be declared before syntax library is loaded
-  function! TrimWhitespace()
-    if &ft == 'markdown'
-      return
-    endif
+  function! s:trim_whitespace()
     let l:save = winsaveview()
-    %s/\s\+$//e
+      if &ft == 'markdown'
+        " Replace lines with only trailing spaces
+        %s/^\s\+$//e
+        " Replace lines with exactly one trailing space with no trailing spaces
+        %g/\S\s$/s/\s$//g
+        " Replace lines with more than 2 trailing spaces with 2 trailing spaces
+        %s/\s\s\s\+$/  /e
+      else
+        " Remove all trailing spaces
+        %s/\s\+$//e
+      endif
     call winrestview(l:save)
-  endfunction
+  endfunction()
 
-  highlight EOLWS ctermbg=red guibg=red
-  match EOLWS /\s\+$/
-  augroup whitespace_color
-    autocmd!
-    autocmd ColorScheme * highlight EOLWS ctermbg=red guibg=red
-    autocmd InsertEnter * highlight EOLWS NONE
-    autocmd InsertLeave * highlight EOLWS ctermbg=red guibg=red
-  augroup END
+  command! TrimWhitespace call <SID>trim_whitespace()
 
   augroup fix_whitespace_save
     autocmd!
-    autocmd BufWritePre * call TrimWhitespace()
+    autocmd BufWritePre *TrimWhitespace
   augroup END
 " }}}
 
 " General: Syntax highlighting ---------------- {{{
+  " Papercolor: options
+  let g:PaperColor_Theme_Options = {}
+  let g:PaperColor_Theme_Options['theme'] = {
+        \     'default': {
+        \       'transparent_background': 1,
+        \       'allow_bold': 1,
+        \       'allow_italic': 1,
+        \     }
+        \ }
+  let g:PaperColor_Theme_Options['language'] = {
+        \     'python': {
+        \       'highlight_builtins' : 1
+        \     },
+        \     'cpp': {
+        \       'highlight_standard_library': 1
+        \     },
+        \     'c': {
+        \       'highlight_builtins' : 1
+        \     }
+        \ }
 
-" Papercolor: options
-let g:PaperColor_Theme_Options = {}
-let g:PaperColor_Theme_Options['theme'] = {
-      \     'default': {
-      \       'transparent_background': 1
-      \     }
-      \ }
-let g:PaperColor_Theme_Options['language'] = {
-      \     'python': {
-      \       'highlight_builtins' : 1
-      \     },
-      \     'cpp': {
-      \       'highlight_standard_library': 1
-      \     },
-      \     'c': {
-      \       'highlight_builtins' : 1
-      \     }
-      \ }
+  " Python: Highlight self and cls keyword in class definitions
+  augroup python_syntax
+    autocmd!
+    autocmd FileType python syn keyword pythonBuiltinObj self
+    autocmd FileType python syn keyword pythonBuiltinObj cls
+  augroup end
 
-" Python: Highlight self and cls keyword in class definitions
-augroup python_syntax
-  autocmd!
-  autocmd FileType python syn keyword pythonBuiltinObj self
-  autocmd FileType python syn keyword pythonBuiltinObj cls
-augroup end
-
-" Syntax: select global syntax scheme
-" Make sure this is at end of section
-try
-  set t_Co=256 " says terminal has 256 colors
-  set background=dark
-  colorscheme PaperColor
-catch
-endtry
-
+  " Syntax: select global syntax scheme
+  " Make sure this is at end of section
+  try
+    set t_Co=256 " says terminal has 256 colors
+    set background=dark
+    colorscheme PaperColor
+  catch
+  endtry
 " }}}
+
 "  Plugin: Configure ------------ {{{
+  " Python highlighting
+    let g:python_highlight_space_errors = 0
+    let g:python_highlight_all = 1
 
-" Python highlighting
-let g:python_highlight_space_errors = 0
-let g:python_highlight_all = 1
+  " NERD Tree
+    let g:NERDTreeShowHidden = 1
+    let g:NERDTreeMapOpenInTab = '<C-t>'
+    let g:NERDTreeMapOpenSplit = '<C-s>'
+    let g:NERDTreeMapOpenVSplit = '<C-v>'
+    let g:NERDTreeShowLineNumbers = 1
+    let g:NERDTreeCaseSensitiveSort = 0
+    let g:NERDTreeWinPos = 'left'
+    let g:NERDTreeWinSize = 35
+    let g:NERDTreeAutoDeleteBuffer = 2
+    let g:NERDTreeIgnore=[
+      \'.env$[[dir]]',
+      \'.env$[[file]]',
+      \'.git$[[dir]]',
+      \'.mypy_cache$[[dir]]',
+      \'.pyc$[[file]]',
+      \'.pytest_cache$[[dir]]',
+      \'.tox$[[dir]]',
+      \'__pycache__$[[dir]]',
+      \'node_modules$[[dir]]'
+      \'pip-wheel-metadata$[[dir]]',
+      \'venv$[[dir]]',
+      \'\.xlsx$[[file]]',
+      \]
+    nnoremap <silent> <space>h :NERDTreeToggle %<CR>
 
-" NERD Tree
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeMapOpenInTab = '<C-t>'
-let g:NERDTreeMapOpenSplit = '<C-s>'
-let g:NERDTreeMapOpenVSplit = '<C-v>'
-let g:NERDTreeShowLineNumbers = 1
-let g:NERDTreeCaseSensitiveSort = 0
-let g:NERDTreeWinPos = 'left'
-let g:NERDTreeWinSize = 35
-let g:NERDTreeAutoDeleteBuffer = 2
-let g:NERDTreeIgnore=[
-  \'.env$[[dir]]',
-  \'.env$[[file]]',
-  \'.git$[[dir]]',
-  \'.mypy_cache$[[dir]]',
-  \'.pyc$[[file]]',
-  \'.pytest_cache$[[dir]]',
-  \'.tox$[[dir]]',
-  \'__pycache__$[[dir]]',
-  \'node_modules$[[dir]]'
-  \'pip-wheel-metadata$[[dir]]',
-  \'venv$[[dir]]',
-  \'\.xlsx$[[file]]',
-  \]
-nnoremap <silent> <space>h :NERDTreeToggle %<CR>
+  " Jedi-vim
+    " Python:
+    " Open module, e.g. :Pyimport os (opens the os module)
+    let g:jedi#popup_on_dot = 0
+    let g:jedi#show_call_signatures = 0
+    let g:jedi#auto_close_doc = 0
+    let g:jedi#smart_auto_mappings = 0
+    let g:jedi#force_py_version = 3
 
-" Jedi-vim
-" Python:
-" Open module, e.g. :Pyimport os (opens the os module)
-let g:jedi#popup_on_dot = 0
-let g:jedi#show_call_signatures = 0
-let g:jedi#auto_close_doc = 0
-let g:jedi#smart_auto_mappings = 0
-let g:jedi#force_py_version = 3
+  " CtrlP
+    let g:ctrlp_working_path_mode = 'rw' " start from cwd
+    let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+    " open first in current window and others as hidden
+    let g:ctrlp_open_multiple_files = '1r'
+    let g:ctrlp_use_caching = 0
 
-" CtrlP
-let g:ctrlp_working_path_mode = 'rw' " start from cwd
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-" open first in current window and others as hidden
-let g:ctrlp_open_multiple_files = '1r'
-let g:ctrlp_use_caching = 0
+  " mappings
+    " auto_vim_configuration creates space between where vim is opened and
+    " closed in my bash terminal. This is annoying, so I disable and manually
+    " configure. See 'set completeopt' in my global config for my settings
+    let g:jedi#auto_vim_configuration = 0
+    let g:jedi#goto_command = "<C-]>"
+    let g:jedi#documentation_command = "<leader>sd"
+    let g:jedi#usages_command = "<leader>su"
+    let g:jedi#rename_command = "<leader>r"
 
-" mappings
-" auto_vim_configuration creates space between where vim is opened and
-" closed in my bash terminal. This is annoying, so I disable and manually
-" configure. See 'set completeopt' in my global config for my settings
-let g:jedi#auto_vim_configuration = 0
-let g:jedi#goto_command = "<C-]>"
-let g:jedi#documentation_command = "<leader>sd"
-let g:jedi#usages_command = "<leader>su"
-let g:jedi#rename_command = "<leader>r"
+  " Web Close Tag
+    " These are the file extensions where this plugin is enabled.
+    "
+    let g:closetag_filenames = '*.html,*.xhtml,*.js,*.jsx'
 
-" Filetype formatter
-let g:vim_filetype_formatter_commands = {
-      \ 'text': 'poetry run textformatter',
-      \ }
+    " filetypes like xml, html, xhtml, ...
+    " These are the file types where this plugin is enabled.
+    "
+    let g:closetag_filetypes = 'html,xhtml,javascript,javascript.jsx,jsx'
 
+    " integer value [0|1]
+    " This will make the list of non-closing tags case-sensitive
+    " (e.g. `<Link>` will be closed while `<link>` won't.)
+    "
+    let g:closetag_emptyTags_caseSensitive = 1
+
+    " dict
+    " Disables auto-close if not in a "valid" region (based on filetype)
+    "
+    let g:closetag_regions = {
+        \ 'typescript.tsx': 'jsxRegion,tsxRegion',
+        \ 'javascript': 'jsxRegion',
+        \ 'javascript.jsx': 'jsxRegion',
+        \ }
+
+    " Shortcut for closing tags, default is '>'
+    "
+    let g:closetag_shortcut = '>'
+
+    " Add > at current position without closing the current tag, default is ''
+    "
+    let g:closetag_close_shortcut = '<leader>>'
+
+  " Sam's code formatter
+    " let g:vim_filetype_formatter_verbose = 1
+    let g:vim_filetype_formatter_commands = {
+          \ 'python': 'black - -q --line-length 79',
+          \ 'javascript': 'npx -q prettier --parser flow --stdin',
+          \ 'javascript.jsx': 'npx -q prettier --parser flow --stdin',
+          \ 'css': 'npx -q prettier --parser css --stdin',
+          \ 'less': 'npx -q prettier --parser less --stdin',
+          \ 'html': 'npx -q prettier --parser html --stdin',
+          \}
+
+    augroup mapping_vim_filetype_formatter
+      autocmd FileType python,javascript,javascript.jsx,css,less,json,html
+            \ nnoremap <silent> <buffer> <leader>f :FiletypeFormat<cr>
+      autocmd FileType python,javascript,javascript.jsx,css,less,json,html
+            \ vnoremap <silent> <buffer> <leader>f :FiletypeFormat<cr>
+    augroup END
 "  }}}
+
 " General: Key remappings ----------------------- {{{
+  " Put your key remappings here
+  " Prefer nnoremap to nmap, inoremap to imap, and vnoremap to vmap
 
-" Put your key remappings here
-" Prefer nnoremap to nmap, inoremap to imap, and vnoremap to vmap
+  function! DefaultKeyMappings()
+    nnoremap <silent> <C-k> :wincmd k<CR>
+    nnoremap <silent> <C-j> :wincmd j<CR>
+    nnoremap <silent> <C-l> :wincmd l<CR>
+    nnoremap <silent> <C-h> :wincmd h<CR>
 
-nnoremap <silent> <C-k> :wincmd k<CR>
-nnoremap <silent> <C-j> :wincmd j<CR>
-nnoremap <silent> <C-l> :wincmd l<CR>
-nnoremap <silent> <C-h> :wincmd h<CR>
+    " FiletypeFormat: remap leader f to do filetype formatting
+      nnoremap <leader>f :FiletypeFormat<cr>
+      vnoremap <leader>f :FiletypeFormat<cr>
 
-" FiletypeFormat: remap leader f to do filetype formatting
-nnoremap <leader>f :FiletypeFormat<cr>
-vnoremap <leader>f :FiletypeFormat<cr>
+    " Disable arrow keys
+      " Sticker mode
+      nnoremap <Up> <nop>
+      nnoremap <Down> <nop>
+      nnoremap <Left> <nop>
+      nnoremap <Right> <nop>
+      inoremap <Up> <nop>
+      inoremap <Down> <nop>
+      inoremap <Left> <nop>
+      inoremap <Right> <nop>
+      vnoremap <Up> <nop>
+      vnoremap <Down> <nop>
+      vnoremap <Left> <nop>
+      vnoremap <Right> <nop>
 
+    " Copy with system clipboard
+      vnoremap <leader>y "+y
+      nnoremap <leader>y "+y
+
+    " Paste from system clipboard
+      " Normal mode paste checks whether the current line has text if yes,
+      " insert new line, if no, start paste on current line
+      nnoremap <expr> <leader>p
+            \ len(getline('.')) == 0 ? '"+p' : 'o<esc>"+p'
+
+    " Select tab by number
+      " MoveTabs: goto tab number. Same as Firefox
+      nnoremap <A-1> 1gt
+      nnoremap <A-2> 2gt
+      nnoremap <A-3> 3gt
+      nnoremap <A-4> 4gt
+      nnoremap <A-5> 5gt
+      nnoremap <A-6> 6gt
+      nnoremap <A-7> 7gt
+      nnoremap <A-8> 8gt
+      nnoremap <A-9> 9gt
+
+    " Clear search highlight
+      " Escape: also clears highlighting
+      nnoremap <silent> <esc> :noh<return><esc>
+
+    " Bad J is bad
+      " unmap J in normal mode unless range explicitely specified
+      nnoremap <silent> <expr> J v:count == 0 ? '<esc>' : 'J'
+
+    " Set omnifunc key to control-space
+      " Omnicompletion: <C-@> is a signal sent by some terms when pressing
+      " <C-Space>.
+      " inoremap <C-@> <C-x><C-o>
+      " inoremap <C-space> <C-x><C-o>
+
+  endfunction
+  call DefaultKeyMappings()
 " }}}
+
 " General: Cleanup ------------------ {{{
-" commands that need to run at the end of my vimrc
+  " commands that need to run at the end of my vimrc
 
-" disable unsafe commands in your project-specific .vimrc files
-" This will prevent :autocmd, shell and write commands from being
-" run inside project-specific .vimrc files unless they’re owned by you.
-set secure
+  " disable unsafe commands in your project-specific .vimrc files
+  " This will prevent :autocmd, shell and write commands from being
+  " run inside project-specific .vimrc files unless they’re owned by you.
+  set secure
 
-" ShowCommand: turn off character printing to vim status line
-set noshowcmd
-
+  " ShowCommand: turn off character printing to vim status line
+  set noshowcmd
 " }}}
