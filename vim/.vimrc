@@ -159,6 +159,9 @@
     " Web Close Tag
     Plug 'alvan/vim-closetag'
 
+    " Vue JS
+    Plug 'posva/vim-vue'
+
   call plug#end()
 " }}}
 
