@@ -41,6 +41,10 @@
   "            combination with 'menu' or 'menuone'.
   set completeopt=menuone,longest,preview
 
+  " Case insensitive matching unless a capital leter is used
+  set ignorecase
+  set smartcase
+
   " Enable buffer deletion instead of having to write each buffer
   set hidden
 
@@ -162,12 +166,19 @@
     " Vue JS
     Plug 'posva/vim-vue'
 
+    " JSX highlights
+    Plug 'maxmellon/vim-jsx-pretty'
+
+    " Typescript syntax highlight
+    Plug 'leafgarland/typescript-vim'
+
   call plug#end()
 " }}}
 
 " General: Filetype recognition ------------ {{{
   augroup filetype_recognition
     autocmd!
+    autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
     autocmd BufNewFile,BufRead,BufEnter *.hql,*.q set filetype=hive
     autocmd BufNewFile,BufRead,BufEnter *.config,.cookiecutterrc set filetype=yaml
     autocmd BufNewFile,BufRead,BufEnter .jrnl_config,*.bowerrc,*.babelrc,*.eslintrc,*.slack-term
@@ -265,41 +276,46 @@
 
 " General: Syntax highlighting ---------------- {{{
   " Papercolor: options
-  let g:PaperColor_Theme_Options = {}
-  let g:PaperColor_Theme_Options['theme'] = {
-        \     'default': {
-        \       'transparent_background': 1,
-        \       'allow_bold': 1,
-        \       'allow_italic': 1,
-        \     }
-        \ }
-  let g:PaperColor_Theme_Options['language'] = {
-        \     'python': {
-        \       'highlight_builtins' : 1
-        \     },
-        \     'cpp': {
-        \       'highlight_standard_library': 1
-        \     },
-        \     'c': {
-        \       'highlight_builtins' : 1
-        \     }
-        \ }
+    let g:PaperColor_Theme_Options = {}
+    let g:PaperColor_Theme_Options.theme = {}
+  " Bold And Italics:
+    let g:PaperColor_Theme_Options.theme.default = {
+          \ 'allow_bold': 1,
+          \ 'allow_italic': 1,
+          \ }
+  " Folds And Highlights:
+    let g:PaperColor_Theme_Options.theme['default.dark'] = {}
+    let g:PaperColor_Theme_Options.theme['default.dark'].override = {
+          \ 'folded_bg': ['gray22', '0'],
+          \ 'folded_fg': ['gray69', '0'],
+          \ 'visual_fg': ['gray12', '0'],
+          \ 'visual_bg': ['gray', '6'],
+          \ }
+  " Language Specific Overrides:
+    let g:PaperColor_Theme_Options.language = {
+          \   'python': {
+          \     'highlight_builtins': 1,
+          \   },
+          \   'cpp': {
+          \     'highlight_standard_library': 1,
+          \   },
+          \   'c': {
+          \     'highlight_builtins': 1,
+          \   }
+          \ }
+  " Load:
+    try
+      colorscheme PaperColor
+    catch
+      echo 'An error occured while configuring Papercolor'
+    endtry
 
   " Python: Highlight self and cls keyword in class definitions
-  augroup python_syntax
-    autocmd!
-    autocmd FileType python syn keyword pythonBuiltinObj self
-    autocmd FileType python syn keyword pythonBuiltinObj cls
-  augroup end
-
-  " Syntax: select global syntax scheme
-  " Make sure this is at end of section
-  try
-    set t_Co=256 " says terminal has 256 colors
-    set background=dark
-    colorscheme PaperColor
-  catch
-  endtry
+    augroup python_syntax
+      autocmd!
+      autocmd FileType python syn keyword pythonBuiltinObj self
+      autocmd FileType python syn keyword pythonBuiltinObj cls
+    augroup end
 " }}}
 
 "  Plugin: Configure ------------ {{{
@@ -362,12 +378,12 @@
   " Web Close Tag
     " These are the file extensions where this plugin is enabled.
     "
-    let g:closetag_filenames = '*.html,*.xhtml,*.js,*.jsx'
+    let g:closetag_filenames = '*.html,*.xhtml,*.js,*.jsx, *.vue'
 
     " filetypes like xml, html, xhtml, ...
     " These are the file types where this plugin is enabled.
     "
-    let g:closetag_filetypes = 'html,xhtml,javascript,javascript.jsx,jsx'
+    let g:closetag_filetypes = 'html,xhtml,javascript,javascript.jsx,jsx,vue'
 
     " integer value [0|1]
     " This will make the list of non-closing tags case-sensitive
@@ -425,8 +441,7 @@
       nnoremap <leader>f :FiletypeFormat<cr>
       vnoremap <leader>f :FiletypeFormat<cr>
 
-    " Disable arrow keys
-      " Sticker mode
+    " Disable Arrow Keys: to better get used to vim movement
       nnoremap <Up> <nop>
       nnoremap <Down> <nop>
       nnoremap <Left> <nop>
@@ -440,11 +455,11 @@
       vnoremap <Left> <nop>
       vnoremap <Right> <nop>
 
-    " Copy with system clipboard
+    " Copy With System Clipboard:
       vnoremap <leader>y "+y
       nnoremap <leader>y "+y
 
-    " Paste from system clipboard
+    " Paste From System Clipboard: easier paste
       " Normal mode paste checks whether the current line has text if yes,
       " insert new line, if no, start paste on current line
       nnoremap <expr> <leader>p
