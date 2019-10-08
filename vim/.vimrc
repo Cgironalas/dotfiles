@@ -78,8 +78,6 @@
   " after the 80 character highlight line
   set t_RV=
 
-  set spelllang=en_us
-
   set autoread
 
   " When you type the first tab hit will complete as much as possible,
@@ -117,6 +115,11 @@
   " Nvim Coc
     " Better display for messages
     set cmdheight=2
+
+  " Spelling
+  " set spellang=es " for spanish
+  set spelllang=en_us
+  set spell
 " }}}
 
 " General: Plugin Install --------------------- {{{
