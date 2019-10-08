@@ -677,7 +677,7 @@ function goto() {
       trw tetris
       ;;
     *)
-      cd ~
+      echo 'bad got'
     esac
 }
 alias go_dotfiles='cd ~/dotfiles/ && update_prompt && trw dotfiles'
