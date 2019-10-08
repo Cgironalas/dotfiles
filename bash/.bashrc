@@ -214,10 +214,10 @@ stty -ixon
         nvim $1
       fi
     }
-    alias v='open_v'
-    alias vi='open_v'
+    alias v='nvim'
+    alias vi='nvim'
     alias vib='nvim ~/dotfiles/bash/.bashrc'
-    alias vim='open_v'
+    alias vim='nvim'
     alias vit='nvim ~/dotfiles/tmux/.tmux.conf'
     alias viv='nvim ~/dotfiles/vim/.vimrc'
   ################################

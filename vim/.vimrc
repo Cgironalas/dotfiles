@@ -109,7 +109,7 @@
     set guicursor=
   endif
 
-  " Configure Updatetime: time vim waits to do something after I stop moving
+  " Configure Update time: time vim waits to do something after I stop moving
   set updatetime=750
 
   " Nvim Coc
@@ -334,6 +334,9 @@
     let g:python_highlight_all = 1
 
   " NERD Tree
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif 
+
     let g:NERDTreeShowHidden = 1
     let g:NERDTreeMapOpenInTab = '<C-t>'
     let g:NERDTreeMapOpenSplit = '<C-s>'
@@ -517,7 +520,7 @@
 
       " Use S-n or S-TAB for previous
       inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-      inoremap <expr><S-n> pumvisible() ? "\<C-p>" : "\<C-h>"
+      inoremap <expr><C-S-n> pumvisible() ? "\<C-p>" : "\<C-h>"
 
       " Use <c-space> to trigger reset
       inoremap <silent><expr> <C-Space> coc#refresh()
