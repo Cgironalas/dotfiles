@@ -113,6 +113,10 @@
 
   " Configure Updatetime: time vim waits to do something after I stop moving
   set updatetime=750
+
+  " Nvim Coc
+    " Better display for messages
+    set cmdheight=2
 " }}}
 
 " General: Plugin Install --------------------- {{{
@@ -171,6 +175,9 @@
 
     " Typescript syntax highlight
     Plug 'leafgarland/typescript-vim'
+
+    " Vim COC
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
   call plug#end()
 " }}}
@@ -425,6 +432,9 @@
       autocmd FileType python,javascript,javascript.jsx,css,less,json,html
             \ vnoremap <silent> <buffer> <leader>f :FiletypeFormat<cr>
     augroup END
+
+  " Nvim Coc
+    " TODO?
 "  }}}
 
 " General: Key remappings ----------------------- {{{
@@ -490,6 +500,47 @@
       " <C-Space>.
       " inoremap <C-@> <C-x><C-o>
       " inoremap <C-space> <C-x><C-o>
+
+    " Nvim Coc
+      " Use TAB for trigger completion with characters ahead and navigate
+      function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1] =~# '\s'
+      endfunction
+      inoremap <silent><expr> <C-c>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ coc#refresh()
+
+      " Use S-n or S-TAB for previous
+      inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+      inoremap <expr><S-n> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+      " Use <c-space> to trigger reset
+      inoremap <silent><expr> <C-Space> coc#refresh()
+
+      " Use <cr> to confirm completion, `<C-g>u` means break undo chain at
+      " current position. Coc only does snippet and additional edit on confirm.
+      inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+      " Remap keys for gotos
+      nnoremap <silent> gd <Plug>(coc-definition)
+      nnoremap <silent> gy <Plug>(coc-type-definition)
+      nnoremap <silent> gi <Plug>(coc-implementation)
+      nnoremap <silent> gr <Plug>(coc-references)
+
+      " Use K to show documentation in preview window
+      function! s:show_documentation()
+        if (index(['vim', 'help'], &filetype) >= 0)
+          execute 'h '.expand('<cword>')
+        else
+          call CocAction('doHover')
+        endif
+      endfunction
+      nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+      " Remap for rename current word
+      nnoremap <leader>rn <Plug>(coc-rename)
 
   endfunction
   call DefaultKeyMappings()
