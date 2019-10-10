@@ -668,6 +668,18 @@ function goto() {
       c ~/dotfiles
       trw dotfiles
       ;;
+    'bash')
+      c ~/dotfiles/bash
+      trw bash_conf
+      ;;
+    'tmux')
+      c ~/dotfiles/tmux
+      trw tmux_conf
+      ;;
+    'vim')
+      c ~/dotfiles/vim
+      trw vim_conf
+      ;;
     'sandbox')
       c ~/sandbox
       trw sandbox
