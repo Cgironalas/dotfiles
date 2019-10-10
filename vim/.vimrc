@@ -175,6 +175,13 @@
     " Typescript syntax highlight
     Plug 'leafgarland/typescript-vim'
 
+    Plug 'Shougo/deoplete.nvim', { 'do': 'UpdateRemotePlugins' }
+    Plug 'Shougo/neco-vim'
+    Plug 'autozimu/LanguageClient-neovim', {
+          \ 'branch': 'next',
+          \ 'do': './install.sh',
+          \ }
+
   call plug#end()
 " }}}
 
@@ -244,7 +251,7 @@
 
   augroup fold_settings
     autocmd!
-    autocmd FileType * setlocal foldlevelstart=1
+    autocmd FileType * setlocal foldlevelstart=0
     " autocmd FileType vim,tmux,bash,zsh,sh
     "       \ setlocal foldmethod=marker foldlevelstart=0 foldnestmax=1
     autocmd FileType markdown, rst
@@ -326,7 +333,7 @@
     let g:python_highlight_space_errors = 0
     let g:python_highlight_all = 1
 
-  " NERD Tree
+  " NERD Tree:
     autocmd StdinReadPre * let s:std_in=1
     autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif 
 
@@ -355,7 +362,7 @@
       \]
     nnoremap <silent> <space>h :NERDTreeToggle %<CR>
 
-  " Jedi-vim
+  " Jedi:
     " Python:
     " Open module, e.g. :Pyimport os (opens the os module)
     let g:jedi#popup_on_dot = 0
@@ -364,14 +371,14 @@
     let g:jedi#smart_auto_mappings = 0
     let g:jedi#force_py_version = 3
 
-  " CtrlP
+  " CtrlP:
     let g:ctrlp_working_path_mode = 'rw' " start from cwd
     let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
     " open first in current window and others as hidden
     let g:ctrlp_open_multiple_files = '1r'
     let g:ctrlp_use_caching = 0
 
-  " mappings
+  " Mappings:
     " auto_vim_configuration creates space between where vim is opened and
     " closed in my bash terminal. This is annoying, so I disable and manually
     " configure. See 'set completeopt' in my global config for my settings
@@ -381,7 +388,7 @@
     let g:jedi#usages_command = "<leader>su"
     let g:jedi#rename_command = "<leader>r"
 
-  " Web Close Tag
+  " Web Close Tag:
     " These are the file extensions where this plugin is enabled.
     "
     let g:closetag_filenames = '*.html,*.xhtml,*.js,*.jsx, *.vue'
@@ -414,7 +421,7 @@
     "
     let g:closetag_close_shortcut = '<leader>>'
 
-  " Sam's code formatter
+  " Code Formatter:
     " let g:vim_filetype_formatter_verbose = 1
     let g:vim_filetype_formatter_commands = {
           \ 'python': 'black - -q --line-length 79',
@@ -430,6 +437,66 @@
             \ nnoremap <silent> <buffer> <leader>f :FiletypeFormat<cr>
       autocmd FileType python,javascript,javascript.jsx,css,less,json,html
             \ vnoremap <silent> <buffer> <leader>f :FiletypeFormat<cr>
+    augroup END
+
+  "Deoplete:
+    let g:deoplete#enable_at_startup = 1
+    function! CustomDeopleteConfig()
+      " Deoplete Defaults:
+        call deoplete#custom#option({
+              \ 'auto_complete': v:true,
+              \ 'auto_complete_delay': 300,
+              \ 'max_list': 500,
+              \ 'num_processes': 2,
+              \ })
+
+      " Source Defaults:
+        call deoplete#custom#option('ignore_sources', {'_': ['buffer', 'around']})
+        call deoplete#custom#source('_', 'min_pattern_length', 1)
+        call deoplete#custom#source('_', 'converters', ['converter_remove_paren'])
+    endfunction
+
+    augroup deoplete_on_vim_startup
+      autocmd!
+      autocmd VimEnter * call CustomDeopleteConfig()
+    augroup END
+
+  " LSP LanguageClient:
+    let g:LanguageClient_serverCommands = {
+          \ 'haskell': ['stack', 'exec', 'hie-wrapper'],
+          \ 'javascript': ['npx', '--no-install', '-q', 'flow', 'lsp'],
+          \ 'javascript.jsx': ['npx', '--no-install', 'flow', 'lsp'],
+          \ 'python': ['jedi-language-server'],
+          \ 'python.jinja2': ['jedi-language-server'],
+          \ 'r': ['R', '--slave', '-e', 'languageserver::run()'],
+          \ 'ruby': ['solargraph', 'stdio'],
+          \ 'rust': ['~/cargo/bin/rustup', 'run', 'stable', 'rls'],
+          \ 'typescript': ['npx', '--no-install', '-q', 'typescript-language-server', '--stdio'],
+          \ }
+
+  " Language Server Configuration:
+    let g:LanguageClient_autoStart = v:true
+    let g:LanguageClient_hoverPreview = 'auto'
+    let g:LanguageClient_diagnosticsEnable = v:false
+    let g:LanguageClient_selectionUI = 'quickfix'
+
+    function! CustomLanguageClientConfig()
+      nnoremap <buffer> <C-]> :call LanguageClient#textDocument_definition()<CR>
+      nnoremap <buffer> <leader>sd :call LanguageClient#textDocument_hover()<CR>
+      nnoremap <buffer> <leader>sr :call LanguageClient#textDocument_rename()<CR>
+      nnoremap <buffer> <leader>sf :call LanguageClient#textDocument_formatting()<CR>
+      nnoremap <buffer> <leader>su :call LanguageClient#textDocument_references()<CR>
+      nnoremap <buffer> <leader>sa :call LanguageClient#textDocument_codeAction()<CR>
+      nnoremap <buffer> <leader>ss :call LanguageClient#textDocument_documentSymbol()<CR>
+      nnoremap <buffer> <leader>sc :call LanguageClient_contextMenu()<CR>
+      setlocal omnifunc=LanguageClient#complete
+    endfunction
+
+    augroup languageclient_on_vim_startup
+      autocmd!
+      execute 'autocmd FileType '
+            \ . join(keys(g:LanguageClient_serverCommands), ',')
+            \ . ' call CustomLanguageClientConfig()'
     augroup END
 "  }}}
 
