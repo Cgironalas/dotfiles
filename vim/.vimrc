@@ -175,6 +175,9 @@
     " Typescript syntax highlight
     Plug 'leafgarland/typescript-vim'
 
+    " Golang
+    Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
+
     Plug 'Shougo/deoplete.nvim', { 'do': 'UpdateRemotePlugins' }
     Plug 'Shougo/neco-vim'
     Plug 'autozimu/LanguageClient-neovim', {
@@ -207,6 +210,7 @@
     autocmd BufNewFile,BufRead,BufEnter poetry.lock set filetype=toml
     autocmd BufNewFile,BufRead,BufEnter .gitignore,.dockerignore
           \ set filetype=conf
+    autocmd BufNewFile,BufRead,BufEnter *.go set filetype=go
   augroup END
 " }}}
 
@@ -343,7 +347,7 @@
     let g:NERDTreeMapOpenVSplit = '<C-v>'
     let g:NERDTreeShowLineNumbers = 1
     let g:NERDTreeCaseSensitiveSort = 0
-    let g:NERDTreeWinPos = 'left'
+    let g:NERDTreeWinPos = 'right'
     let g:NERDTreeWinSize = 35
     let g:NERDTreeAutoDeleteBuffer = 2
     let g:NERDTreeIgnore=[
@@ -425,12 +429,13 @@
     " let g:vim_filetype_formatter_verbose = 1
     let g:vim_filetype_formatter_commands = {
           \ 'python': 'black - -q --line-length 79',
-          \ 'javascript': 'npx -q prettier --parser flow --stdin',
-          \ 'javascript.jsx': 'npx -q prettier --parser flow --stdin',
+          \ 'javascript.jsx': g:filetype_formatter#ft#formatters['javascript']['prettier'],
+          \ 'typescript': g:filetype_formatter#ft#formatters['javascript']['prettier'],
+          \ 'typescript.tsx': g:filetype_formatter#ft#formatters['javascript']['prettier'],
           \ 'css': 'npx -q prettier --parser css --stdin',
           \ 'less': 'npx -q prettier --parser less --stdin',
           \ 'html': 'npx -q prettier --parser html --stdin',
-          \}
+          \ }
 
     augroup mapping_vim_filetype_formatter
       autocmd FileType python,javascript,javascript.jsx,css,less,json,html
