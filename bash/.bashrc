@@ -251,7 +251,7 @@ stty -ixon
       update_prompt
     }
 
-    function go() {
+    function gc() {
       git checkout $*
       update_prompt
     }
