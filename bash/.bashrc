@@ -363,6 +363,11 @@ stty -ixon
 
 #### Functions ################################################################
   ## Python functions ##########################################
+    function envi() {
+      ## Install frequently used python pip dependencies
+      pip install -U pip pynvim jedi-language-server black
+    }
+
     function enva() {
       if [ -z $1 ]; then
         if [ -d .env ]; then
@@ -386,14 +391,14 @@ stty -ixon
         echo $1 >> .env
       fi
       enva
-      pip install -U pip pynvim
+      envi
     }
 
     function envp() {
       if [[ -n "$VIRTUAL_ENV" ]]; then
         echo "${VIRTUAL_ENV##*/}_$(print_python_version)"
       else
-        echo '$(print_python_version)'
+        echo "$(print_python_version)"
       fi
     }
 
