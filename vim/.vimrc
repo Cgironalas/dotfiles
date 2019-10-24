@@ -142,9 +142,6 @@
     " File system explorer for vim
     Plug 'scrooloose/nerdtree'
 
-    " Jedi-vim
-    Plug 'davidhalter/jedi-vim'
-
     " Vim rooter
     Plug 'airblade/vim-rooter'
 
@@ -180,9 +177,10 @@
 
     Plug 'Shougo/deoplete.nvim', { 'do': 'UpdateRemotePlugins' }
     Plug 'Shougo/neco-vim'
+
     Plug 'autozimu/LanguageClient-neovim', {
           \ 'branch': 'next',
-          \ 'do': './install.sh',
+          \ 'do': 'bash install.sh',
           \ }
 
   call plug#end()
@@ -479,14 +477,21 @@
           \ 'typescript': ['npx', '--no-install', '-q', 'typescript-language-server', '--stdio'],
           \ }
 
-  " Language Server Configuration:
+    let g:LanguageClient_rootMarkers = {
+          \ 'go': ['go.mod', 'go.sum'],
+          \ 'gomod': ['go.mod', 'go.sum'],
+          \ 'python': ['pyproject.toml', 'poetry.lock'],
+          \ }
+
+  " Language Client Configuration:
     let g:LanguageClient_autoStart = v:true
-    let g:LanguageClient_hoverPreview = 'auto'
+    let g:LanguageClient_hoverPreview = 'Always'
     let g:LanguageClient_diagnosticsEnable = v:false
     let g:LanguageClient_selectionUI = 'quickfix'
 
     function! CustomLanguageClientConfig()
       nnoremap <buffer> <C-]> :call LanguageClient#textDocument_definition()<CR>
+      nnoremap <buffer> <C-k> :call LanguageClient#textDocument_hover()<CR>
       nnoremap <buffer> <leader>sd :call LanguageClient#textDocument_hover()<CR>
       nnoremap <buffer> <leader>sr :call LanguageClient#textDocument_rename()<CR>
       nnoremap <buffer> <leader>sf :call LanguageClient#textDocument_formatting()<CR>
@@ -510,7 +515,7 @@
   " Prefer nnoremap to nmap, inoremap to imap, and vnoremap to vmap
 
   function! DefaultKeyMappings()
-    nnoremap <silent> <C-k> :wincmd k<CR>
+    " nnoremap <silent> <C-k> :wincmd k<CR>
     nnoremap <silent> <C-j> :wincmd j<CR>
     nnoremap <silent> <C-l> :wincmd l<CR>
     nnoremap <silent> <C-h> :wincmd h<CR>
@@ -566,8 +571,8 @@
     " Set omnifunc key to control-space
       " Omnicompletion: <C-@> is a signal sent by some terms when pressing
       " <C-Space>.
-      " inoremap <C-@> <C-x><C-o>
-      " inoremap <C-space> <C-x><C-o>
+      inoremap <C-@> <C-x><C-o>
+      inoremap <C-space> <C-x><C-o>
 
   endfunction
   call DefaultKeyMappings()
