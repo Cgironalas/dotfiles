@@ -403,13 +403,27 @@ stty -ixon
     }
 
     function envr() {
-      if [ -d .env ]; then
-        echo "removing default virtual env '.env'"
-        rm -rf .env
+      # Deactivate any virtual env being used (just in case)
+      if [[ -n "$VIRTUAL_ENV" ]]; then
+        deactivate
+      fi
+
+      if [ -z $1 ]; then
+        # If no virtual env name received
+        if [ -d .env ]; then
+          # If '.env' is a directory remove '.env' virtual env
+          echo "removing default virtual env '.env'"
+          rm -rf .env
+        else
+          # Revome virtual env written in '.env' file
+          echo "removing found virtual env '$(cat .env)'"
+          rm -rf $(cat .env)
+          rm .env
+        fi
       else
-        echo "removing virtual env '$(cat .env)'"
-        rm -rf $(cat .env)
-        rm .env
+        # If virtual env name received
+        echo "removing received virtual env '$1'"
+        rm -rf $1
       fi
     }
 
@@ -735,3 +749,5 @@ get_pem() {
 ###############################################################################
 
 include ~/.bash/sensitive
+
+# [ -f ~/.fzf.bash ] && source ~/.fzf.bash
