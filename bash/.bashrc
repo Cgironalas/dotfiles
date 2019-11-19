@@ -344,7 +344,7 @@ stty -ixon
   ## ##########################################################################
     ## Other
     alias cl='clear && update_prompt'
-    alias fn='find . -name'
+    # alias fn='find . -name'
     alias dfn='grep -nri'
 
     alias trw='tmux rename-window'
@@ -363,6 +363,9 @@ stty -ixon
 
 
 #### Functions ################################################################
+  function fn() {
+    find . -name *$1*
+  }
   ## Python functions ##########################################
     function envi() {
       ## Install frequently used python pip dependencies
