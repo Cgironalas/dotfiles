@@ -238,7 +238,8 @@ stty -ixon
     alias ga='git add'
     alias gb='git branch'
     alias gco='git commit'
-    alias gd='git diff .'
+    alias gch='git checkout'
+    # alias gd='git diff .'
     alias gda='git diff'
     alias gds='git diff --staged'
     alias gdw='git diff --word-diff=color'
@@ -246,6 +247,14 @@ stty -ixon
     alias gs='git status .'
     alias gsa='git status'
     alias gsu='git status -u'
+
+    function gd() {
+      if [ -z $1 ]; then
+        git diff .
+      else
+        git diff $*
+      fi
+    }
 
     function gcb() {
       git checkout -b $1
@@ -344,6 +353,8 @@ stty -ixon
   ## ##########################################################################
     ## Other
     alias cl='clear && update_prompt'
+    alias cls='clear && update_prompt && git status'
+    alias cld='clear && update_prompt && git diff'
     # alias fn='find . -name'
     alias dfn='grep -nri'
 
