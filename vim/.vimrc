@@ -524,19 +524,22 @@
       nnoremap <leader>f :FiletypeFormat<cr>
       vnoremap <leader>f :FiletypeFormat<cr>
 
+    " Disable Ex Mode: to avoid opening it by mistake
+      nnoremap Q <nop>
+
     " Disable Arrow Keys: to better get used to vim movement
-      nnoremap <Up> <nop>
-      nnoremap <Down> <nop>
-      nnoremap <Left> <nop>
-      nnoremap <Right> <nop>
-      inoremap <Up> <nop>
-      inoremap <Down> <nop>
-      inoremap <Left> <nop>
-      inoremap <Right> <nop>
-      vnoremap <Up> <nop>
-      vnoremap <Down> <nop>
-      vnoremap <Left> <nop>
-      vnoremap <Right> <nop>
+      " nnoremap <Up> <nop>
+      " nnoremap <Down> <nop>
+      " nnoremap <Left> <nop>
+      " nnoremap <Right> <nop>
+      " inoremap <Up> <nop>
+      " inoremap <Down> <nop>
+      " inoremap <Left> <nop>
+      " inoremap <Right> <nop>
+      " vnoremap <Up> <nop>
+      " vnoremap <Down> <nop>
+      " vnoremap <Left> <nop>
+      " vnoremap <Right> <nop>
 
     " Copy With System Clipboard:
       vnoremap <leader>y "+y
