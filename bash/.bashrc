@@ -355,6 +355,7 @@ stty -ixon
     alias cl='clear && update_prompt'
     alias cls='clear && update_prompt && git status'
     alias cld='clear && update_prompt && git diff'
+    alias clx='clear && tox'
     # alias fn='find . -name'
     alias dfn='grep -nri'
 
