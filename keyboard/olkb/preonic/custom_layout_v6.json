@@ -6,53 +6,70 @@
     [
       "KC_GRV", "KC_1", "KC_2", "KC_3", "KC_4", "KC_5", "KC_6", "KC_7", "KC_8", "KC_9", "KC_0", "KC_BSPC",
       "KC_TAB", "KC_QUOT", "KC_COMM", "KC_DOT", "KC_P", "KC_Y", "KC_F", "KC_G", "KC_C", "KC_R", "KC_L", "KC_SLSH",
-      "KC_RCTL", "KC_A", "KC_O", "KC_E", "KC_U", "KC_I", "KC_D", "KC_H", "KC_T", "KC_N", "KC_S", "KC_ENT",
+      "KC_RCTL", "KC_A", "KC_O", "KC_E", "KC_U", "KC_I", "KC_D", "KC_H", "KC_T", "KC_N", "KC_S", "KC_MINS",
       "KC_LSFT", "KC_SCLN", "KC_Q", "KC_J", "KC_K", "KC_X", "KC_B", "KC_M", "KC_W", "KC_V", "KC_Z", "KC_RSFT",
-      "KC_ESC", "KC_RALT", "KC_LGUI", "KC_LALT", "MO(3)", "KC_SPC", "KC_SPC", "MO(4)", "KC_LEFT", "KC_DOWN", "KC_UP", "KC_RGHT"
+      "KC_ESC", "KC_RALT", "KC_LGUI", "KC_LALT", "MO(3)", "KC_SPC", "KC_SPC", "MO(5)", "KC_LEFT", "KC_DOWN", "KC_UP", "KC_RGHT"
     ],
     [
       "KC_GRV", "KC_1", "KC_2", "KC_3", "KC_4", "KC_5", "KC_6", "KC_7", "KC_8", "KC_9", "KC_0", "KC_BSPC",
-      "KC_TAB", "KC_Q", "KC_W", "KC_E", "KC_R", "KC_T", "KC_Y", "KC_U", "KC_I", "KC_O", "KC_P", "KC_QUOT",
-      "KC_RCTL", "KC_A", "KC_S", "KC_D", "KC_F", "KC_G", "KC_H", "KC_J", "KC_K", "KC_L", "KC_SCLN", "KC_ENT",
+      "KC_TAB", "KC_Q", "KC_W", "KC_E", "KC_R", "KC_T", "KC_Y", "KC_U", "KC_I", "KC_O", "KC_P", "KC_LBRC",
+      "KC_RCTL", "KC_A", "KC_S", "KC_D", "KC_F", "KC_G", "KC_H", "KC_J", "KC_K", "KC_L", "KC_SCLN", "KC_QUOT",
       "KC_LSFT", "KC_Z", "KC_X", "KC_C", "KC_V", "KC_B", "KC_N", "KC_M", "KC_COMM", "KC_DOT", "KC_SLSH", "KC_RSFT",
-      "KC_ESC", "KC_RALT", "KC_LGUI", "KC_LALT", "MO(3)", "KC_SPC", "KC_SPC", "MO(4)", "KC_LEFT", "KC_DOWN", "KC_UP", "KC_RGHT"
+      "KC_ESC", "KC_RALT", "KC_LGUI", "KC_LALT", "MO(4)", "KC_SPC", "KC_SPC", "MO(5)", "KC_LEFT", "KC_DOWN", "KC_UP", "KC_RGHT"
     ],
     [
-      "KC_ESC", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_LBRC", "KC_RBRC", "KC_DEL",
-      "KC_NO", "KC_NO", "KC_HOME", "KC_END", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_EQL", "KC_BSLS",
-      "KC_RCTL", "KC_NO", "KC_PGUP", "KC_PGDN", "KC_NO", "KC_NO", "KC_LEFT", "KC_DOWN", "KC_UP", "KC_RGHT", "KC_NO", "KC_MINS",
+      "KC_ESC", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_DEL",
+      "KC_NO", "KC_NO", "KC_HOME", "KC_END", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO",
+      "KC_RCTL", "KC_NO", "KC_PGUP", "KC_PGDN", "KC_NO", "KC_NO", "KC_LEFT", "KC_DOWN", "KC_UP", "KC_RGHT", "KC_NO", "KC_ENT",
       "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO",
-      "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "MO(5)", "KC_NO", "KC_NO", "KC_NO", "KC_NO"
+      "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "MO(6)", "KC_NO", "KC_NO", "KC_NO", "KC_NO"
     ],
     [
-      "KC_ESC", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_LBRC", "KC_RBRC", "KC_DEL",
-      "KC_NO", "KC_NO", "KC_HOME", "KC_END", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_EQL", "KC_BSLS",
-      "KC_RCTL", "KC_NO", "KC_PGUP", "KC_PGDN", "KC_NO", "KC_NO", "KC_LEFT", "KC_DOWN", "KC_UP", "KC_RGHT", "KC_NO", "KC_MINS",
+      "KC_TRNS", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_LBRC", "KC_RBRC", "KC_TRNS",
+      "KC_NO", "KC_NO", "KC_TRNS", "KC_TRNS", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_EQL", "KC_BSLS",
+      "KC_TRNS", "KC_NO", "KC_TRNS", "KC_TRNS", "KC_NO", "KC_NO", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_NO", "KC_TRNS",
       "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO",
-      "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "MO(5)", "KC_NO", "KC_NO", "KC_NO", "KC_NO"
+      "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_TRNS", "KC_NO", "KC_NO", "KC_NO", "KC_NO"
     ],
     [
-      "KC_ESC", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_LBRC", "KC_RBRC", "KC_DEL",
-      "KC_NO", "KC_NO", "KC_HOME", "KC_END", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_EQL", "KC_BSLS",
-      "KC_RCTL", "KC_NO", "KC_PGUP", "KC_PGDN", "KC_NO", "KC_NO", "KC_LEFT", "KC_DOWN", "KC_UP", "KC_RGHT", "KC_NO", "KC_MINS",
+      "KC_TRNS", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_MINS", "KC_EQL", "KC_TRNS",
+      "KC_NO", "KC_NO", "KC_TRNS", "KC_TRNS", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_RBRC", "KC_BSLS",
+      "KC_TRNS", "KC_NO", "KC_TRNS", "KC_TRNS", "KC_NO", "KC_NO", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_NO", "KC_TRNS",
       "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO",
-      "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "MO(5)", "KC_NO", "KC_NO", "KC_NO", "KC_NO"
+      "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_TRNS", "KC_NO", "KC_NO", "KC_NO", "KC_NO"
     ],
     [
       "KC_F1", "KC_F2", "KC_F3", "KC_F4", "KC_F5", "KC_F6", "KC_F7", "KC_F8", "KC_F9", "KC_F10", "KC_F11", "KC_F12",
       "KC_NO", "KC_NO", "KC_MUTE", "KC_VOLD", "KC_VOLU", "KC_NO", "KC_NO", "KC_BTN1", "KC_MS_U", "KC_BTN2", "KC_NO", "KC_BRIU",
       "KC_NO", "KC_NO", "KC_MRWD", "KC_MPLY", "KC_MFFD", "KC_FIND", "KC_NO", "KC_MS_L", "KC_MS_D", "KC_MS_R", "KC_NO", "KC_BRID",
       "KC_NO", "KC_NO", "KC_CUT", "KC_COPY", "KC_PSTE", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO",
-      "KC_NO", "KC_NO", "KC_NO", "KC_NO", "MO(5)", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"
+      "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_TRNS", "KC_NO", "KC_NO", "KC_TRNS", "KC_NO", "KC_NO", "KC_NO", "KC_NO"
     ],
     [
-      "KC_F1", "KC_F2", "KC_F3", "KC_F4", "KC_F5", "KC_F6", "KC_F7", "KC_F8", "KC_F9", "KC_F10", "KC_F11", "KC_F12",
-      "KC_TRNS", "RESET", "DEBUG", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "ANY(TERM_ON)", "ANY(TERM_OFF)", "KC_TRNS", "KC_TRNS", "KC_PSCR",
-      "KC_TRNS", "KC_TRNS", "ANY(MU_MOD)", "ANY(AU_ON)", "ANY(AU_OFF)", "ANY(AG_NORM)", "ANY(AG_SWAP)", "DF(0)", "DF(1)", "DF(2)", "KC_TRNS", "KC_TRNS",
-      "KC_TRNS", "ANY(MUV_DE)", "ANY(MUV_IN)", "ANY(MU_ON)", "ANY(MU_OFF)", "ANY(MI_ON)", "ANY(MI_OFF)", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS",
-      "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS"
+      "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO",
+      "KC_NO", "RESET", "DEBUG", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "ANY(TERM_ON)", "ANY(TERM_OFF)", "KC_NO", "KC_NO", "KC_PSCR",
+      "KC_NO", "KC_NO", "ANY(MU_MOD)", "ANY(AU_ON)", "ANY(AU_OFF)", "ANY(AG_NORM)", "ANY(AG_SWAP)", "DF(0)", "DF(1)", "KC_NO", "KC_NO", "KC_NO",
+      "KC_NO", "ANY(MUV_DE)", "ANY(MUV_IN)", "ANY(MU_ON)", "ANY(MU_OFF)", "ANY(MI_ON)", "ANY(MI_OFF)", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO",
+      "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"
     ]
   ],
   "author": "Carlos Giron <cgironalas@gmail.com>",
-  "notes": "Layer 1: DVORAK, layer 2: QWRERTY, layer 3: media/arrows/tkl extras, layer 4: default preonic with F keys and print screen. Layers 1 and 3 have right control in the caps lock position, escape in the lower left corner and right alt right next to it."
+  "notes": [
+    "Layer 0: DVORAK",
+    "Layer 1: QWRERTY",
+    "Layer 2: alternate ESC, TKL extras, arrow keys, alternate DEL, ENTER",
+    "Layer 3: Layer 2 + extra DVORAK keys",
+    "Layer 4: Layer 2 + extra QWERTY keys",
+    "Layer 5: F keys, media keys, mouse simulation, brightness control",
+    "Layer 6: Default preonic top layer, without transitions",
+    "Layers 0 and 1 have: ": [
+      "both shifts",
+      "tab where expected",
+      "back space where expected",
+      "right control in the caps lock position",
+      "escape in the lower left corner",
+      "right alt right next to escape",
+      "arrow keys at bottom right"
+    ]
+  ]
 }
