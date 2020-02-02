@@ -35,7 +35,8 @@ yay -Syu \
   spotify \
   steam \
   telegram-desktop \
-  zoom
+  zoom \
+  filezilla
 
 echo "Finishing docker installation"
   systemctl start docker
