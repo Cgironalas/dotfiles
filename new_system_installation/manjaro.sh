@@ -20,7 +20,7 @@ sudo pacman -Syu \
   xsel \
   xclip
 
-if [ -x "$(command -v yay)" ]
+if [ -x "$(command -v yay)" ]; then
   echo "yay not installed, it will be downloaded and installed"
   git clone https://our.archlinux.org/yay.git ~/.yay
   cd ~/.yay
@@ -35,12 +35,13 @@ yay -Syu \
   spotify \
   steam \
   telegram-desktop \
-  zoom
+  zoom \
+  filezilla
 
 echo "Finishing docker installation"
   systemctl start docker
   systemctl enable docker
-  sudo usermod -ag docker $USER
+  sudo usermod -aG docker $USER
 echo "Please reboot to be able to use docker"
 
 echo "Finishing snap installation"
