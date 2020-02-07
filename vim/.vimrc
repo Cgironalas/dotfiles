@@ -169,6 +169,9 @@
     " JSX highlights
     Plug 'maxmellon/vim-jsx-pretty'
 
+    " Jenkinsfile syntax
+    Plug 'khalliday7/Jenkinsfile-vim-syntax'
+
     " Typescript syntax highlight
     Plug 'leafgarland/typescript-vim'
 
@@ -234,6 +237,19 @@
           \ cinoptions+='j1'
           \ cinoptions+='J1'
   augroup END
+" }}}
+
+" Writing: Mainly for markdown {{{
+  " augroup writing
+  "  autocmd!
+  "  " autocmd VimEnter * call s:abolish_correct()
+  "  autocmd FileType markdown,rst,text,gitcommit
+  "        \ setlocal wrap linebreak nolist
+  "        \ | call textobj#sentence#init()
+  "  autocmd FileType requirements setlocal nospell
+  "  autocmd BufNewFile,BufRead *.html,*.tex setlocal wrap
+  "  autocmd FileType markdown nnoremap <buffer> <leader>f :TableFormat<CR>
+  " augroup END
 " }}}
 
 " General: Colorcolumn --------------- {{{
@@ -576,6 +592,17 @@
       " <C-Space>.
       inoremap <C-@> <C-x><C-o>
       inoremap <C-space> <C-x><C-o>
+
+    " MoveVisual: up and down visually only if count is specified before
+    " Otherwise, you want to move up lines numerically
+      nnoremap <expr> k
+             \ v:count == 0 ? 'gk' : 'k'
+      vnoremap <expr> k
+             \ v:count == 0 ? 'gk' : 'k'
+      nnoremap <expr> j
+             \ v:count == 0 ? 'gj' : 'j'
+      vnoremap <expr> j
+             \ v:count == 0 ? 'gj' : 'j'
 
   endfunction
   call DefaultKeyMappings()
