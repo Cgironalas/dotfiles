@@ -178,7 +178,9 @@
     " Golang
     Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
 
-    Plug 'Shougo/deoplete.nvim', { 'do': 'UpdateRemotePlugins' }
+    " COC
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
     Plug 'Shougo/neco-vim'
 
     Plug 'autozimu/LanguageClient-neovim', {
@@ -186,7 +188,72 @@
           \ 'do': 'bash install.sh',
           \ }
 
+
   call plug#end()
+" }}}
+
+" COC: for IDE stuff ------------ {{{
+  for coc_plugin in [
+        \ 'git@github.com:coc-extensions/coc-svelte.git',
+        \ 'git@github.com:fannheyward/coc-markdownlint.git',
+        \ 'git@github.com:josa42/coc-docker.git',
+        \ 'git@github.com:neoclide/coc-css.git',
+        \ 'git@github.com:neoclide/coc-html.git',
+        \ 'git@github.com:neoclide/coc-json.git',
+        \ 'git@github.com:neoclide/coc-pairs.git',
+        \ 'git@github.com:neoclide/coc-python.git',
+        \ 'git@github.com:neoclide/coc-rls.git',
+        \ 'git@github.com:neoclide/coc-snippets.git',
+        \ 'git@github.com:neoclide/coc-tsserver.git',
+        \ 'git@github.com:neoclide/coc-yaml.git',
+        \ ]
+  endfor
+
+  function! s:show_documentation()
+    if (index(['vim', 'help'], &filetype) >= 0)
+      execute 'help ' . expand('<cword>') 
+    else
+      call CocAction('doHover')
+    endif
+  endfunction
+
+  function! s:coc_diagnostic_disable()
+    cal coc#config('diagnostic.enable', v:false)
+    let g:coc_custom_diagnostic_enabled = v:false
+    silent CocRestart
+    echom 'Disabled: Coc Diagnostics'
+  endfunction
+
+  function! s:coc_diagnostic_enable()
+    cal coc#config('diagnostic.enable', v:true)
+    let g:coc_custom_diagnostic_enabled = v:true
+    echom 'Enabled: Coc Diagnostics'
+  endfunction
+
+  function! s:coc_diagnostic_toggle()
+    if g:coc_custom_diagnostic_enabled == v:true
+      call s:coc_diagnostic_disable()
+    else
+      call s:coc_diagnostic_enable()
+    endif
+  endfunction
+
+  function! s:coc_init()
+    let g:coc_custom_diagnostic_enabled = v:false
+  endfunction
+
+  augroup coc_initialization
+    autocmd!
+    autocmd VimEnter * call s:coc_init()
+  augroup end
+
+  command! CocDiagnosticToggle call s:coc_diagnostic_toggle()
+  command! CocDiagnosticEnable call s:coc_diagnostic_enable()
+  command! CocDiagnosticDisable call s:coc_diagnostic_disable()
+
+  " coc-pairs to auto indent braces, parentheses, etc
+  inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                                  \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 " }}}
 
 " General: Filetype recognition ------------ {{{
@@ -458,28 +525,6 @@
             \ vnoremap <silent> <buffer> <leader>f :FiletypeFormat<cr>
     augroup END
 
-  "Deoplete:
-    let g:deoplete#enable_at_startup = 1
-    function! CustomDeopleteConfig()
-      " Deoplete Defaults:
-        call deoplete#custom#option({
-              \ 'auto_complete': v:true,
-              \ 'auto_complete_delay': 300,
-              \ 'max_list': 500,
-              \ 'num_processes': 2,
-              \ })
-
-      " Source Defaults:
-        call deoplete#custom#option('ignore_sources', {'_': ['buffer', 'around']})
-        call deoplete#custom#source('_', 'min_pattern_length', 1)
-        call deoplete#custom#source('_', 'converters', ['converter_remove_paren'])
-    endfunction
-
-    augroup deoplete_on_vim_startup
-      autocmd!
-      autocmd VimEnter * call CustomDeopleteConfig()
-    augroup END
-
   " LSP LanguageClient:
     let g:LanguageClient_serverCommands = {
           \ 'haskell': ['stack', 'exec', 'hie-wrapper'],
@@ -507,7 +552,7 @@
 
     function! CustomLanguageClientConfig()
       nnoremap <buffer> <C-]> :call LanguageClient#textDocument_definition()<CR>
-      nnoremap <buffer> <C-k> :call LanguageClient#textDocument_hover()<CR>
+      " nnoremap <buffer> <C-k> :call LanguageClient#textDocument_hover()<CR>
       nnoremap <buffer> <leader>sd :call LanguageClient#textDocument_hover()<CR>
       nnoremap <buffer> <leader>sr :call LanguageClient#textDocument_rename()<CR>
       nnoremap <buffer> <leader>sf :call LanguageClient#textDocument_formatting()<CR>
@@ -590,8 +635,8 @@
     " Set omnifunc key to control-space
       " Omnicompletion: <C-@> is a signal sent by some terms when pressing
       " <C-Space>.
-      inoremap <C-@> <C-x><C-o>
-      inoremap <C-space> <C-x><C-o>
+      " inoremap <C-@> <C-x><C-o>
+      " inoremap <C-space> <C-x><C-o>
 
     " MoveVisual: up and down visually only if count is specified before
     " Otherwise, you want to move up lines numerically
@@ -603,6 +648,18 @@
              \ v:count == 0 ? 'gj' : 'j'
       vnoremap <expr> j
              \ v:count == 0 ? 'gj' : 'j'
+
+    " COC: settings for coc.nvim
+        nmap <silent> <C-]> <Plug>(coc-definition)
+        nmap <silent> <2-LeftMouse> <Plug>(coc-defintion)
+      " Use <c-space> to trigger completion
+        inoremap <silent><expr> <c-space> coc#refresh()
+        nnoremap <silent> <C-K> :call <SID>show_documentation()<CR>
+      " Scroll in floating windows
+        nnoremap <expr><C-e> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-e>"
+        nnoremap <expr><C-y> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-y>"
+      " Toggle Diagnostics
+        nnoremap <silent> <leader>a :CocDiagnosticToggle<CR>
 
   endfunction
   call DefaultKeyMappings()
