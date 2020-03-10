@@ -356,6 +356,7 @@ stty -ixon
     alias cls='clear && update_prompt && git status'
     alias cld='clear && update_prompt && git diff'
     alias clx='clear && tox'
+    alias clp='clear && pyprep && python main.py'
     # alias fn='find . -name'
     alias dfn='grep -nri'
 
@@ -381,7 +382,16 @@ stty -ixon
   ## Python functions ##########################################
     function envi() {
       ## Install frequently used python pip dependencies
-      pip install -U pip pynvim jedi-language-server black
+      pip install -U \
+        pip \
+        pynvim \
+        jedi-language-server \
+        black \
+        isort \
+        neovim-remote \
+        pylint \
+        toml-sort \
+      && asdf reshim python
     }
 
     function enva() {
