@@ -355,7 +355,7 @@ stty -ixon
     alias cl='clear && update_prompt'
     alias cls='clear && update_prompt && git status'
     alias cld='clear && update_prompt && git diff'
-    alias clx='clear && pyprep && ptox'
+    alias clx='clear && pyprep && tox'
     alias clp='clear && pyprep && python main.py'
     # alias fn='find . -name'
     alias dfn='grep -nri'
