@@ -115,17 +115,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 
+void persistent_default_layer_set(uint16_t default_layer) {
+  eeconfig_update_default_layer(default_layer);
+  default_layer_set(default_layer);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case QWERTY:
       if (record->event.pressed) {
         set_single_persistent_default_layer(_QWERTY);
+        persistent_default_layer_set(1UL<<_QWERTY);
       }
       return false;
       break;
     case DVORAK:
       if (record->event.pressed) {
         set_single_persistent_default_layer(_DVORAK);
+        persistent_default_layer_set(1UL<<_DVORAK);
       }
       return false;
       break;
@@ -159,4 +166,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
   }
   return true;
+}
+
+#ifdef RGBLIGHT_ENABLE
+bool rgb_layer_change = true;
+#endif
+
+uint32_t layer_state_set_user(uint32_t state) {
+#ifdef RGBLIGHT_ENABLE
+  uint8_t default_layer = eeconfig_read_default_layer();
+  if (rgb_layer_change) {
+    switch (biton32(state)) {
+    case _RAISE:
+      /* rgblight_sethsv(HSV_RED); */
+      /* rgblight_mode(1); */
+      break;
+    case _LOWER:
+      /* rgblight_sethsv(HSV_GREEN); */
+      /* rgblight_mode(1); */
+      break;
+    case _ADJUST:
+      /* rgblight_sethsv(HSV_YELLOW); */
+      /* rgblight_mode(1); */
+      break;
+    default:
+      if (default_layer & (1UL << _DVORAK)) {
+        rgblight_sethsv(HSV_CYAN);
+      }
+      else {
+        rgblight_sethsv(HSV_BLUE);
+      }
+      rgblight_mode(1);
+      break;
+    }
+  }
+#endif
+  return state;
 }
