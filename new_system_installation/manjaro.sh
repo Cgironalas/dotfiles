@@ -50,17 +50,21 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 cur_dir=$(pwd)
 #manjaro
 
+echo "\n\n\nMaking common directories"
 mkdir ~/repos
 mkdir ~/sandbox
 
+echo "\n\n\nClone latest ASDF"
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf && \
   cd ~/.asdf && /
   git checkout "$(git describe --abbrev=0 --tags)"
 
+echo "\n\n\nClone and make personal dotfiles"
 git clone https://github.com/cgironalas/dotfiles.git ~/dotfiles && \
   cd ~/dotfiles && \
   make dotfiles
 
+echo "\n\n\nInstall commonly used python versions"
 source ~/.asdf/asdf.sh && \
       asdf plugin-add python && \
       asdf install python 2.7.15 && \
@@ -78,6 +82,7 @@ source ~/.asdf/asdf.sh && \
             toml-sort && \
       asdf reshim python
 
+echo "\n\n\nInstall nodejs and yarn"
 source ~/.asdf/asdf.sh && \
       asdf plugin-add nodejs && \
       asdf plugin-add yarn && \
