@@ -554,9 +554,13 @@ stty -ixon
       zoomy 9279165538
     }
     function print_vpn_status() {
-      net_status=$(nmcli)
-      if [[ $net_status == *"Auto AWS VPN connection"* ]]; then
-        echo "ON"
+      if [[ $(command -v nmcli) ]]; then
+        net_status=$(nmcli)
+        if [[ $net_status == *"Auto AWS VPN connection"* ]]; then
+          echo "ON"
+        else
+          echo "OFF"
+        fi
       else
         echo "OFF"
       fi

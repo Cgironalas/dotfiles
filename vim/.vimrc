@@ -514,9 +514,6 @@
     " let g:vim_filetype_formatter_verbose = 1
     let g:vim_filetype_formatter_commands = {
           \ 'python': 'black - -q --line-length 79',
-          \ 'javascript.jsx': g:filetype_formatter#ft#formatters['javascript']['prettier'],
-          \ 'typescript': g:filetype_formatter#ft#formatters['javascript']['prettier'],
-          \ 'typescript.tsx': g:filetype_formatter#ft#formatters['javascript']['prettier'],
           \ 'css': 'npx -q prettier --parser css --stdin',
           \ 'less': 'npx -q prettier --parser less --stdin',
           \ 'html': 'npx -q prettier --parser html --stdin',
