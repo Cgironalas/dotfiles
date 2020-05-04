@@ -595,6 +595,11 @@ stty -ixon
       fi
     }
 
+    function update_zoom() {
+      curl -Lsf https://zoom.us/client/latest/zoom_amd64.deb -o /tmp/zoom_amd64.deb
+      sudo dpkg -i /tmp/zoom_amd64.deb
+    }
+
     function pkg_updates() {
       if [[ $(command -v apt) ]]; then
         echo "Using apt update then upgrade -y"
