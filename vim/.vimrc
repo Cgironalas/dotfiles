@@ -188,6 +188,10 @@
           \ 'do': 'bash install.sh',
           \ }
 
+    " Nvim repl
+    Plug 'tpope/vim-repeat'
+    Plug 'pappasam/nvim-repl'
+
 
   call plug#end()
 " }}}
@@ -660,6 +664,11 @@
         nnoremap <expr><C-y> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-y>"
       " Toggle Diagnostics
         nnoremap <silent> <leader>a :CocDiagnosticToggle<CR>
+
+    " Repl: my very own repl plugin
+      nnoremap <leader><leader>e :ReplToggle<CR>
+      nmap <leader>e <Plug>ReplSendLine
+      vmap <leader>e <Plug>ReplSendVisual
 
   endfunction
   call DefaultKeyMappings()
