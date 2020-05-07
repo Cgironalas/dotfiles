@@ -380,18 +380,26 @@ stty -ixon
     find . -name *$1*
   }
   ## Python functions ##########################################
-    function envi() {
+    function env_install_dev() {
       ## Install frequently used python pip dependencies
       pip install -U \
+        bpython \
         pip \
         pynvim \
-        jedi-language-server \
-        black \
-        isort \
         neovim-remote \
-        pylint \
-        toml-sort \
       && asdf reshim python
+    }
+
+    function env_install_global() {
+      pip install -U \
+        black \
+        cookiecutter \
+        docker-compose \
+        isort \
+        jedi-language-server \
+        mypy \ 
+        toml-sort \
+        && asdf reshim python
     }
 
     function enva() {
@@ -417,7 +425,7 @@ stty -ixon
         echo $1 >> .env
       fi
       enva
-      envi
+      env_install_dev
     }
 
     function envp() {
