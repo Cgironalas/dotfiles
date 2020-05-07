@@ -192,6 +192,24 @@
     Plug 'tpope/vim-repeat'
     Plug 'pappasam/nvim-repl'
 
+    for coc_plugin in [
+            \ 'git@github.com:coc-extensions/coc-svelte.git',
+            \ 'git@github.com:fannheyward/coc-markdownlint.git',
+            \ 'git@github.com:josa42/coc-docker.git',
+            \ 'git@github.com:neoclide/coc-css.git',
+            \ 'git@github.com:neoclide/coc-html.git',
+            \ 'git@github.com:neoclide/coc-json.git',
+            \ 'git@github.com:neoclide/coc-pairs.git',
+            \ 'git@github.com:neoclide/coc-rls.git',
+            \ 'git@github.com:neoclide/coc-snippets.git',
+            \ 'git@github.com:neoclide/coc-tsserver.git',
+            \ 'git@github.com:neoclide/coc-yaml.git',
+            \ 'git@github.com:pappasam/coc-jedi.git',
+            \ ]
+        Plug coc_plugin, {
+              \ 'do': 'yarn install --frozen-lockfile && yarn build',
+              \ }
+      endfor
 
   call plug#end()
 " }}}
@@ -205,11 +223,11 @@
         \ 'git@github.com:neoclide/coc-html.git',
         \ 'git@github.com:neoclide/coc-json.git',
         \ 'git@github.com:neoclide/coc-pairs.git',
-        \ 'git@github.com:neoclide/coc-python.git',
         \ 'git@github.com:neoclide/coc-rls.git',
         \ 'git@github.com:neoclide/coc-snippets.git',
         \ 'git@github.com:neoclide/coc-tsserver.git',
         \ 'git@github.com:neoclide/coc-yaml.git',
+        \ 'git@github.com:pappasam/coc-jedi.git',
         \ ]
   endfor
 
