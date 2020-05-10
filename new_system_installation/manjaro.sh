@@ -66,6 +66,8 @@ git clone https://github.com/cgironalas/dotfiles.git ~/dotfiles && \
     cd ~/dotfiles && \
     make dotfiles
 
+nvim -E -s -u "~/.vimrc" +PlugInstall +qall
+
 echo "\n\n\nInstall commonly used python versions"
 source ~/.asdf/asdf.sh && \
     asdf plugin-add python && \
