@@ -153,6 +153,9 @@
 
     " For Svelte
     Plug 'evanleck/vim-svelte' "svelte highlights
+    Plug 'davidroeca/coc-svelte-language-tools', {
+      \ 'do': 'yarn install --frozen-lockfile && yarn build'
+      \ }
 
     " For Rust
     Plug 'rust-lang/rust.vim' "rust highlights
@@ -600,26 +603,26 @@
     nnoremap <silent> <C-l> :wincmd l<CR>
     nnoremap <silent> <C-h> :wincmd h<CR>
 
-    " FiletypeFormat: remap leader f to do filetype formatting
-      nnoremap <leader>f :FiletypeFormat<cr>
-      vnoremap <leader>f :FiletypeFormat<cr>
+    " FiletypeFormat: remap leader f to do filetype formatting TODO
+      nnoremap <silent> <leader>f <cmd>FiletypeFormat<cr>
+      vnoremap <silent> <leader>f :FiletypeFormat<cr>
 
     " Disable Ex Mode: to avoid opening it by mistake
       nnoremap Q <nop>
 
     " Disable Arrow Keys: to better get used to vim movement
-      " nnoremap <Up> <nop>
-      " nnoremap <Down> <nop>
-      " nnoremap <Left> <nop>
-      " nnoremap <Right> <nop>
+      nnoremap <Up> <nop>
+      nnoremap <Down> <nop>
+      nnoremap <Left> <nop>
+      nnoremap <Right> <nop>
       " inoremap <Up> <nop>
       " inoremap <Down> <nop>
       " inoremap <Left> <nop>
       " inoremap <Right> <nop>
-      " vnoremap <Up> <nop>
-      " vnoremap <Down> <nop>
-      " vnoremap <Left> <nop>
-      " vnoremap <Right> <nop>
+      vnoremap <Up> <nop>
+      vnoremap <Down> <nop>
+      vnoremap <Left> <nop>
+      vnoremap <Right> <nop>
 
     " Copy With System Clipboard:
       vnoremap <leader>y "+y
@@ -631,7 +634,7 @@
       nnoremap <expr> <leader>p
             \ len(getline('.')) == 0 ? '"+p' : 'o<esc>"+p'
 
-    " Select tab by number
+    " Select Tab By Number:
       " MoveTabs: goto tab number. Same as Firefox
       nnoremap <A-1> 1gt
       nnoremap <A-2> 2gt
@@ -643,30 +646,40 @@
       nnoremap <A-8> 8gt
       nnoremap <A-9> 9gt
 
-    " Clear search highlight
-      " Escape: also clears highlighting
+    " Escape Also Clears Highlighting:
       nnoremap <silent> <esc> :noh<return><esc>
 
     " Bad J is bad
       " unmap J in normal mode unless range explicitely specified
       nnoremap <silent> <expr> J v:count == 0 ? '<esc>' : 'J'
 
-    " Set omnifunc key to control-space
-      " Omnicompletion: <C-@> is a signal sent by some terms when pressing
-      " <C-Space>.
-      " inoremap <C-@> <C-x><C-o>
-      " inoremap <C-space> <C-x><C-o>
+    " Search Backward: remap comma to single quote
+      nnoremap ' ,
 
     " MoveVisual: up and down visually only if count is specified before
     " Otherwise, you want to move up lines numerically
-      nnoremap <expr> k
-             \ v:count == 0 ? 'gk' : 'k'
-      vnoremap <expr> k
-             \ v:count == 0 ? 'gk' : 'k'
-      nnoremap <expr> j
-             \ v:count == 0 ? 'gj' : 'j'
-      vnoremap <expr> j
-             \ v:count == 0 ? 'gj' : 'j'
+      nnoremap <expr> k v:count == 0 ? 'gk' : 'k'
+      vnoremap <expr> k v:count == 0 ? 'gk' : 'k'
+      nnoremap <expr> j v:count == 0 ? 'gj' : 'j'
+      vnoremap <expr> j v:count == 0 ? 'gj' : 'j'
+
+    " Substitute: replace word under cursor
+      nnoremap <leader><leader>s yiw:%s/\<<C-R>0\>//gc<Left><Left><Left>
+      vnoremap <leader><leader>s y:%s/<C-R>0//gc<Left><Left><Left>
+
+    " Relative Numbers: uses custom functions TODO
+      nnoremap <silent> <leader>R <cmd>ToggleNumber<CR>
+      nnoremap <silent> <leader>r <cmd>ToggleRelativeNumber<CR>
+
+    " Choose Window: just like tmux TODO
+      nnoremap <C-w>q <cmd>ChooseWin<CR>
+
+    " Indent Lines: toggle if indent lines is visible TODO
+      nnoremap <silent> <leader>i <cmd>IndentLinesToggle<CR>
+
+    " Resize Window: up and down; relies on custom functions TODO
+      nnoremap <silent> <leader><leader>h <cmd>ResizeWindowHeight<CR>
+      nnoremap <silent> <leader><leader>w <cmd>ResizeWindowWidth<CR>
 
     " COC: settings for coc.nvim
         nmap <silent> <C-]> <Plug>(coc-definition)
@@ -684,6 +697,14 @@
       nnoremap <leader><leader>e :ReplToggle<CR>
       nmap <leader>e <Plug>ReplSendLine
       vmap <leader>e <Plug>ReplSendVisual
+
+    " Mouse Configuration: remaps mouse to work better in terminal
+      " Out Jump List: <C-RightMouse> already mapped to something like <C-t>
+      nnoremap <RightMouse> <C-o>
+
+    " Format JSON Files:
+      nnoremap <leader>fj :%!json_xs -f json -t json-pretty<CR>
+      inoremap <leader>fj :%!json_xs -f json -t json-pretty<CR>
 
   endfunction
   call DefaultKeyMappings()
