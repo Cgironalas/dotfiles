@@ -243,6 +243,7 @@ stty -ixon
     alias gda='git diff'
     alias gds='git diff --staged'
     alias gdw='git diff --word-diff=color'
+    alias gdsw='git diff --staged --word-diff=color'
     alias gh='git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
     alias gs='git status .'
     alias gsa='git status'
