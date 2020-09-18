@@ -9,8 +9,9 @@
 
 [alias]
   br = branch
-  ; -- test if git cb creates a branch by receiving a parameter
-  ; cb = checkout -b
+  ; Can create branches by just adding a parameter at the end
+  ; Less ideal if using the gcb alias in bashrc
+  cb = checkout -b
   ci = commit
   co = checkout
   df = diff
