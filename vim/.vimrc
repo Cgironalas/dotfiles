@@ -116,6 +116,9 @@
   " set spellang=es " for spanish
   set spelllang=en_us
   " set spell
+
+  " 
+  set cmdheight=2
 " }}}
 
 " General: Plugin Install --------------------- {{{
@@ -179,17 +182,17 @@
     Plug 'leafgarland/typescript-vim'
 
     " Golang
-    Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
+    " Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
 
     " COC
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
     Plug 'Shougo/neco-vim'
 
-    Plug 'autozimu/LanguageClient-neovim', {
-          \ 'branch': 'next',
-          \ 'do': 'bash install.sh',
-          \ }
+    " Plug 'autozimu/LanguageClient-neovim', {
+    "       \ 'branch': 'next',
+    "       \ 'do': 'bash install.sh',
+    "       \ }
 
     " Nvim repl
     Plug 'tpope/vim-repeat'
@@ -350,7 +353,7 @@
   augroup colorcolumn_configuration
     autocmd!
     autocmd FileType gitcommit setlocal colorcolumn=73 textwidth=72
-    autocmd FileType html, text, markdown,rst setlocal colorcolumn=0
+    autocmd FileType html,text,markdown,rst setlocal colorcolumn=0
   augroup END
 " }}}
 
@@ -364,7 +367,7 @@
     autocmd FileType * setlocal foldlevelstart=0
     " autocmd FileType vim,tmux,bash,zsh,sh
     "       \ setlocal foldmethod=marker foldlevelstart=0 foldnestmax=1
-    autocmd FileType markdown, rst
+    autocmd FileType markdown,rst
           \ setlocal nofoldenable
   augroup END
 " }}}
@@ -390,7 +393,7 @@
 
   augroup fix_whitespace_save
     autocmd!
-    autocmd BufWritePre *TrimWhitespace
+    autocmd BufWritePre * TrimWhitespace
   augroup END
 " }}}
 
@@ -501,7 +504,7 @@
   " Web Close Tag:
     " These are the file extensions where this plugin is enabled.
     "
-    let g:closetag_filenames = '*.html,*.xhtml,*.js,*.jsx, *.vue'
+    let g:closetag_filenames = '*.html,*.xhtml,*.js,*.jsx,*.vue'
 
     " filetypes like xml, html, xhtml, ...
     " These are the file types where this plugin is enabled.
@@ -548,49 +551,49 @@
     augroup END
 
   " LSP LanguageClient:
-    let g:LanguageClient_serverCommands = {
-          \ 'haskell': ['stack', 'exec', 'hie-wrapper'],
-          \ 'javascript': ['npx', '--no-install', '-q', 'flow', 'lsp'],
-          \ 'javascript.jsx': ['npx', '--no-install', 'flow', 'lsp'],
-          \ 'python': ['jedi-language-server'],
-          \ 'python.jinja2': ['jedi-language-server'],
-          \ 'r': ['R', '--slave', '-e', 'languageserver::run()'],
-          \ 'ruby': ['solargraph', 'stdio'],
-          \ 'rust': ['~/cargo/bin/rustup', 'run', 'stable', 'rls'],
-          \ 'typescript': ['npx', '--no-install', '-q', 'typescript-language-server', '--stdio'],
-          \ }
+    " let g:LanguageClient_serverCommands = {
+    "       \ 'haskell': ['stack', 'exec', 'hie-wrapper'],
+    "       \ 'javascript': ['npx', '--no-install', '-q', 'flow', 'lsp'],
+    "       \ 'javascript.jsx': ['npx', '--no-install', 'flow', 'lsp'],
+    "       \ 'python': ['jedi-language-server'],
+    "       \ 'python.jinja2': ['jedi-language-server'],
+    "       \ 'r': ['R', '--slave', '-e', 'languageserver::run()'],
+    "       \ 'ruby': ['solargraph', 'stdio'],
+    "       \ 'rust': ['~/cargo/bin/rustup', 'run', 'stable', 'rls'],
+    "       \ 'typescript': ['npx', '--no-install', '-q', 'typescript-language-server', '--stdio'],
+    "       \ }
 
-    let g:LanguageClient_rootMarkers = {
-          \ 'go': ['go.mod', 'go.sum'],
-          \ 'gomod': ['go.mod', 'go.sum'],
-          \ 'python': ['pyproject.toml', 'poetry.lock'],
-          \ }
+    " let g:LanguageClient_rootMarkers = {
+    "       \ 'go': ['go.mod', 'go.sum'],
+    "       \ 'gomod': ['go.mod', 'go.sum'],
+    "       \ 'python': ['pyproject.toml', 'poetry.lock'],
+    "       \ }
 
-  " Language Client Configuration:
-    let g:LanguageClient_autoStart = v:true
-    let g:LanguageClient_hoverPreview = 'Always'
-    let g:LanguageClient_diagnosticsEnable = v:false
-    let g:LanguageClient_selectionUI = 'quickfix'
+  " " Language Client Configuration:
+    " let g:LanguageClient_autoStart = v:true
+    " let g:LanguageClient_hoverPreview = 'Always'
+    " let g:LanguageClient_diagnosticsEnable = v:false
+    " let g:LanguageClient_selectionUI = 'quickfix'
 
-    function! CustomLanguageClientConfig()
-      nnoremap <buffer> <C-]> :call LanguageClient#textDocument_definition()<CR>
-      " nnoremap <buffer> <C-k> :call LanguageClient#textDocument_hover()<CR>
-      nnoremap <buffer> <leader>sd :call LanguageClient#textDocument_hover()<CR>
-      nnoremap <buffer> <leader>sr :call LanguageClient#textDocument_rename()<CR>
-      nnoremap <buffer> <leader>sf :call LanguageClient#textDocument_formatting()<CR>
-      nnoremap <buffer> <leader>su :call LanguageClient#textDocument_references()<CR>
-      nnoremap <buffer> <leader>sa :call LanguageClient#textDocument_codeAction()<CR>
-      nnoremap <buffer> <leader>ss :call LanguageClient#textDocument_documentSymbol()<CR>
-      nnoremap <buffer> <leader>sc :call LanguageClient_contextMenu()<CR>
-      setlocal omnifunc=LanguageClient#complete
-    endfunction
+    " function! CustomLanguageClientConfig()
+    "   nnoremap <buffer> <C-]> :call LanguageClient#textDocument_definition()<CR>
+    "   " nnoremap <buffer> <C-k> :call LanguageClient#textDocument_hover()<CR>
+    "   nnoremap <buffer> <leader>sd :call LanguageClient#textDocument_hover()<CR>
+    "   nnoremap <buffer> <leader>sr :call LanguageClient#textDocument_rename()<CR>
+    "   nnoremap <buffer> <leader>sf :call LanguageClient#textDocument_formatting()<CR>
+    "   nnoremap <buffer> <leader>su :call LanguageClient#textDocument_references()<CR>
+    "   nnoremap <buffer> <leader>sa :call LanguageClient#textDocument_codeAction()<CR>
+    "   nnoremap <buffer> <leader>ss :call LanguageClient#textDocument_documentSymbol()<CR>
+    "   nnoremap <buffer> <leader>sc :call LanguageClient_contextMenu()<CR>
+    "   setlocal omnifunc=LanguageClient#complete
+    " endfunction
 
-    augroup languageclient_on_vim_startup
-      autocmd!
-      execute 'autocmd FileType '
-            \ . join(keys(g:LanguageClient_serverCommands), ',')
-            \ . ' call CustomLanguageClientConfig()'
-    augroup END
+    " augroup languageclient_on_vim_startup
+    "   autocmd!
+    "   execute 'autocmd FileType '
+    "         \ . join(keys(g:LanguageClient_serverCommands), ',')
+    "         \ . ' call CustomLanguageClientConfig()'
+    " augroup END
 "  }}}
 
 " General: Key remappings ----------------------- {{{
