@@ -239,11 +239,12 @@ stty -ixon
     alias gb='git branch'
     alias gco='git commit'
     alias gch='git checkout'
-    # alias gd='git diff .'
     alias gda='git diff'
     alias gds='git diff --staged'
     alias gdw='git diff --word-diff=color'
     alias gdsw='git diff --staged --word-diff=color'
+    alias gg='git grep'
+    alias ggi='git grep --ignore-case'
     alias gh='git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
     alias gs='git status .'
     alias gsa='git status'
@@ -398,7 +399,7 @@ stty -ixon
         docker-compose \
         isort \
         jedi-language-server \
-        mypy \ 
+        mypy \
         toml-sort \
         && asdf reshim python
     }
