@@ -401,6 +401,9 @@ stty -ixon
         jedi-language-server \
         mypy \
         toml-sort \
+        pynvim \
+        bpython \
+        neovim-remote \
         && asdf reshim python
     }
 
