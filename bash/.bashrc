@@ -632,6 +632,20 @@ stty -ixon
         fi
       fi
     }
+
+    # Running dfu-util requires sudo permissions
+    function flash_ck() {
+      if [[ $(command -v dfu-util) ]]; then
+        if [ -z $1 ]; then
+          echo "No firware path was passed in"
+        else
+          echo "Flashing firmware located at '$1'"
+          sudo dfu-util -d 1eaf:0003 -a 2 -D $1
+        fi
+      else
+        echo 'dfu-util is not installed, please install it before trying again'
+      fi
+    }
   ######################################
 
   function zoomy() {
