@@ -216,10 +216,11 @@ stty -ixon
     }
     alias v='open_v'
     alias vi='open_v'
-    alias vib='open_v ~/dotfiles/bash/.bashrc'
     alias vim='open_v'
-    alias vit='open_v ~/dotfiles/tmux/.tmux.conf'
-    alias viv='open_v ~/dotfiles/vim/.vimrc'
+
+    alias vv='nvim ~/dotfiles/vim/.vimrc'
+    alias b='nvim ~/dotfiles/bash/.bashrc'
+    alias t='nvim ~/dotfiles/tmux/.tmux.conf'
   ################################
 
   ## List aliases ################
@@ -243,13 +244,24 @@ stty -ixon
     alias gds='git diff --staged'
     alias gdw='git diff --word-diff=color'
     alias gdsw='git diff --staged --word-diff=color'
-    alias gg='git grep'
-    alias ggi='git grep --ignore-case'
+    alias gg='git grep --color=auto'
+    alias ggi='git grep --ignore-case --color=auto'
     alias gh='git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
     alias gs='git status .'
     alias gsa='git status'
     alias gsu='git status -u'
 
+    # cd to the current git root
+    function gr() {
+      if [ $(git rev-parse --is-inside-work-tree 2>/dev/null ) ]; then
+        cd $(git rev-parse --show-toplevel)
+      else
+        echo "'$PWD' is not inside a git repository"
+        return 1
+      fi
+    }
+
+    # Simple git diff
     function gd() {
       if [ -z $1 ]; then
         git diff .
@@ -258,15 +270,19 @@ stty -ixon
       fi
     }
 
+    # Create git branch
     function gcb() {
       git checkout -b $1
       update_prompt
     }
 
+    # Git checkout
     function gc() {
       git checkout $*
       update_prompt
     }
+
+    # Print current git branch
     function gitp() {
       if [[ -d .git || $(git rev-parse --git-dir 2> /dev/null) ]]; then
         echo "[$(git branch | grep \* | sed -r 's/\* //g')]"
@@ -385,25 +401,26 @@ stty -ixon
     function env_install_dev() {
       ## Install frequently used python pip dependencies
       pip install -U \
-        bpython \
         pip \
+        mypy \
+        pylint \
         pynvim \
+        bpython \
         neovim-remote \
       && asdf reshim python
     }
 
     function env_install_global() {
       pip install -U \
+        pip \
         black \
-        cookiecutter \
-        docker-compose \
         isort \
-        jedi-language-server \
-        mypy \
-        toml-sort \
         pynvim \
         bpython \
+        toml-sort \
+        cookiecutter \
         neovim-remote \
+        docker-compose \
         && asdf reshim python
     }
 
@@ -633,6 +650,21 @@ stty -ixon
       fi
     }
 
+    function upgrade() {
+      sudo apt update
+      sudo apt upgrade -y
+      sudo apt autoremove -y
+      asdf update
+      asdf plugin-update --all
+      pushd .
+      cd ~/dotfiles
+      git pull
+      popd
+      # asdf uninstall neovim nightly
+      # asdf install neovim nightly
+      # asdf global neovim nightly
+    }
+
     # Running dfu-util requires sudo permissions
     function flash_ck() {
       if [[ $(command -v dfu-util) ]]; then
@@ -644,6 +676,16 @@ stty -ixon
         fi
       else
         echo 'dfu-util is not installed, please install it before trying again'
+      fi
+    }
+
+    # Pipe man stuff to neovim
+    function m() {
+      man --location "$@" &> /dev/null
+      if [ $? -eq 0 ]; then
+        man --pager=cat "$@" | nvim -c 'set ft=man' -
+      else
+        man "$@"
       fi
     }
   ######################################
