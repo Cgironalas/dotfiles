@@ -51,6 +51,7 @@
   " Disable swap files
   set nobackup
   set noswapfile
+  set nowritebackup
 
   " Enable filetype detection, plugins and indentation
   filetype plugin indent on
@@ -109,16 +110,46 @@
     set guicursor=
   endif
 
-  " Configure Update time: time vim waits to do something after I stop moving
-  set updatetime=750
+  " Configure Update time: time vim waits to do something after I stop moving,
+  " was in 750, updated to 300 coc-recommended
+  set updatetime=300
 
   " Spelling
   " set spellang=es " for spanish
   set spelllang=en_us
   " set spell
 
-  " 
+  " Enables by default 2 lines for messages, coc-recommended
   set cmdheight=2
+
+  " Don't pass messages to 'floating menu'? coc-recommended
+  " Dissabled cause not yet sure if I want it
+  " set shortmess+=c
+
+  " Always show signcolumn, used for diagnostics. coc-recommended
+  set signcolumn=yes
+
+  " Use tab for trigger completion with characters ahead and navigate.
+  " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+  " other plugin before putting this into your config.
+  " coc-recommended
+  inoremap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
+
+  " Use <c-space> to trigger completion. coc-recommended
+  if has('nvim')
+    inoremap <silent><expr> <c-space> coc#refresh()
+  else
+    inoremap <silent><expr> <c-@> coc#refresh()
+  endif
 " }}}
 
 " General: Plugin Install --------------------- {{{
@@ -181,18 +212,10 @@
     " Typescript syntax highlight
     Plug 'leafgarland/typescript-vim'
 
-    " Golang
-    " Plug 'fatih/vim-go', { 'do': 'GoUpdateBinaries' }
-
     " COC
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
     Plug 'Shougo/neco-vim'
-
-    " Plug 'autozimu/LanguageClient-neovim', {
-    "       \ 'branch': 'next',
-    "       \ 'do': 'bash install.sh',
-    "       \ }
 
     " Nvim repl
     Plug 'tpope/vim-repeat'
@@ -239,7 +262,7 @@
 
   function! s:show_documentation()
     if (index(['vim', 'help'], &filetype) >= 0)
-      execute 'help ' . expand('<cword>') 
+      execute 'help ' . expand('<cword>')
     else
       call CocAction('doHover')
     endif
@@ -448,7 +471,7 @@
 
   " NERD Tree:
     autocmd StdinReadPre * let s:std_in=1
-    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif 
+    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
     let g:NERDTreeShowHidden = 1
     let g:NERDTreeMapOpenInTab = '<C-t>'
@@ -549,51 +572,6 @@
       autocmd FileType python,javascript,javascript.jsx,css,less,json,html
             \ vnoremap <silent> <buffer> <leader>f :FiletypeFormat<cr>
     augroup END
-
-  " LSP LanguageClient:
-    " let g:LanguageClient_serverCommands = {
-    "       \ 'haskell': ['stack', 'exec', 'hie-wrapper'],
-    "       \ 'javascript': ['npx', '--no-install', '-q', 'flow', 'lsp'],
-    "       \ 'javascript.jsx': ['npx', '--no-install', 'flow', 'lsp'],
-    "       \ 'python': ['jedi-language-server'],
-    "       \ 'python.jinja2': ['jedi-language-server'],
-    "       \ 'r': ['R', '--slave', '-e', 'languageserver::run()'],
-    "       \ 'ruby': ['solargraph', 'stdio'],
-    "       \ 'rust': ['~/cargo/bin/rustup', 'run', 'stable', 'rls'],
-    "       \ 'typescript': ['npx', '--no-install', '-q', 'typescript-language-server', '--stdio'],
-    "       \ }
-
-    " let g:LanguageClient_rootMarkers = {
-    "       \ 'go': ['go.mod', 'go.sum'],
-    "       \ 'gomod': ['go.mod', 'go.sum'],
-    "       \ 'python': ['pyproject.toml', 'poetry.lock'],
-    "       \ }
-
-  " " Language Client Configuration:
-    " let g:LanguageClient_autoStart = v:true
-    " let g:LanguageClient_hoverPreview = 'Always'
-    " let g:LanguageClient_diagnosticsEnable = v:false
-    " let g:LanguageClient_selectionUI = 'quickfix'
-
-    " function! CustomLanguageClientConfig()
-    "   nnoremap <buffer> <C-]> :call LanguageClient#textDocument_definition()<CR>
-    "   " nnoremap <buffer> <C-k> :call LanguageClient#textDocument_hover()<CR>
-    "   nnoremap <buffer> <leader>sd :call LanguageClient#textDocument_hover()<CR>
-    "   nnoremap <buffer> <leader>sr :call LanguageClient#textDocument_rename()<CR>
-    "   nnoremap <buffer> <leader>sf :call LanguageClient#textDocument_formatting()<CR>
-    "   nnoremap <buffer> <leader>su :call LanguageClient#textDocument_references()<CR>
-    "   nnoremap <buffer> <leader>sa :call LanguageClient#textDocument_codeAction()<CR>
-    "   nnoremap <buffer> <leader>ss :call LanguageClient#textDocument_documentSymbol()<CR>
-    "   nnoremap <buffer> <leader>sc :call LanguageClient_contextMenu()<CR>
-    "   setlocal omnifunc=LanguageClient#complete
-    " endfunction
-
-    " augroup languageclient_on_vim_startup
-    "   autocmd!
-    "   execute 'autocmd FileType '
-    "         \ . join(keys(g:LanguageClient_serverCommands), ',')
-    "         \ . ' call CustomLanguageClientConfig()'
-    " augroup END
 "  }}}
 
 " General: Key remappings ----------------------- {{{
@@ -613,15 +591,11 @@
     " Disable Ex Mode: to avoid opening it by mistake
       nnoremap Q <nop>
 
-    " Disable Arrow Keys: to better get used to vim movement
+    " Disable Arrow Keys: for normal mode and visual mode.
       nnoremap <Up> <nop>
       nnoremap <Down> <nop>
       nnoremap <Left> <nop>
       nnoremap <Right> <nop>
-      " inoremap <Up> <nop>
-      " inoremap <Down> <nop>
-      " inoremap <Left> <nop>
-      " inoremap <Right> <nop>
       vnoremap <Up> <nop>
       vnoremap <Down> <nop>
       vnoremap <Left> <nop>
