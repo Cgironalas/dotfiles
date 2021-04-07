@@ -342,10 +342,10 @@ stty -ixon
 
       if [[ ! -n "$VIRTUAL_ENV" ]]; then
         if [ -d .env ]; then
-          source .env/bin/activate
+          source .env/bin/activate && export GITBRANCH=integration && export ENV=integration
         else
           if [ -f .env ]; then
-            source $(cat .env)/bin/activate
+            source $(cat .env)/bin/activate && export GITBRANCH=integration && export ENV=integration
           fi
         fi
       fi
