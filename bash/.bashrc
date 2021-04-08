@@ -688,6 +688,15 @@ stty -ixon
         man "$@"
       fi
     }
+
+    # Fix apt signatures
+    function fix_apt_pubkey() {
+      if [ -z $1 ]; then
+        echo "No PUBKEY was passed in!!!"
+      else
+        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $1
+      fi
+    }
   ######################################
 
   function zoomy() {
