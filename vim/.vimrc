@@ -221,6 +221,8 @@
     Plug 'tpope/vim-repeat'
     Plug 'pappasam/nvim-repl'
 
+    " Some of the plugins need to be compiled, but the way that they are
+    " compiled is project specific. So this may break easily.
     for coc_plugin in [
             \ 'git@github.com:coc-extensions/coc-svelte.git',
             \ 'git@github.com:fannheyward/coc-markdownlint.git',
@@ -661,14 +663,20 @@
     " COC: settings for coc.nvim
         nmap <silent> <C-]> <Plug>(coc-definition)
         nmap <silent> <2-LeftMouse> <Plug>(coc-defintion)
-      " Use <c-space> to trigger completion
+      " Use control space to trigger completion
         inoremap <silent><expr> <c-space> coc#refresh()
         nnoremap <silent> <C-K> :call <SID>show_documentation()<CR>
       " Scroll in floating windows
-        nnoremap <expr><C-e> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-e>"
-        nnoremap <expr><C-y> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-y>"
-      " Toggle Diagnostics
+        nnoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
+        nnoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
+        inoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
+        inoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
+        vnoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
+        vnoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
+      " Toggle Diagnostics with leader a
         nnoremap <silent> <leader>a :CocDiagnosticToggle<CR>
+        nmap     <silent> ]g <Plug>(coc-diagnostic-next)
+        nmap     <silent> [g <Plug>(coc-diagnostic-prev)
 
     " Repl: my very own repl plugin
       nnoremap <leader><leader>e :ReplToggle<CR>
