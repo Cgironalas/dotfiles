@@ -370,6 +370,7 @@ stty -ixon
 
   ## ##########################################################################
     ## Other
+    alias celar='clear'
     alias cl='clear && update_prompt'
     alias cls='clear && update_prompt && git status'
     alias cld='clear && update_prompt && git diff'
