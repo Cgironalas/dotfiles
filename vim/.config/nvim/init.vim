@@ -61,6 +61,8 @@
     call packager#add('git@github.com:pappasam/nvim-repl.git')
 
     call packager#add('git@github.com:pappasam/vim-filetype-formatter')
+
+    call packager#add('git@github.com:pantharshit00/vim-prisma')
     " call packager#add('git@github.com:')
   endfunction
 
@@ -203,86 +205,89 @@
   endif
 " }}}
 
-" General: Plugin Install --------------------- {{{
-  call plug#begin('~/.vim/plugged')
-
-    " Commands run in vim's virtual screen and don't pollute main shell
-    " Plug 'fcpg/vim-altscreen'
-
-    " Language-specific syntax
-    " Plug 'hdima/python-syntax'
-
-    " Vim rooter
-    " Plug 'airblade/vim-rooter'
-
-    " For Svelte
-    " Plug 'davidroeca/coc-svelte-language-tools', {
-    "   \ 'do': 'yarn install --frozen-lockfile && yarn build'
-    "   \ }
-
-    " Vue JS
-    " Plug 'posva/vim-vue'
-
-    " JSX highlights
-    " Plug 'maxmellon/vim-jsx-pretty'
-
-    " Jenkinsfile syntax
-    " Plug 'khalliday7/Jenkinsfile-vim-syntax'
-
-    " Typescript syntax highlight
-    " Plug 'leafgarland/typescript-vim'
-
-    " Plug 'Shougo/neco-vim'
-
-    " Some of the plugins need to be compiled, but the way that they are
-    " compiled is project specific. So this may break easily.
-    for coc_plugin in [
-            \ 'git@github.com:coc-extensions/coc-svelte.git',
-            \ 'git@github.com:fannheyward/coc-markdownlint.git',
-            \ 'git@github.com:josa42/coc-docker.git',
-            \ 'git@github.com:neoclide/coc-css.git',
-            \ 'git@github.com:neoclide/coc-html.git',
-            \ 'git@github.com:neoclide/coc-json.git',
-            \ 'git@github.com:neoclide/coc-pairs.git',
-            \ 'git@github.com:neoclide/coc-rls.git',
-            \ 'git@github.com:neoclide/coc-snippets.git',
-            \ 'git@github.com:neoclide/coc-tsserver.git',
-            \ 'git@github.com:neoclide/coc-yaml.git',
-            \ 'git@github.com:pappasam/coc-jedi.git',
-            \ ]
-        Plug coc_plugin, {
-              \ 'do': 'yarn install --frozen-lockfile && yarn build',
-              \ }
-      endfor
-
-  call plug#end()
-" }}}
-
 " COC: for IDE stuff ------------ {{{
-  for coc_plugin in [
-        \ 'git@github.com:coc-extensions/coc-svelte.git',
-        \ 'git@github.com:fannheyward/coc-markdownlint.git',
-        \ 'git@github.com:josa42/coc-docker.git',
-        \ 'git@github.com:neoclide/coc-css.git',
-        \ 'git@github.com:neoclide/coc-html.git',
-        \ 'git@github.com:neoclide/coc-json.git',
-        \ 'git@github.com:neoclide/coc-pairs.git',
-        \ 'git@github.com:neoclide/coc-rls.git',
-        \ 'git@github.com:neoclide/coc-snippets.git',
-        \ 'git@github.com:neoclide/coc-tsserver.git',
-        \ 'git@github.com:neoclide/coc-yaml.git',
-        \ 'git@github.com:pappasam/coc-jedi.git',
-        \ ]
-  endfor
-
+  " Docs:
   function! s:show_documentation()
     if (index(['vim', 'help'], &filetype) >= 0)
       execute 'help ' . expand('<cword>')
     else
-      call CocAction('doHover')
+      call CocActionAsync('doHover')
     endif
   endfunction
 
+  " General Config:
+  let g:coc_snippet_next = '<C-j>'
+  let g:coc_snippet_prev = '<C-k>'
+  let g:coc_start_at_startup = 1
+  let g:coc_filetype_map = {
+    \ 'python.jinja2': 'python',
+    \ 'sql.jinja2': 'sql',
+    \ 'yaml.ansible': 'yaml',
+    \ 'yaml.docker-compose': 'yaml',
+    \ 'jinja.html': 'html',
+    \ }
+
+  " Global Extensions: installed on Vim open
+  let g:coc_global_extensions = [
+    \ 'coc-go',
+    \ 'coc-svelte',
+    \ 'coc-docker',
+    \ 'coc-markdownlint',
+    \ 'coc-css',
+    \ 'coc-html',
+    \ 'coc-json',
+    \ 'coc-lists',
+    \ 'coc-pairs',
+    \ 'coc-rls',
+    \ 'coc-sh',
+    \ 'coc-snippets',
+    \ 'coc-svg',
+    \ 'coc-syntax',
+    \ 'coc-tsserver',
+    \ 'coc-vimlsp',
+    \ 'coc-jedi',
+    \ 'coc-word',
+    \ 'coc-yaml',
+    \ 'coc-yank',
+    \ 'coc-diagnostic',
+    \ 'coc-dictionary',
+    \ 'coc-spell-checker',
+    \ 'coc-texlab',
+    \ 'coc-prisma',
+    \ ]
+
+  function! s:autocmd_custom_coc()
+    if !exists("g:did_coc_loaded")
+      return
+    endif
+    augroup custom_coc
+      autocmd CursorHold * silent call CocActionAsync('highlight')
+      autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+      " Coc nvim might override mappings, call them again just in case
+      autocmd User CocNvimInit call s:DefaultKeyMappings()
+    augroup end
+  endfunction
+
+  augroup custom_coc
+    autocmd!
+    autocmd VimEnter * call s:autocmd_custom_coc()
+  augroup end
+
+  augroup custom_coc_pairs
+    autocmd!
+    autocmd FileType html let b:coc_pairs_disabled = ['<']
+    autocmd FileType plantuml let b:coc_pairs_disabled = ["'"]
+    autocmd FileType rust let b:coc_pairs_disabled = ["'"]
+    autocmd FileType vim let b:coc_pairs_disabled = ['"']
+  augroup end
+
+  augroup custom_coc_additional_keyword_characters
+    autocmd!
+    autocmd FileType nginx let b:coc_additional_keywords = ['$']
+    autocmd FileType zsh let b:coc_additional_keywords = ['-']
+  augroup end
+
+  " Diagnostics: ================================
   function! s:coc_diagnostic_disable()
     cal coc#config('diagnostic.enable', v:false)
     let g:coc_custom_diagnostic_enabled = v:false
@@ -293,6 +298,7 @@
   function! s:coc_diagnostic_enable()
     cal coc#config('diagnostic.enable', v:true)
     let g:coc_custom_diagnostic_enabled = v:true
+    silent CocRestart
     echom 'Enabled: Coc Diagnostics'
   endfunction
 
@@ -303,9 +309,11 @@
       call s:coc_diagnostic_enable()
     endif
   endfunction
+  " =============================================
 
   function! s:coc_init()
     let g:coc_custom_diagnostic_enabled = v:false
+    call s:coc_diagnostic_disable()
   endfunction
 
   augroup coc_initialization
@@ -486,7 +494,7 @@
 
   " NERD Tree:
     autocmd StdinReadPre * let s:std_in=1
-    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+    " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
     let g:NERDTreeShowHidden = 1
     let g:NERDTreeMapOpenInTab = '<C-t>'
@@ -606,15 +614,15 @@
     " Disable Ex Mode: to avoid opening it by mistake
       nnoremap Q <nop>
 
-    " Disable Arrow Keys: for normal mode and visual mode.
-      nnoremap <Up> <nop>
-      nnoremap <Down> <nop>
-      nnoremap <Left> <nop>
-      nnoremap <Right> <nop>
-      vnoremap <Up> <nop>
-      vnoremap <Down> <nop>
-      vnoremap <Left> <nop>
-      vnoremap <Right> <nop>
+    " " Disable Arrow Keys: for normal mode and visual mode.
+    "   nnoremap <Up> <nop>
+    "   nnoremap <Down> <nop>
+    "   nnoremap <Left> <nop>
+    "   nnoremap <Right> <nop>
+    "   vnoremap <Up> <nop>
+    "   vnoremap <Down> <nop>
+    "   vnoremap <Left> <nop>
+    "   vnoremap <Right> <nop>
 
     " Copy With System Clipboard:
       vnoremap <leader>y "+y
@@ -673,23 +681,49 @@
       nnoremap <silent> <leader><leader>h <cmd>ResizeWindowHeight<CR>
       nnoremap <silent> <leader><leader>w <cmd>ResizeWindowWidth<CR>
 
-    " COC: settings for coc.nvim
+    " COC: settings for coc.nvim ============================================
+      " Jump to definition
         nmap <silent> <C-]> <Plug>(coc-definition)
-        nmap <silent> <2-LeftMouse> <Plug>(coc-defintion)
+        nmap <silent> <C-LeftMouse> <Plug>(coc-defintion)
+
+      " Show documentation
+        nnoremap <silent> <C-k> :call <SID>show_documentation()<CR>
+        inoremap <silent> <C-h> <cmd>call CocActionAsync('showSignatureHelp')<CR>
+
       " Use control space to trigger completion
         inoremap <silent><expr> <c-space> coc#refresh()
-        nnoremap <silent> <C-K> :call <SID>show_documentation()<CR>
+
       " Scroll in floating windows
         nnoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
         nnoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
-        inoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
-        inoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
+        inoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<C-e>"
+        inoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<C-y>"
         vnoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
-        vnoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
-      " Toggle Diagnostics with leader a
-        nnoremap <silent> <leader>a :CocDiagnosticToggle<CR>
+        vnoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>
+
+      " Snippets
+        imap     <silent> <expr> <C-l> coc#expandable() ? "<Plug>(coc-snippets-expand)" : "\<C-y>"
+
+      " Diagnostics mappings
+        nnoremap <silent> <leader>d :CocDiagnosticToggle<CR>
+        nnoremap <silent> <leader>D <cmd>call CocActionAsync('diagnosticPreview')<CR>
         nmap     <silent> ]g <Plug>(coc-diagnostic-next)
         nmap     <silent> [g <Plug>(coc-diagnostic-prev)
+
+      " No idea, but recommended
+        nmap     <silent>        <leader>st <Plug>(coc-type-definition)
+        nmap     <silent>        <leader>si <Plug>(coc-implementation)
+        nmap     <silent>        <leader>su <Plug>(coc-references)
+        nmap     <silent>        <leader>sr <Plug>(coc-rename)
+        nmap     <silent>        <leader>sa v<Plug>(coc-codeaction-selected)
+        vmap     <silent>        <leader>sa <Plug>(coc-codeaction-selected)
+        nnoremap <silent>        <leader>sn <cmd>CocNext<CR>
+        nnoremap <silent>        <leader>sp <cmd>CocPrev<CR>
+        nnoremap <silent>        <leader>sl <cmd>CocListResume<CR>
+        nnoremap <silent>        <leader>sc <cmd>CocList commands<cr>
+        nnoremap <silent>        <leader>so <cmd>CocList -A outline<cr>
+        nnoremap <silent>        <leader>sw <cmd>CocList -A -I symbols<cr>
+        inoremap <silent> <expr> <CR> pumvisible() ? '<CR>' : '<C-g>u<CR><c-r>=coc#on_enter()<CR>'
 
     " Repl: my very own repl plugin
       nnoremap <leader><leader>e :ReplToggle<CR>
@@ -699,6 +733,8 @@
     " Mouse Configuration: remaps mouse to work better in terminal
       " Out Jump List: <C-RightMouse> already mapped to something like <C-t>
       nnoremap <RightMouse> <C-o>
+      vnoremap <RightMouse> "+y
+      " inoremap <RightMouse> <S-C-v>
 
     " Format JSON Files:
       nnoremap <leader>fj :%!json_xs -f json -t json-pretty<CR>
