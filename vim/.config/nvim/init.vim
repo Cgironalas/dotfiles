@@ -1,6 +1,3 @@
-" set runtimepath^=~/.vim runtimepath+=~/.vim/after
-" let &packpath = &runtimepath
-" source ~/.vimrc
 " General: Notes
   "
   " Based On: Samuel Roeca dotfiles (https://github.com/pappasam/dotfiles)
@@ -153,8 +150,8 @@
   " Redraw window whenever I've regained focus
   augroup redraw_on_refocus
     autocmd!
-    autocmd FocusGained * :redraw!
-  augroup END
+    autocmd FocusGained * redraw!
+  augroup end
 
   " Enable Truecolor if applicable
   if $COLORTERM ==# 'truecolor'
@@ -166,6 +163,12 @@
   " Configure Update time: time vim waits to do something after I stop moving,
   " was in 750, updated to 300 coc-recommended
   set updatetime=300
+
+  " Tabs: <tab> inserts 2 spaces, tabs already present occupy 8 spaces visually
+  set expandtab
+  set shiftwidth=2
+  set softtabstop=2
+  set tabstop=8
 
   " Spelling
   " set spellang=es " for spanish
@@ -197,12 +200,9 @@
     return !col || getline('.')[col - 1]  =~# '\s'
   endfunction
 
-  " Use <c-space> to trigger completion. coc-recommended
-  if has('nvim')
-    inoremap <silent><expr> <c-space> coc#refresh()
-  else
-    inoremap <silent><expr> <c-@> coc#refresh()
-  endif
+  " Python provider
+  let g:python3_host_prog = "$HOME/.asdf/shims/python"
+  let g:loaded_python_provider = 0
 " }}}
 
 " COC: for IDE stuff ------------ {{{
@@ -264,7 +264,7 @@
       autocmd CursorHold * silent call CocActionAsync('highlight')
       autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
       " Coc nvim might override mappings, call them again just in case
-      autocmd User CocNvimInit call s:DefaultKeyMappings()
+      autocmd User CocNvimInit call s:default_key_mappings()
     augroup end
   endfunction
 
@@ -331,53 +331,50 @@
 " }}}
 
 " General: Filetype recognition ------------ {{{
-  augroup filetype_recognition
+  augroup custom_filetype_recognition
     autocmd!
-    autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
-    autocmd BufNewFile,BufRead,BufEnter *.hql,*.q set filetype=hive
-    autocmd BufNewFile,BufRead,BufEnter *.config,.cookiecutterrc set filetype=yaml
-    autocmd BufNewFile,BufRead,BufEnter .jrnl_config,*.bowerrc,*.babelrc,*.eslintrc,*.slack-term
-          \ set filetype=json
-    autocmd BufNewFile,BufRead,BufEnter *.asm set filetype=nasm
-    autocmd BufNewFile,BufRead,BufEnter *.handlebars set filetype=html
-    autocmd BufNewFile,BufRead,BufEnter *.m,*.oct set filetype=octave
-    autocmd BufNewFile,BufRead,BufEnter *.jsx set filetype=javascript
-    autocmd BufNewFile,BufRead,BufEnter *.gs set filetype=javascript
-    autocmd BufNewFile,BufRead,BufEnter *.cfg,*.ini,.coveragerc,*pylintrc
-          \ set filetype=dosini
-    autocmd BufNewFile,BufRead,BufEnter *.tsv set filetype=tsv
-    autocmd BufNewFile,BufRead,BufEnter *.toml set filetype=toml
-    autocmd BufNewFile,BufRead,BufEnter Dockerfile.* set filetype=Dockerfile
-    autocmd BufNewFile,BufRead,BufEnter Makefile.* set filetype=make
-    autocmd BufNewFile,BufRead,BufEnter poetry.lock set filetype=toml
-    autocmd BufNewFile,BufRead,BufEnter .gitignore,.dockerignore
-          \ set filetype=conf
-    autocmd BufNewFile,BufRead,BufEnter *.go set filetype=go
-  augroup END
+    autocmd BufEnter *.asm set filetype=nasm
+    autocmd BufEnter *.cfg,*.ini,.coveragerc,*pylintrc,zoomus.conf set filetype=dosini
+    autocmd BufEnter *.config,.cookiecutterrc set filetype=yaml
+    autocmd BufEnter *.go set filetype=go
+    autocmd BufEnter *.handlebars set filetype=html
+    autocmd BufEnter *.hql,*.q set filetype=hive
+    autocmd BufEnter *.js,*.gs set filetype=javascript
+    autocmd BufEnter *.min.js set filetype=none
+    autocmd BufEnter *.m,*.oct set filetype=octave
+    autocmd BufEnter *.py.j2 set filetype=python.jinja2
+    autocmd BufEnter *.sql.j2 set filetype=sql.jinja2
+    autocmd BufEnter *.toml set filetype=toml
+    autocmd BufEnter *.tsv set filetype=tsv
+    autocmd BufEnter .envrc set filetype=sh
+    autocmd BufEnter .gitignore,.dockerignore set filetype=conf
+    autocmd BufEnter .jrnl_config,*.bowerrc,*.babelrc,*.eslintrc,*.slack-term set filetype=json
+    autocmd BufEnter Dockerfile.* set filetype=Dockerfile
+    autocmd BufEnter Makefile.* set filetype=make
+    autocmd BufEnter poetry.lock,Pipfile set filetype=toml
+    autocmd BufEnter tsconfig.json,*.jsonc,.markdownlintrc set filetype=jsonc
+    autocmd BufEnter .zshrc set filetype=sh
+  augroup end
 " }}}
 
 " General: Indentation (tabs, spaces, width, etc)------------- {{{
-  " Note -> apparently BufRead, BufNewFile trumps Filetype
-  " Eg, if BufRead,BufNewFile * ignores any Filetype overwrites
-  " This is why default settings are chosen with Filetype *
-  set expandtab shiftwidth=2 softtabstop=2 tabstop=8
-  augroup indentation_sr
+  augroup custom_indentation
     autocmd!
+    " 4 spaces per tab, not 2
     autocmd Filetype python,c,haskell,markdown,rust,rst,kv,nginx,asm,nasm,gdscript3
-          \ setlocal shiftwidth=4 softtabstop=4 tabstop=8
-    autocmd Filetype dot setlocal autoindent cindent
-    autocmd Filetype make,tsv,votl,go
-          \ setlocal tabstop=4 softtabstop=0 shiftwidth=4 noexpandtab
+            \ setlocal shiftwidth=4 softtabstop=4
+    " Use hard tabs, not spaces
+    autocmd Filetype make,tsv,votl,go,gomod
+            \ setlocal tabstop=4 softtabstop=0 shiftwidth=0 noexpandtab
     " Prevent auto-indenting from occuring
     autocmd Filetype yaml setlocal indentkeys-=<:>
-
     autocmd Filetype ron setlocal cindent
-          \ cinkeys=0{,0},0(,0),0[,0],:,0#,!^F,o,O,e
-          \ cinoptions+='(s,m2'
-          \ cinoptions+='(s,U1'
-          \ cinoptions+='j1'
-          \ cinoptions+='J1'
-  augroup END
+            \ cinkeys=0{,0},0(,0),0[,0],:,0#,!^F,o,O,e
+            \ cinoptions+='(s,m2'
+            \ cinoptions+='(s,U1'
+            \ cinoptions+='j1'
+            \ cinoptions+='J1'
+  augroup end
 " }}}
 
 " Writing: Mainly for markdown {{{
@@ -390,17 +387,17 @@
   "  autocmd FileType requirements setlocal nospell
   "  autocmd BufNewFile,BufRead *.html,*.tex setlocal wrap
   "  autocmd FileType markdown nnoremap <buffer> <leader>f :TableFormat<CR>
-  " augroup END
+  " augroup end
 " }}}
 
-" General: Colorcolumn --------------- {{{
+" General: Color column --------------- {{{
   " Set column to light grey at 80 characters
   set colorcolumn=80
-  augroup colorcolumn_configuration
+  augroup custom_colorcolumn
     autocmd!
     autocmd FileType gitcommit setlocal colorcolumn=73 textwidth=72
-    autocmd FileType html,text,markdown,rst setlocal colorcolumn=0
-  augroup END
+    autocmd FileType html,text,markdown,rst,fzf setlocal colorcolumn=0
+  augroup end
 " }}}
 
 " General: Folding Settings --------------- {{{
@@ -408,14 +405,14 @@
   set foldnestmax=10
   set nofoldenable
 
-  augroup fold_settings
+  augroup custom_fold_setting
     autocmd!
-    autocmd FileType * setlocal foldlevelstart=0
-    " autocmd FileType vim,tmux,bash,zsh,sh
-    "       \ setlocal foldmethod=marker foldlevelstart=0 foldnestmax=1
+    autocmd FileType vim,tmux,bash,zsh,sh
+          \ setlocal foldmethod=marker foldnestmax=1 foldenable
     autocmd FileType markdown,rst
           \ setlocal nofoldenable
-  augroup END
+    autocmd FileType yaml setlocal nofoldenable foldmethod=indent foldnestmax=1
+  augroup end
 " }}}
 
 " General: Trailing whitespace ------------- {{{
@@ -437,10 +434,10 @@
 
   command! TrimWhitespace call <SID>trim_whitespace()
 
-  augroup fix_whitespace_save
+  augroup custom_fix_whitespace_save
     autocmd!
     autocmd BufWritePre * TrimWhitespace
-  augroup END
+  augroup end
 " }}}
 
 " General: Syntax highlighting ---------------- {{{
@@ -594,22 +591,22 @@
             \ nnoremap <silent> <buffer> <leader>f :FiletypeFormat<cr>
       autocmd FileType python,javascript,javascript.jsx,css,less,json,html
             \ vnoremap <silent> <buffer> <leader>f :FiletypeFormat<cr>
-    augroup END
+    augroup end
 "  }}}
 
 " General: Key remappings ----------------------- {{{
   " Put your key remappings here
   " Prefer nnoremap to nmap, inoremap to imap, and vnoremap to vmap
 
-  function! DefaultKeyMappings()
+  function! s:default_key_mappings()
     " nnoremap <silent> <C-k> :wincmd k<CR>
     nnoremap <silent> <C-j> :wincmd j<CR>
     nnoremap <silent> <C-l> :wincmd l<CR>
     nnoremap <silent> <C-h> :wincmd h<CR>
 
-    " FiletypeFormat: remap leader f to do filetype formatting TODO
-      nnoremap <silent> <leader>f <cmd>FiletypeFormat<cr>
-      vnoremap <silent> <leader>f :FiletypeFormat<cr>
+    " FiletypeFormat:
+      nnoremap <leader>f <cmd>FiletypeFormat<cr>
+      vnoremap <leader>f :FiletypeFormat<cr>
 
     " Disable Ex Mode: to avoid opening it by mistake
       nnoremap Q <nop>
@@ -741,7 +738,8 @@
       inoremap <leader>fj :%!json_xs -f json -t json-pretty<CR>
 
   endfunction
-  call DefaultKeyMappings()
+
+  call s:default_key_mappings()
 " }}}
 
 " General: Cleanup ------------------ {{{
