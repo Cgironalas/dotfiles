@@ -41,10 +41,10 @@ echo "Please reboot to be able to use docker"
 echo "\n\n\nFinishing snap installation"
     sudo systemctl enable —now snapd.socket && \
     echo "installing bitwarden" && \
-    snap install bitwarden 
+    snap install bitwarden
 
 echo "\n\n\nInstalling vimplug"
-cd ~ && \ 
+cd ~ && \
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 cur_dir=$(pwd)
@@ -91,7 +91,7 @@ source ~/.asdf/asdf.sh && \
     asdf plugin-add nodejs && \
     asdf plugin-add yarn && \
     bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring && \
-    asdf install nodejs 12.9.1 && \
+    asdf install nodejs 12.12.0 && \
     asdf install yarn 1.17.3 && \
-    asdf global nodejs 12.9.1 && \
+    asdf global nodejs 12.12.0 && \
     asdf global yarn 1.17.3
