@@ -182,12 +182,25 @@ include () {
   [[ -f "$1" ]] && source "$1"
 }
 
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
 
 # }}}
 # Executed Commands --- {{{
 
 # turn off ctrl-s and ctrl-q from freezing / unfreezing terminal
-stty -ixon
+# stty -ixon
 
 # }}}
 
@@ -801,7 +814,7 @@ stty -ixon
   GIT_COLOUR="\033[38;5;226m"
   PY_COLOUR="\033[38;5;118m" #Chartreuse1
 
-  BOLD="$(tput bold)"
+  # BOLD="$(tput bold)"
 
   # Set Bash PS1
   PS1_GIT="\[$GIT_COLOUR\]$(gitp)\[$COLOR_RESET\]"
