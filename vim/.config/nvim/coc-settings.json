@@ -124,7 +124,7 @@
     }
   },
   "languageserver": {
-    "terraform-ls": {
+    "terraform": {
       "command": "terraform-ls",
       "args": ["serve"],
       "filetypes": ["terraform", "tf"],
