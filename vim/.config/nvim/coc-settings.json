@@ -124,26 +124,11 @@
     }
   },
   "languageserver": {
-    "dockerfile": {
-      "command": "docker-langserver",
-      "filetypes": ["Dockerfile"],
-      "args": ["--stdio"]
-    },
-    "terraform-lsp": {
-      "command": "terraform-lsp",
+    "terraform-ls": {
+      "command": "terraform-ls",
+      "args": ["serve"],
       "filetypes": ["terraform", "tf"],
       "rootPatterns": ["Makefile", ".git"]
-    },
-    "nginx-language-server": {
-      "command": "nginx-language-server",
-      "filetypes": ["nginx"],
-      "rootPatterns": ["nginx.conf", ".git"]
-    },
-    "tflint": {
-      "command": "tflint",
-      "filetypes": ["terraform"],
-      "rootPatterns": ["Makefile", ".git"],
-      "args": ["--langserver"]
     }
   },
   "suggest.completionItemKindLabels": {

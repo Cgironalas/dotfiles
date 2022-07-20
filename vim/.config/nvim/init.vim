@@ -61,6 +61,9 @@
 
     call packager#add('git@github.com:pantharshit00/vim-prisma')
     " call packager#add('git@github.com:')
+
+    " General / Writing
+    call packager#add('git@github.com:iamcco/markdown-preview.nvim', {'do': 'cd app & yarn install'})
   endfunction
 
   command!       PackInstall call s:pack_init() | call packager#install()
@@ -203,6 +206,19 @@
   " Python provider
   let g:python3_host_prog = "$HOME/.asdf/shims/python"
   let g:loaded_python_provider = 0
+
+  " let g:clipboard = {
+  "   \ 'name': 'xsel',
+  "   \ 'copy': {
+  "   \ '+': 'xsel --clipboard --input',
+  "   \ '*': 'xsel --clipboard --input',
+  "   \ },
+  "   \ 'paste': {
+  "   \ '+': 'xsel --clipboard --output',
+  "   \ '*': 'xsel --clipboard --output',
+  "   \ },
+  "   \ 'cache_enabled': 0,
+  "   \ }
 " }}}
 
 " COC: for IDE stuff ------------ {{{
@@ -470,6 +486,7 @@
           \   }
           \ }
   " Load:
+  " Add autocommands to change colors here.
     try
       colorscheme PaperColorSlim
     catch
