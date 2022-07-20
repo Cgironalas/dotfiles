@@ -119,7 +119,7 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export EDITOR=vim
 export SHELL=bash
 
-export MANPAGER="nvim -c 'set ft=man' -"
+export MANPAGER="nvim +Man!"
 
 # environment variable controlling difference between HI-DPI / Non HI_DPI
 # turn off because it messes up my pdf tooling
@@ -218,7 +218,8 @@ stty -ixon
     alias vi='open_v'
     alias vim='open_v'
 
-    alias vv='nvim ~/dotfiles/vim/.vimrc'
+    alias vv='nvim ~/dotfiles/vim/.config/nvim/init.vim'
+    alias n='nvim ~/dotfiles/vim/.config/nvim/init.vim'
     alias b='nvim ~/dotfiles/bash/.bashrc'
     alias t='nvim ~/dotfiles/tmux/.tmux.conf'
   ################################
@@ -250,6 +251,8 @@ stty -ixon
     alias gs='git status .'
     alias gsa='git status'
     alias gsu='git status -u'
+    alias push='git push'
+    alias pull='git pull'
 
     # cd to the current git root
     function gr() {
@@ -286,6 +289,13 @@ stty -ixon
     function gitp() {
       if [[ -d .git || $(git rev-parse --git-dir 2> /dev/null) ]]; then
         echo "[$(git branch | grep \* | sed -r 's/\* //g')]"
+      else
+        echo ''
+      fi
+    }
+    function gitb() {
+      if [[ -d .git || $(git rev-parse --git-dir 2> /dev/null) ]]; then
+        echo "$(git branch | grep \* | sed -r 's/\* //g')" | pbcopy
       else
         echo ''
       fi
@@ -511,6 +521,11 @@ stty -ixon
         echo "pyenv is not installed"
       fi
     }
+
+    function redshift_integration {
+      # host: rs-analytics-master.keplergrp.com
+      psql -h 10.90.47.214 -U ingestion -d general -p 5439
+    }
   ######################################
 
   ## RUST ##############################
@@ -599,22 +614,29 @@ stty -ixon
   ######################################
 
   ## MISC ##############################
+    # Reload bashrc
     function so() {
-      # Reload bashrc
       envd
+      pushd . >/dev/null
       source ~/.bashrc
+      popd >/dev/null
+      update_prompt
     }
 
+    # Open current directory in file browser
     function explore() {
-      if [[ $(command -v nemo) ]]; then
+      if [[ $(command -v xdg-open) ]]; then
+        echo 'using xdg-open'
+        xdg-open .
+      elif [[ $(command -v nemo) ]]; then
         echo 'using nemo'
         nemo .
       else
-        echo 'using xdg-open'
-        xdg-open .
+        echo "couldn't open current directory"
       fi
     }
 
+    # Clear => list all (if input grep search for it)
     function cll() {
       update_prompt
       if [ -z $1 ]; then
@@ -623,6 +645,37 @@ stty -ixon
       else
         clear
         ll | grep $1
+      fi
+    }
+
+    function despace() {
+      # if [ -z $1 ]; then
+      #   echo "Must provide a file as the first and only argument."
+      # else
+      #   mv "$1" $(printf "$1" | tr -s ' ' '_')
+      # fi
+
+      # # Ricardo's implementation
+      # local in="$@"
+      # if [ -z "$in" ]; then
+      #   while read -r in; do
+      #     mv "$in" $(printf "$in" | tr -s ' ' '_')
+      #   done
+      # else
+      #   for filename in "$in"; do
+      #     mv "$filename" $(printf "$filename" | tr -s ' ' '_')
+      #   done
+      # fi
+
+      # Sam's implementation
+      if [ $# -eq 0 ]; then
+        while read -r in; do
+          mv "$in" $(printf "$in" | tr -s ' ' '_')
+        done
+      else
+        for filename in "$@"; do
+          mv "$filename" $(printf "$filename" | tr -s ' ' '_')
+        done
       fi
     }
 
@@ -661,9 +714,9 @@ stty -ixon
       cd ~/dotfiles
       git pull
       popd
-      # asdf uninstall neovim nightly
-      # asdf install neovim nightly
-      # asdf global neovim nightly
+      asdf uninstall neovim nightly
+      asdf install neovim nightly
+      asdf global neovim nightly
     }
 
     # Running dfu-util requires sudo permissions
@@ -795,73 +848,76 @@ ${PS1_USR}"
 #### ##########################################################################
 
 ## Project CDs ################################################################
-function goto() {
-  case $1 in
-    'dotfiles')
-      c ~/dotfiles
-      trw dotfiles
-      ;;
-    'bash')
-      c ~/dotfiles/bash
-      trw bash_conf
-      ;;
-    'tmux')
-      c ~/dotfiles/tmux
-      trw tmux_conf
-      ;;
-    'vim')
-      c ~/dotfiles/vim
-      trw vim_conf
-      ;;
-    'sandbox')
-      c ~/sandbox
-      trw sandbox
-      ;;
-    'tetris')
-      c ~/repos/tetris
-      trw tetris
-      ;;
-    *)
-      echo 'bad got'
-    esac
-}
-alias go_dotfiles='cd ~/dotfiles/ && update_prompt && trw dotfiles'
-alias go_sandbox='cd ~/sandbox/ && update_prompt && trw sandbox'
-alias go_tetris='cd ~/repos/tetris/ && update_prompt && trw tetris'
+  function goto() {
+    case $1 in
+      'dotfiles')
+        c ~/dotfiles
+        trw dotfiles
+        ;;
+      'bash')
+        c ~/dotfiles/bash
+        trw bash_conf
+        ;;
+      'tmux')
+        c ~/dotfiles/tmux
+        trw tmux_conf
+        ;;
+      'vim')
+        c ~/dotfiles/vim
+        trw vim_conf
+        ;;
+      'sandbox')
+        c ~/sandbox
+        trw sandbox
+        ;;
+      'tetris')
+        c ~/repos/tetris
+        trw tetris
+        ;;
+      *)
+        echo 'bad got'
+      esac
+  }
+  alias go_dotfiles='cd ~/dotfiles/ && update_prompt && trw dotfiles'
+  alias go_sandbox='cd ~/sandbox/ && update_prompt && trw sandbox'
+  alias go_tetris='cd ~/repos/tetris/ && update_prompt && trw tetris'
 ###############################################################################
 
 ## Monitor stuff ##############################################################
-function hz() {
-  case $1 in
-    240)
-      echo "240"
-      xrandr --output DisplayPort-0 --mode 1920x1080 --rate 239.96
-      ;;
-    144)
-      xrandr --output DisplayPort-0 --mode 1920x1080 --rate 144.00
-      ;;
-    120)
-      xrandr --output DisployPort-0 --mode 1920x1080 --rate 119.98
-      ;;
-    100)
-      xrandr --output DisplayPort-0 --mode 1920x1080 --rate 99.93
-      ;;
-    *)
-      xrandr --output DisplayPort-0 --mode 1920x1080 --rate 60.00
-  esac
-}
+  function hz() {
+    case $1 in
+      240)
+        echo "240"
+        xrandr --output DisplayPort-0 --mode 1920x1080 --rate 239.96
+        ;;
+      144)
+        xrandr --output DisplayPort-0 --mode 1920x1080 --rate 144.00
+        ;;
+      120)
+        xrandr --output DisployPort-0 --mode 1920x1080 --rate 119.98
+        ;;
+      100)
+        xrandr --output DisplayPort-0 --mode 1920x1080 --rate 99.93
+        ;;
+      *)
+        xrandr --output DisplayPort-0 --mode 1920x1080 --rate 60.00
+    esac
+  }
 ###############################################################################
 
 ## SSH stuff ##################################################################
-get_ppk() {
-  sudo puttygen $1 -o $2 -O private
-}
+  get_ppk() {  # $1 input pem file name - $2 output ppk file name
+    sudo puttygen $1 -o $2 -O private
+  }
 
-get_pem() {
-  sudo puttygen $1 -O private-openssh -o $2
-}
+  get_pem() {  # $1 input ppk file name - $2 output pem file name
+    sudo puttygen $1 -O private-openssh -o $2
+  }
 ###############################################################################
 
 include ~/.bash/sensitive
 
+include ~/.xrandrc
+
 # [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# add note
