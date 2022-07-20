@@ -1,4 +1,4 @@
-DOT_FILES = .bashrc .profile .gitconfig .tmux.conf .vimrc .config/nvim/init.vim
+DOT_FILES = .bashrc .profile .inputrc .gitconfig .tmux.conf .vimrc .config/nvim/init.vim .config/nvim/coc-settings.json
 DOT_DIR = bash git tmux vim
 
 .PHONY: help
