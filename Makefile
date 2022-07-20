@@ -1,4 +1,4 @@
-DOT_FILES = .bashrc .profile .inputrc .gitconfig .tmux.conf .vimrc .config/nvim/init.vim .config/nvim/coc-settings.json
+DOT_FILES = .bashrc .profile .inputrc .gitconfig .tmux.conf .config/nvim/init.vim .config/nvim/coc-settings.json
 DOT_DIR = bash git tmux vim
 
 .PHONY: help
@@ -12,7 +12,7 @@ help:
 .PHONY: backup_folder
 backup_folder:
 	@mkdir -p $(CURDIR)/.old;
-	@mkdir -p $(CURDIR)/.old/.config/nvim/init.vim;
+	@mkdir -p $(CURDIR)/.old/.config/nvim;
 	@echo "Backup folder created or already exists.\n"
 
 .PHONY: backup
