@@ -14,6 +14,10 @@ sudo add-apt-repository --yes ppa:ubuntuhandbook1/audacity
 sudo add-apt-repository --yes ppa:inkscape.dev/stable
 sudo add-apt-repository --yes ppa:kicad/kicad-6.0-releases
 
+echo "\n\n\n===== Add Spotify dependencies. ====="
+curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
+echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+
 
 echo "\n\n\n===== Installing Ubuntu system packages. ====="
 sudo apt install -y \
@@ -22,6 +26,7 @@ sudo apt install -y \
   build-essential \
   curl \
   exuberant-ctags \
+  flatpak \
   fortune \
   git \
   htop \
@@ -71,7 +76,8 @@ sudo apt install -y \
   libfreetype6-dev \
   libfontconfig1-dev \
   libxcb-xfixes0-dev \
-  libxkbcommon-dev
+  libxkbcommon-dev \
+  spotify-client
 
 echo "\n\n\n===== Make dirs for rc files. ====="
 mkdir -p ~/.bash/
@@ -79,7 +85,7 @@ mkdir -p ~/.config/nvim
 mkdir -p ~/bin
 
 echo "\n\n\n===== Make other common dirs. ====="
-mkdir -p ~/sandbox
+mkdir -p ~/Documents/sandbox
 mkdir -p ~/Documents/repos
 
 echo "\n\n\n===== Clone and make personal dotfiles. ====="
@@ -97,6 +103,7 @@ else
   git checkout "$(git describe --abbrev=0 --tags)"
   cd $cur_dir
 fi
+
 
 git clone https://github.com/kristijanhusak/vim-packager ~/.config/nvim/pack/packager/opt/vim-packager
 
@@ -125,14 +132,36 @@ source ~/.asdf/asdf.sh && \
 echo "\n\n\n===== Install commonly used tools in the latest version. ====="
 source ~/.asdf/asdf.sh && \
     asdf plugin-add neovim && \
-    asdf neovim install latest && \
+    asdf install neovim latest && \
     asdf global neovim latest && \
     asdf plugin-add tmux && \
     asdf install tmux latest && \
     asdf global tmux latest && \
     asdf plugin-add rust && \
     asdf install rust latest && \
-    asdf global rust latest
+    asdf global rust latest && \
+    asdf plugin-add awscli && \
+    asdf install awscli latest && \
+    asdf global awscli latest
+
+echo "\n\n\n===== Cloning / building alacritty. ====="
+git clone https://github.com/alacritty/alacritty.git ~/alacritty
+cd ~/alacritty
+
+# Install
+cargo build --release
+
+cp ~/alacritty/target/release/alacritty ~/bin/
+sudo cp ~/alacritty/extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg
+sudo desktop-file-install ~/alacritty/extra/linux/Alacritty.desktop
+sudo update-desktop-database
+
+# terminfo
+tic -xe alacritty,alacritty-direct ~/alacritty/extra/alacritty.info
+
+# man page
+sudo mkdir -p /usr/local/share/man/man1
+gzip -c ~/alacritty/extra/alacritty.man | sudo tee /usr/local/share/man/man1/alacritty.1.gz > /dev/null
 
 echo "\n\n\n===== Install nodejs and yarn. ====="
 source ~/.asdf/asdf.sh && \
@@ -148,18 +177,14 @@ sudo apt install --install-recommends kicad
 
 echo "\n\n\n===== Installing flatpak packages. ====="
 flatpak install -y org.telegram.desktop
-flatpak install -y spotify
-flatpak install -y slack
 flatpak install -y bitwarden
 flatpak install -y com.obsproject.Studio
 
-echo "\n\n\n===== Install Alacritty. ====="
-cargo install alacritty
-
 echo "\n\n\n===== Recommended to install the following software through their .debs: ====="
+echo "VIA: https://github.com/the-via/releases/releases/"
+echo "Zoom: https://zoom.us/support/download"
+echo "Slack: https://slack.com/downloads/linux"
 echo "Discord: https://discord.com/download"
 echo "Steam: https://store.steampowered.com/about/"
-echo "VIA: https://github.com/the-via/releases/releases/tag/v1.3.1"
-echo "Zoom: https://zoom.us/support/download"
 
 cd $cur_dir
