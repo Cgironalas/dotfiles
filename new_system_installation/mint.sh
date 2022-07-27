@@ -43,8 +43,13 @@ sudo apt install -y \
   libsqlite3-dev \
   libssl-dev \
   libtool \
+  libkrb5-dev \
+  libsasl2-dev \
+  libpq-dev \
   libxslt-dev \
   libyaml-dev \
+  default-libmysqlclient-dev \
+  freetds-dev \
   llvm \
   make \
   manpages-dev \
