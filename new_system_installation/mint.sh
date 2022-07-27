@@ -179,9 +179,10 @@ echo "\n\n\n===== Install full Kicad. ====="
 sudo apt install --install-recommends kicad
 
 echo "\n\n\n===== Installing flatpak packages. ====="
-flatpak install -y org.telegram.desktop
-flatpak install -y bitwarden
-flatpak install -y com.obsproject.Studio
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install -y flathub org.telegram.desktop
+flatpak install -y flathub com.bitwarden.desktop
+flatpak install -y flathub com.obsproject.Studio
 
 echo "\n\n\n===== Recommended to install the following software through their .debs: ====="
 echo "VIA: https://github.com/the-via/releases/releases/"
