@@ -136,6 +136,7 @@ PYENV_ROOT="$HOME/.pyenv"
 if [ -d "$PYENV_ROOT" ]; then
   export PYENV_ROOT
   path_radd "$PYENV_ROOT/bin"
+  path_radd "/home/carlos/.local/bin"
   eval "$(pyenv init -)"
 fi
 
@@ -248,10 +249,16 @@ esac
     alias pycache-clean='find . -name "*.pyc" -delete'
   ## #############################
 
+  ## AWS CLI stuff ###############
+    alias awsl='aws sso login --no-browser'
+    alias awslo='aws sso logout'
+  ## #############################
+
   ## Git #########################
     alias g='git'
     alias ga='git add'
     alias gb='git branch'
+    alias gbd='git branch -D'
     alias gco='git commit'
     alias gch='git checkout'
     alias gda='git diff'
@@ -325,6 +332,8 @@ esac
     alias dkrmai='docker rmi $(docker images -q)'
     alias 'dk-cu'='docker-compose up'
     alias 'dk-cd'='docker-compose down'
+    alias mbt='make build-test'
+    alias mbr='make build-release'
 
     ## $ drmi kip python
     ## will remove any docker images that contain kip, amazonaws, and python
@@ -379,6 +388,7 @@ esac
       cd "$@"
       update_prompt
     }
+    alias kip='cd ~/Documents/repos/'
     alias .='cd .. && update_prompt'
     alias ..='cd ../../ && update_prompt'
     alias ...='cd ../../../ && update_prompt'
@@ -445,6 +455,7 @@ esac
         cookiecutter \
         neovim-remote \
         docker-compose \
+        pipex \
         && asdf reshim python
     }
 
@@ -533,11 +544,6 @@ esac
       else
         echo "pyenv is not installed"
       fi
-    }
-
-    function redshift_integration {
-      # host: rs-analytics-master.keplergrp.com
-      psql -h 10.90.47.214 -U ingestion -d general -p 5439
     }
   ######################################
 
