@@ -82,7 +82,9 @@ sudo apt install -y \
   libfontconfig1-dev \
   libxcb-xfixes0-dev \
   libxkbcommon-dev \
-  spotify-client
+  spotify-client \
+  libcurl4-openssl-dev \
+  uuid-dev
 
 echo "\n\n\n===== Make dirs for rc files. ====="
 mkdir -p ~/.bash/
@@ -151,6 +153,14 @@ source ~/.asdf/asdf.sh && \
     asdf plugin-add terraform-ls && \
     asdf install terraform-ls latest && \
     asdf global terraform-ls latest
+
+
+echo "\n\n\n===== Install postgres. ====="
+touch ~/.asdf-postgres-configure-options
+echo 'POSTGRES_EXTRA_CONFIGURE_OPTIONS="--with-uuid=e2fs --with-openssl --with-libraries=/usr/local/lib:/usr/local/opt/openssl@1.1/lib --with-includes=/usr/local/include:/usr/local/opt/openssl@1.1/include" asdf install postgres' >> ~/.asdf-postgres-configure-options
+source ~/.asdf/asdf.sh && \
+    asdf plugin-add postgres && \
+    asdf install postgres 12.11
 
 echo "\n\n\n===== Cloning / building alacritty. ====="
 git clone https://github.com/alacritty/alacritty.git ~/alacritty
