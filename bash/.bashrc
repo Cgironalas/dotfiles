@@ -358,7 +358,7 @@ esac
     alias porun='poetry run'
 
     alias poa='poetry add'
-    alias poad='poetry add --dev'
+    alias poad='poetry add --group dev'
 
     alias por='poetry remove'
 
