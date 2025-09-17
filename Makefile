@@ -32,6 +32,13 @@ backup: backup_folder
             echo "Doesn't exists, thus ignored.\n"; \
 	done
 
+.PHONY: unstow
+unstow:
+	@for DIR in $(DOT_DIR) ; do \
+		echo $$DIR; \
+		stow -D $$DIR; \
+	done
+
 .PHONY: dotfiles
 dotfiles: backup
 	@for DIR in $(DOT_DIR) ; do \
