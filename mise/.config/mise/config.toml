@@ -1,0 +1,20 @@
+# :schema https://github.com/jdx/mise/blob/main/schema/mise.json
+
+[tools]
+awscli = "latest"
+direnv = "latest"
+go = "1.23.1"
+java = "latest"
+k9s = "0.26.7"
+kubectl = "latest"
+lua-language-server = "latest"
+minikube = "latest"
+node = "22.8.0"
+python = "3.12.6"
+shellcheck = "latest"
+shfmt = "latest"
+terraform = "latest"
+terraform-ls = "latest"
+tflint = "latest"
+tmux = "latest"
+vault = "latest"
