@@ -7,6 +7,9 @@
   autocrlf = input
   safecrlf = true
 
+[init]
+  defaultBranch = main
+
 [alias]
   br = branch
   ; Can create branches by just adding a parameter at the end
@@ -23,6 +26,17 @@
   type = cat-file -t
   ut = status -u
   hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+  root = rev-parse --show-toplevel
 
+[merge "ours"]
+  driver = true
+[pull]
+  rebase = false
+[push]
+  default = matching
 [commit]
   verbose = true
+[credential "https://github.com"]
+  helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+  helper = !gh auth git-credential
