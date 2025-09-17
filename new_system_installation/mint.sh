@@ -22,12 +22,12 @@ echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sou
 echo "\n\n\n===== Installing Ubuntu system packages. ====="
 sudo apt install -y \
   autoconf \
+  neovim \
   automake \
   build-essential \
   curl \
   exuberant-ctags \
   flatpak \
-  fortune \
   git \
   htop \
   jq \
@@ -35,10 +35,6 @@ sudo apt install -y \
   libffi-dev \
   liblzma-dev \
   libncurses-dev \
-  libncurses5 \
-  libncurses5-dev \
-  libncursesw5 \
-  libncursesw5-dev \
   libreadline-dev \
   libsqlite3-dev \
   libssl-dev \
@@ -46,7 +42,6 @@ sudo apt install -y \
   libkrb5-dev \
   libsasl2-dev \
   libpq-dev \
-  libxslt-dev \
   libyaml-dev \
   default-libmysqlclient-dev \
   freetds-dev \
@@ -54,12 +49,12 @@ sudo apt install -y \
   make \
   manpages-dev \
   manpages-posix-dev \
-  python-openssl \
-  python-pygments \
+  python3-pygments \
   python3 \
   python3-dev \
   python3-pip \
   python3-virtualenv \
+  python3-pynvim \
   tk-dev \
   tmux \
   tree \
@@ -78,11 +73,9 @@ sudo apt install -y \
   inkscape \
   cmake \
   pkg-config \
-  libfreetype6-dev \
   libfontconfig1-dev \
   libxcb-xfixes0-dev \
   libxkbcommon-dev \
-  spotify-client \
   libcurl4-openssl-dev \
   uuid-dev
 
