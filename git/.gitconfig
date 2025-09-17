@@ -19,10 +19,10 @@
   dump = cat-file -p
   gr = grep
   gri = grep --ignore-case
-  hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
   st = status
   type = cat-file -t
   ut = status -u
+  hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 
 [commit]
   verbose = true
